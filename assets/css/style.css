@@ -1,0 +1,7 @@
+@import url("reset.css");
+
+:root {
+   --black-main-color: #333;
+   --main-orange-color: #F58220;
+   --main-white-color: #fff; 
+}
