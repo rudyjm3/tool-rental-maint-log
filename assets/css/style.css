@@ -7,6 +7,31 @@
 }
 
 
+body {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: var(--black-main-color);
+   height: 100vh;
+}
+label {
+   width: 100%;
+}
+/* HIDE NUMBER INPUTS UP/DOWN ARROWS */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+/* END HIDE NUMBER INPUTS UP/DOWN ARROWS */
+
+
 #entry-form-container {
    padding: 15px;
    width: 450px;
