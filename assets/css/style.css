@@ -5,3 +5,28 @@
    --main-orange-color: #F58220;
    --main-white-color: #fff; 
 }
+
+
+#entry-form-container {
+   padding: 10px;
+   width: 250px;
+   background-color: #dddddd;
+}
+#entry-form {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   flex-direction: column;
+   gap: 15px;
+   width: 100%;
+   background-color: aliceblue;
+}
+
+.form-control {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   flex-wrap: wrap;
+   width: 200px;
+   background-color: white;
+}
