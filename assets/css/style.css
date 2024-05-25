@@ -8,8 +8,8 @@
 
 
 #entry-form-container {
-   padding: 10px;
-   width: 250px;
+   padding: 15px;
+   width: 450px;
    background-color: #dddddd;
 }
 #entry-form {
@@ -19,6 +19,7 @@
    flex-direction: column;
    gap: 15px;
    width: 100%;
+   padding: 10px;
    background-color: aliceblue;
 }
 
@@ -27,6 +28,9 @@
    justify-content: flex-start;
    align-items: center;
    flex-wrap: wrap;
-   width: 200px;
+   padding: 10px;
+   width: 100%;
+   border-radius: 5px;
+   border: solid 1px grey;
    background-color: white;
 }
