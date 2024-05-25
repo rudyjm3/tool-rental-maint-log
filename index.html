@@ -18,13 +18,17 @@
         <!-- Entry input form -->
         <div id="entry-form-container">
             <form id="entry-form" action="">
+                <div class="form-header">
+                    <h1>Equipment Preventive Maintenance Enrty Form</h1>    
+                </div>
+
                 <div class="form-control">
                     <label for="equipment-description-input">Equipment description</label>
                     <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer">    
                 </div>
                 <div class="form-control">
                     <label for="rental-id-number">Rental ID number</label>
-                    <input type="number" name="rental-id-number" id="rental-id-number" placeholder="last-5 digits" required >    
+                    <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID. Eg. 04511" required >    
                 </div>
                 <div class="form-control">
                     <label for="service-type">Service type</label>
@@ -36,7 +40,7 @@
                 </div>
                 <div class="form-control">
                     <label for="hour-meter">Hour meter reading</label>
-                    <input type="number" name="hour-meter" id="hour-meter" placeholder="Last 5-digits on rental ID. Eg. 04511">    
+                    <input type="number" name="hour-meter" id="hour-meter" placeholder="Eg. 12.5">    
                 </div>
                 <div class="form-control">
                     <label for="service-date">Service date</label>
