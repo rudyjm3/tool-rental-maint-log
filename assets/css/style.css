@@ -37,6 +37,21 @@ input[type=number] input[type=text] input[type=textarea] {
    border-radius: 2px;
 }
 
+/* Header styling */
+header {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   padding: 20px;
+   width: 100%;
+   background-color: var(--black-main-color);
+   color: var(--main-white-color);
+}
+.page-title {
+   font-weight: bold;
+   
+}
+
 
 #entry-form-container {
    padding: 10px;
