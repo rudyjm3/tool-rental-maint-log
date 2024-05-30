@@ -11,59 +11,95 @@
 </head>
 <body>
 
-    <div id="main-container">
+   <div id="main-container">
       <header>
          <div class="page-title">General Maintenance Log</div>
       </header>
         <!-- Table container for logged maintenance entries -->
-        <div id="table-container">
+      <div id="table-container">
+         <table>
+            <thead>
+               <tr> <!-- This is the first row -->
+                  <th>Unit ID#</th>
+                  <th>Equipment Description</th>
+                  <th>Service Type</th>
+                  <th>Service Description</th>
+                  <th>Hour Meter</th>
+                  <th>Date</th>
+                  <th>Done by</th>
+                  <th>Edit</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr> <!-- This is the second row -->
+                  <td>12345</td>
+                  <td>3500 4500 PSI Pressure Washer</td>
+                  <td>Preventive maintenance</td>
+                  <td>Pump oil changed</td>
+                  <td>12.5</td>
+                  <td>05/20/2024</td>
+                  <td>User Name or ID</td>
+                  <td><span><i class="fa-solid fa-pen-to-square"></i></span> <span><i class="fa-solid fa-trash-can"></i></span></td>
+               </tr>
+               <tr> <!-- This is the third row -->
+                  <td>12345</td>
+                  <td>3500 4500 PSI Pressure Washer</td>
+                  <td>Preventive maintenance</td>
+                  <td>Pump oil changed</td>
+                  <td>12.5</td>
+                  <td>05/20/2024</td>
+                  <td>User Name or ID</td>
+                  <td><span><i class="fa-solid fa-pen-to-square"></i></span> <span><i class="fa-solid fa-trash-can"></i></span></td>
+               </tr>
+            </tbody>
+            
+            </table>
+      </div>
 
-        </div>
+      <!-- Entry input form -->
+      <div id="entry-form-container">
+         <form id="entry-form" action="POST">
+            <div class="form-header">
+               <h1>General Maintenance Enrty Form</h1>
+               <i class="fa-regular fa-rectangle-xmark" id="form-close-btn"></i>
+            </div>
 
-        <!-- Entry input form -->
-        <div id="entry-form-container">
-            <form id="entry-form" action="POST">
-                <div class="form-header">
-                  <h1>General Maintenance Enrty Form</h1>
-                  <i class="fa-regular fa-rectangle-xmark" id="form-close-btn"></i>
-                </div>
+            <div class="form-control">
+               <label for="equipment-description-input">Equipment description</label>
+               <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer" required>    
+            </div>
+            <div class="form-control">
+               <label for="rental-id-number">Rental ID number</label>
+               <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID" required >    
+            </div>
+            <div class="form-control">
+               <label for="service-type">Service type</label>
+               <input type="text" name="service-type" id="service-type" placeholder="Eg. Preventive maintenance" required>    
+            </div>
+            <div class="form-control">
+               <label for="service-description">Service description</label>
+               <textarea name="service-description" id="service-description" placeholder="Eg. Pump oil changed" required></textarea>   
+            </div>
+            <div class="form-control">
+               <label for="hour-meter">Hour meter reading</label>
+               <input type="number" name="hour-meter" id="hour-meter" placeholder="Eg. 12.5">    
+            </div>
+            <div class="form-control">
+               <label for="service-date">Service date</label>
+               <input type="date" name="service-date" id="service-date" required>    
+            </div>
+               <div class="form-control">
+               <label for="name-input">Done by</label>
+               <input type="text" name="name-input" id="name-input" placeholder="Your first name or LDAP" required>    
+            </div>
 
-                <div class="form-control">
-                  <label for="equipment-description-input">Equipment description</label>
-                  <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer" required>    
-                </div>
-                <div class="form-control">
-                    <label for="rental-id-number">Rental ID number</label>
-                    <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID" required >    
-                </div>
-                <div class="form-control">
-                    <label for="service-type">Service type</label>
-                    <input type="text" name="service-type" id="service-type" placeholder="Eg. Preventive maintenance" required>    
-                </div>
-                <div class="form-control">
-                    <label for="service-description">Service description</label>
-                    <textarea name="service-description" id="service-description" placeholder="Eg. Pump oil changed" required></textarea>   
-                </div>
-                <div class="form-control">
-                    <label for="hour-meter">Hour meter reading</label>
-                    <input type="number" name="hour-meter" id="hour-meter" placeholder="Eg. 12.5">    
-                </div>
-                <div class="form-control">
-                    <label for="service-date">Service date</label>
-                    <input type="date" name="service-date" id="service-date" required>    
-                </div>
-                <div class="form-control">
-                  <label for="name-input">Done by</label>
-                  <input type="text" name="name-input" id="name-input" placeholder="Your first name or LDAP" required>    
-              </div>
+            <div class="form-control">
+               <button id="submit-button">Submit</button>    
+            </div>    
+         </form>
 
-                <div class="form-control">
-                    <button id="submit-button">Submit</button>    
-                </div>
-                
-            </form>
-        </div>
-    </div>
+      </div>
+   </div>
 
     
 

@@ -9,7 +9,6 @@
    --light-grey-color2: #ababab;
 }
 
-
 body {
    display: flex;
    justify-content: center;
@@ -25,10 +24,10 @@ body {
    justify-content: center;
    align-items: center;
    flex-direction: column;
-   gap: 15px;
    width: 100%;
    background-color: var(--light-grey-color1);
 }
+
 /* Header styling */
 header {
    display: flex;
@@ -42,6 +41,31 @@ header {
 .page-title {
    font-weight: bold;
 }
+
+/* Table styling */
+#table-container {
+   width: 100%;
+   height: auto;
+   padding: 0 20px;
+   background-color: var(--main-white-color);
+}
+table {
+   border-collapse: collapse;
+   width: 100%;
+}
+th {
+   text-align: left;
+   padding: 10px 5px;
+   border-bottom: 2px solid var(--main-black-color);
+   background-color: var(--main-white-color);
+}
+tr:nth-child(odd) {
+   background-color: var(--light-grey-color1);
+}
+td {
+   padding: 20px 10px;
+}
+/* End Table styling */
 
 /* Form styling */
 #entry-form-container {
@@ -89,7 +113,6 @@ header {
    padding: 15px;
    width: 100%;
 }
-
 label {
    width: 100%;
 }
@@ -100,7 +123,6 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
