@@ -9,6 +9,11 @@
    --light-grey-color2: #ababab;
 }
 
+
+html {
+   scroll-behavior: smooth;
+}
+
 body {
    display: flex;
    justify-content: center;
