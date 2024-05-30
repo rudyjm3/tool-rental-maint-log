@@ -6,6 +6,8 @@
     <title>Tool Rental Maintenance Log</title>
     <!-- Stylesheet/s -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Font Awesome 6.5.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -13,29 +15,30 @@
       <header>
          <div class="page-title">General Maintenance Log</div>
       </header>
-        <!-- Container to display entries -->
-        <div id="log-output-container">
+        <!-- Table container for logged maintenance entries -->
+        <div id="table-container">
 
         </div>
 
         <!-- Entry input form -->
         <div id="entry-form-container">
-            <form id="entry-form" action="">
+            <form id="entry-form" action="POST">
                 <div class="form-header">
-                    <h1>Equipment Preventive Maintenance Enrty Form</h1>    
+                  <h1>General Maintenance Enrty Form</h1>
+                  <i class="fa-regular fa-rectangle-xmark" id="form-close-btn"></i>
                 </div>
 
                 <div class="form-control">
-                    <label for="equipment-description-input">Equipment description</label>
-                    <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer">    
+                  <label for="equipment-description-input">Equipment description</label>
+                  <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer" required>    
                 </div>
                 <div class="form-control">
                     <label for="rental-id-number">Rental ID number</label>
-                    <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID. Eg. 04511" required >    
+                    <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID" required >    
                 </div>
                 <div class="form-control">
                     <label for="service-type">Service type</label>
-                    <input type="text" name="service-type" id="service-type" placeholder="Service Type- Eg. Preventive maintenance" required>    
+                    <input type="text" name="service-type" id="service-type" placeholder="Eg. Preventive maintenance" required>    
                 </div>
                 <div class="form-control">
                     <label for="service-description">Service description</label>
@@ -49,9 +52,13 @@
                     <label for="service-date">Service date</label>
                     <input type="date" name="service-date" id="service-date" required>    
                 </div>
+                <div class="form-control">
+                  <label for="name-input">Done by</label>
+                  <input type="text" name="name-input" id="name-input" placeholder="Your first name or LDAP" required>    
+              </div>
 
                 <div class="form-control">
-                    <input type="button" value="Submit" id="submit-button">    
+                    <button id="submit-button">Submit</button>    
                 </div>
                 
             </form>
