@@ -14,18 +14,21 @@ body {
    justify-content: center;
    align-items: center;
    background-color: var(--main-white-color);
-   height: 100%;
    font-family: Roboto, sans-serif;
    font-size: 16px;
+   height: 100vh;
 }
 
 #main-container {
+   position: relative;
    display: flex;
-   justify-content: center;
+   justify-content: flex-start;
    align-items: center;
    flex-direction: column;
    width: 100%;
+   height: 100%;
    background-color: var(--light-grey-color1);
+   overflow-x: hidden;
 }
 
 /* Header styling */
@@ -69,6 +72,9 @@ td {
 
 /* Form styling */
 #entry-form-container {
+   position: absolute;
+   top: 0px;
+   /* right: calc(0px - 420px); */
    width: 425px;
    border-radius: 4px;
    overflow: hidden;
