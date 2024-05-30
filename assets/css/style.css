@@ -71,7 +71,6 @@ header {
 .form-header > h1 {
    font-size: 20px;
    color: var(--main-white-color);
-   line-height 1.5;
 }
 #form-close-btn {
    font-size: 20px;
