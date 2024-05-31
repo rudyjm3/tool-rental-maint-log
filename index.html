@@ -14,6 +14,7 @@
    <div id="main-container">
       <header>
          <div class="page-title">General Maintenance Log</div>
+         <button id="new-form-btn" type="button" onclick="openForm()">New Form</button>
       </header>
         <!-- Table container for logged maintenance entries -->
       <div id="table-container">
@@ -58,12 +59,11 @@
 
       <!-- Entry input form -->
       <div id="entry-form-container">
-         <form id="entry-form" action="POST">
-            <div class="form-header">
-               <h1>General Maintenance Enrty Form</h1>
-               <i class="fa-regular fa-rectangle-xmark" id="form-close-btn"></i>
-            </div>
-
+         <div class="form-header">
+            <h1>General Maintenance Enrty Form</h1>
+            <button type="button" id="close-form-btn" onclick="closeForm()"><i class="fa-regular fa-rectangle-xmark"></i></button> 
+         </div>
+         <form id="entry-form" action="POST" >
             <div class="form-control">
                <label for="equipment-description-input">Equipment description</label>
                <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer" required>    
