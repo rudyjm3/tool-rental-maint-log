@@ -14,8 +14,17 @@
    <div id="main-container">
       <header>
          <div class="page-title">General Maintenance Log</div>
-         <button id="new-form-btn" type="button" onclick="openForm()">New Form</button>
       </header>
+      
+      <!--  Search bar and new form button section -->
+      <div id="search-container">
+         <div class="search-bar-wrapper">
+            <input type="search" name="search-input" id="search-input" placeholder="Search by Unit#, Equipment description">
+            <button type="button">Search</button>
+         </div>
+         <button id="new-form-btn" type="button" onclick="openForm()">Log New Maintenance</button>
+      </div>
+
         <!-- Table container for logged maintenance entries -->
       <div id="table-container">
          <table>
