@@ -1,21 +1,3 @@
-
-// Open form //
-// const formContainer = document.getElementById("entry-form-container");
-// const newFormBtn = document.getElementById("new-form-btn");
-// const closeFormBtn = document.getElementById('close-form-btn');
-// const maintForm = document.getElementById('entry-form');
-
-// function toggleForm() {
-//    debugger;
-//    if (closeFormBtn) {
-//       maintForm.reset();
-//       formContainer.classList.toggle('open-form-container');
-//    } else {
-//       formContainer.classList.toggle('open-form-container');
-//    }
-// };
-
-
 const newFormBtn = document.getElementById('new-form-btn');
 const formContainer = document.getElementById('entry-form-container');
 const closeBtn = document.getElementById('close-form-btn');
