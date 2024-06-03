@@ -52,6 +52,15 @@ header {
    font-size: 1.6rem;
    font-weight: 500;
 }
+/* Search Section styling */
+#search-container {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 20px;
+   width: 100%;
+
+}
 #new-form-btn {
    font-size: 16px;
    font-weight: 600;
@@ -67,6 +76,8 @@ header {
    background-color: var(--orange-hover-color);
    transition: all 0.3s ease-in-out;
 }
+/* End search section styling */
+
 /* Table styling */
 #table-container {
    width: 100%;
