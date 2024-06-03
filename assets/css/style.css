@@ -121,7 +121,7 @@ table {
 th {
    position: relative;
    text-align: left;
-   padding: 10px 5px;
+   padding: 10px 15px 10px 5px;
    border-bottom: 2px solid var(--main-black-color);
    background-color: var(--main-white-color);
 }
@@ -131,6 +131,17 @@ tr:nth-child(odd) {
 td {
    padding: 20px 10px;
 }
+<<<<<<< HEAD
+#unit-id-header-col::after {
+   position: absolute;
+   top: 10px;
+   right: 10px;
+   display: inline-block;
+   content: "f0dc";
+   color: var(--main-orange-color);
+   font-weight: bold;
+}
+=======
 #unit-id-header-col::after {
    display: inline-block;
    position: absolute;
@@ -140,6 +151,7 @@ td {
    font-weight: bold;
    color: var(--main-orange-color);
 }
+>>>>>>> 6104d7eb6a5878cef0fbc76bbaa461e692e19b1e
 .col-wrapper {
    display: flex;
    justify-content: space-between;
