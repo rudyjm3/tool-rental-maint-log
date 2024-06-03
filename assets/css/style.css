@@ -48,8 +48,9 @@ header {
    background-color: var(--main-black-color);
    color: var(--main-white-color);
 }
-.page-title {
-   font-weight: bold;
+.page-title > h1 {
+   font-size: 1.6rem;
+   font-weight: 500;
 }
 #new-form-btn {
    font-size: 16px;
@@ -89,6 +90,25 @@ tr:nth-child(odd) {
 }
 td {
    padding: 20px 10px;
+}
+.col-wrapper {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 18px;
+}
+.edit-log-btn, .delete-log-btn {
+   font-size: 20px;
+   color: var(--main-orange-color)
+}
+.edit-log-btn:hover {
+   color: var(--orange-hover-color);
+   transition: all 0.3s ease-in-out;
+}
+.delete-log-btn:hover {
+   color: red;
+   transition: all 0.3s ease-in-out;
 }
 /* End Table styling */
 
