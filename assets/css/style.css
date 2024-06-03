@@ -52,14 +52,42 @@ header {
    font-size: 1.6rem;
    font-weight: 500;
 }
+
 /* Search Section styling */
 #search-container {
    display: flex;
    justify-content: space-between;
    align-items: center;
+   flex-wrap: wrap;
+   gap: 15px;
    padding: 20px;
    width: 100%;
-
+}
+.search-bar-wrapper {
+   position: relative;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   padding: 20px;
+   width: 60%;
+}
+#search-input {
+   padding-right: 140px;
+   width: 100%;
+}
+#search-btn {
+   position: absolute;
+   top: 23px;
+   right: 23px;
+   font-size: 16px;
+   font-weight: 600;
+   color: var(--main-white-color);
+   background-color: var(--main-orange-color);
+   border: none;
+   padding: 10px;
+   border-radius: 2px;
+   width: 125px;
+   cursor: pointer;
 }
 #new-form-btn {
    font-size: 16px;
@@ -69,7 +97,7 @@ header {
    border: none;
    padding: 10px;
    border-radius: 2px;
-   width: 150px;
+   width: 240px;
    cursor: pointer;
 }
 #new-form-btn:hover {
@@ -213,7 +241,7 @@ input::placeholder, textarea::placeholder, select::placeholder {
    color: rgba(158, 158, 158, 0.5);
    font-weight: 500;
 }
-input[type=number]:focus, input[type=text]:focus,  input[type=email]:focus, input[type=date]:focus, textarea:focus, select:focus {
+input, input[type=number]:focus, input[type=text]:focus,  input[type=email]:focus, input[type=date]:focus, textarea:focus, select:focus {
    border: 2px solid #4aa5eb;
    outline: none;
    box-shadow: 0 0 4px 1px rgba(74, 165, 235, 0.8);
@@ -240,3 +268,24 @@ input[type=number]:focus, input[type=text]:focus,  input[type=email]:focus, inpu
    transition: all 0.3s ease-in-out;
 }
 /* End form styling */
+
+
+
+
+/* Responsive Styling */
+@media screen and (max-width: 700px) {
+   #search-container {
+      justify-content: center;
+   }
+   .search-bar-wrapper {
+      width: 100%;
+   }
+   #search-input {
+      padding-right: 140px;
+      width: 100%;
+   }
+   #new-form-btn {
+      width: 95%;
+   }
+}
+/* End Responsive Styling */
