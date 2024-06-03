@@ -137,7 +137,7 @@ td {
    top: 10px;
    right: 10px;
    display: inline-block;
-   content: "f0dc";
+   content: "<i class="fa-solid fa-sort"></i>";
    color: var(--main-orange-color);
    font-weight: bold;
 }
