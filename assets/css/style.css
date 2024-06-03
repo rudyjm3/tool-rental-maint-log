@@ -72,6 +72,7 @@ header {
    width: 60%;
 }
 #search-input {
+   background-color: var(--main-white-color);
    padding-right: 140px;
    width: 100%;
 }
