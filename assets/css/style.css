@@ -137,7 +137,8 @@ td {
    top: 10px;
    right: 10px;
    display: inline-block;
-   content: url('images/sort-solid.svg');
+   /* content: url('images/sort-solid.svg'); */
+   content: '\10563';
    color: var(--main-orange-color);
    /* font-weight: bold; */
 }
@@ -150,10 +151,12 @@ td {
 }
 .edit-log-btn, .delete-log-btn {
    font-size: 20px;
-   color: var(--main-orange-color)
+   color: var(--main-orange-color);
+   cursor: pointer;
 }
 .edit-log-btn:hover {
    color: var(--orange-hover-color);
+   cursor: pointer;
    transition: all 0.3s ease-in-out;
 }
 .delete-log-btn:hover {
