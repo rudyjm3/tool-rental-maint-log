@@ -137,7 +137,7 @@ td {
    top: 10px;
    right: 10px;
    display: inline-block;
-   content: url('rudyjm3/tool-rental-maint-log/assets/images/sort-solid.svg');
+   content: url('images/sort-solid.svg');
    color: var(--main-orange-color);
    /* font-weight: bold; */
 }
