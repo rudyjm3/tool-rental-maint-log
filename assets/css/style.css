@@ -137,9 +137,9 @@ td {
    top: 10px;
    right: 10px;
    display: inline-block;
-   content: "<i class="fa-solid fa-sort"></i>";
+   content: url('rudyjm3/tool-rental-maint-log/assets/images/sort-solid.svg');
    color: var(--main-orange-color);
-   font-weight: bold;
+   /* font-weight: bold; */
 }
 .col-wrapper {
    display: flex;
