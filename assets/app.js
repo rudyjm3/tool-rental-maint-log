@@ -68,3 +68,51 @@ function sortTable(n) {
    }
 };
 
+// Search Filter Function 
+// function searchFilter() {
+//    // Declare variables
+//    var input, filter, table, tr, td, i, txtValue;
+//    input = document.getElementById("search-input");
+//    filter = input.value.toUpperCase();
+//    table = document.getElementById("equipment-log-table");
+//    tr = table.getElementsByTagName("tr");
+ 
+//    // Loop through all table rows, and hide those who don't match the search query
+//    for (i = 1; i < tr.length; i++) {
+//      td = tr[i].getElementsByTagName("td")[1];
+//      if (td) {
+//        txtValue = td.textContent || td.innerText;
+//        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//          tr[i].style.display = "";
+//        } else {
+//          tr[i].style.display = "none";
+//        }
+//      }
+//    }
+//  };
+
+
+ // 2nd Search Filter function
+ const searchFilter2 = () => {
+   const columns = [
+     { name: 'entry#', index: 0, isFilter: false },
+     { name: 'unit#', index: 1, isFilter: true },
+     { name: 'unit-description', index: 2, isFilter: true },
+     { name: 'service-type', index: 3, isFilter: true },
+     { name: 'date-of-service', index: 4, isFilter: true },
+     { name: 'tech-name', index: 5, isFilter: true },
+   ]
+   const filterColumns = columns.filter(c => c.isFilter).map(c => c.index)
+   const trs = document.querySelectorAll(`#equipment-log-table tr:not(.header)`)
+   const filter = document.querySelector('#search-input').value
+   const regex = new RegExp(escape(filter), 'i')
+   const isFoundInTds = td => regex.test(td.innerHTML)
+   const isFound = childrenArr => childrenArr.some(isFoundInTds)
+   const setTrStyleDisplay = ({ style, children }) => {
+     style.display = isFound([
+       ...filterColumns.map(c => children[c]) // <-- filter Columns
+     ]) ? '' : 'none'
+   }
+   
+   trs.forEach(setTrStyleDisplay)
+ }
