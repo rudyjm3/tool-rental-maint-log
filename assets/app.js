@@ -1,19 +1,12 @@
-const newFormBtn = document.getElementById('new-form-btn');
-const formContainer = document.getElementById('entry-form-container');
-const closeBtn = document.getElementById('close-form-btn');
-const entryForm = document.getElementById('entry-form');
+// Open close Log New Maintenance Form function
+function formOpenClose() {
+   const formContainer = document.getElementById('entry-form-container');
+   const entryForm = document.getElementById('entry-form');
+   if (formContainer.className == 'open-form-container') {
+      entryForm.reset();
+      formContainer.classList.toggle('open-form-container');
+   } else {
+      formContainer.classList.toggle('open-form-container');
+   }
+};
 
-
-newFormBtn.addEventListener('click', openForm);
-closeBtn.addEventListener('click', closeForm);
-
-function openForm() {
-  formContainer.style.display = 'block';
-  formContainer.style.transform = 'scale(1)';
-}
-
-function closeForm() {
-   entryForm.reset();
-  formContainer.style.display = 'none';
-  formContainer.style.transform = 'scale(0)';
-}

@@ -22,7 +22,7 @@
             <input type="search" name="search-input" id="search-input" placeholder="Search by Unit#, Equipment description">
             <button type="button" id="search-btn">Search</button>
          </div>
-         <button id="new-form-btn" type="button" onclick="openForm()">Log New Maintenance</button>
+         <button id="new-form-btn" type="button" onclick="formOpenClose()">Log New Maintenance</button>
       </div>
 
         <!-- Table container for logged maintenance entries -->
@@ -30,14 +30,41 @@
          <table>
             <thead>
                <tr> <!-- This is the first row -->
-                  <th id="unit-id-header-col">Unit ID#</th>
-                  <th id="unit-description-header-col">Equipment Description</th>
-                  <th id="service-type-header-col">Service Type</th>
-                  <th id="service-description-header-col">Service Description</th>
-                  <th id="hour-meter-header-col">Hour Meter</th>
-                  <th id="date-header-col">Date</th>
-                  <th id="tech-name-header-col">Done by</th>
-                  <th id="edit-hearder-col">Edit</th>
+                  <th id="unit-id-header-col">
+                     <div class="col-th-wrapper">
+                        <p class="table-header-text">Unit ID#</p><span class="sort-icon-wrapper"><i class="fa-solid fa-sort"></i></span>
+                     </div></th>
+                  <th id="unit-description-header-col">
+                     <div class="col-th-wrapper">
+                        <p class="table-header-text">Equipment Description</p><span class="sort-icon-wrapper"><i class="fa-solid fa-sort"></i></span>
+                     </div>
+                  </th>
+                  <th id="service-type-header-col">
+                     <div class="col-th-wrapper">
+                        <p class="table-header-text">Service Type</p><span class="sort-icon-wrapper"><i class="fa-solid fa-sort"></i></span>
+                     </div>
+                  </th>
+                  <th id="service-description-header-col">
+                     <div class="col-th-wrapper">
+                        <p class="table-header-text">Service Description</p><span class="sort-icon-wrapper"><i class="fa-solid fa-sort"></i></span>
+                     </div>
+                  </th>
+                  <th id="hour-meter-header-col">
+                     <div class="col-th-wrapper">
+                        <p class="table-header-text">Hour Meter</p><span class="sort-icon-wrapper"><i class="fa-solid fa-sort"></i></span>
+                     </div>
+                  </th>
+                  <th id="date-header-col">
+                     <div class="col-th-wrapper">
+                        <p class="table-header-text">Date</p><span class="sort-icon-wrapper"><i class="fa-solid fa-sort"></i></span>
+                     </div>
+                  </th>
+                  <th id="tech-name-header-col">
+                     <div class="col-th-wrapper">
+                        <p class="table-header-text">Technician Name</p><span class="sort-icon-wrapper"><i class="fa-solid fa-sort"></i></span>  
+                     </div>
+                  </th>
+                  <th id="edit-hearder-col"><p class="table-header-text">Edit</p></th>
                </tr>
             </thead>
             <tbody>
@@ -187,12 +214,22 @@
             
             </table>
       </div>
-
+      <footer>
+         <div class="footer-wrapper">
+            <div class="footer-col">
+               <p class="site-version-text">Version 1.0</p>
+            </div>
+            <div class="footer-col">
+               <p class="site-author-text">Site designed and coded by : Rudy Mims</p>
+            </div>
+         </div>
+          
+      </footer>
       <!-- Entry input form -->
       <div id="entry-form-container">
          <div class="form-header">
-            <h1>General Maintenance Enrty Form</h1>
-            <button type="button" id="close-form-btn" onclick="closeForm()"><i class="fa-regular fa-rectangle-xmark"></i></button> 
+            <h1>Log New Maintenance</h1>
+            <button type="button" id="close-form-btn" onclick="formOpenClose()"><i class="fa-regular fa-rectangle-xmark"></i></button> 
          </div>
          <form id="entry-form" action="POST" >
             <div class="form-control">
