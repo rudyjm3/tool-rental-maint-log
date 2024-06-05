@@ -12,6 +12,7 @@ function formOpenClose() {
 
 // Table header sort function
 function sortTable(n) {
+   debugger;
    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
    table = document.getElementById("equipment-log-table");
    switching = true;
@@ -61,7 +62,6 @@ function sortTable(n) {
          /* If no switching has been done AND the direction is "asc",
          set the direction to "desc" and run the while loop again. */
          if (switchcount == 0 && dir == "asc") {
-            dir = "desc";
             switching = true;
          }
       }

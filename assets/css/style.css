@@ -145,6 +145,9 @@ tr:nth-child(odd) {
 td {
    padding: 20px 10px;
 }
+#entry-log-num-header-col, .entry-log-num-col {
+   display: none;
+}
 .col-th-wrapper {
    display: flex;
    justify-content: space-between;
