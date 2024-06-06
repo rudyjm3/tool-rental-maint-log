@@ -96,26 +96,108 @@ function searchFilter() {
  };
 
 // Send form data to database function and create new table row
-const form = document.getElementById('entry-form');
-const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-
-form.addEventListener('submit', function(event) {
+const submitButton = document.getElementById('submit-button');
+submitButton.addEventListener('click', function(event) {
   event.preventDefault();
 
-  const formData = new FormData(form);
+  const rentalId = document.getElementById('rental-id-number').value;
+  const equipmentDescription = document.getElementById('equipment-description-input').value;
+  const serviceType = document.getElementById('service-type').value;
+  const serviceDescription = document.getElementById('service-description').value;
+  const hourMeter = document.getElementById('hour-meter').value;
+  const serviceDate = document.getElementById('service-date').value;
+  const techName = document.getElementById('name-input').value;
 
-  fetch('process_data.php', {
+  const formData = {
+    rentalId: rentalId,
+    equipmentDescription: equipmentDescription,
+    serviceType: serviceType,
+    serviceDescription: serviceDescription,
+    hourMeter: hourMeter,
+    serviceDate: serviceDate,
+    techName: techName
+  };
+
+  sendFormDataToServer(formData);
+});
+
+function sendFormDataToServer(formData) {
+  fetch('process_maintenance_data.php', {
     method: 'POST',
-    body: formData
+    body: JSON.stringify(formData)
   })
   .then(response => response.text())
   .then(data => {
-    dataTable.innerHTML = data;
+    // Update the table with the received data (new row)
+    updateTable(data);
   })
   .catch(error => {
     console.error(error);
+    // Handle any errors that might occur during the request
   });
-});
+}
+
+function updateTable(data) {
+   // Assuming you have a table with an ID like 'equipment-log-table'
+   const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
+ 
+   // Parse the JSON data from the server response
+   const newEntryData = JSON.parse(data);
+ 
+   // Create new table row element for the new entry
+   const newRow = document.createElement('tr');
+ 
+   // Create table cells for each data point in the new entry
+   const entryLogNumCell = document.createElement('td');
+   entryLogNumCell.classList.add('entry-log-num-col');
+   entryLogNumCell.textContent = newEntryData.entryLogNum; // Assuming 'entryLogNum' is a property in the data
+ 
+   const unitIdCell = document.createElement('td');
+   unitIdCell.classList.add('unit-id-col');
+   unitIdCell.textContent = newEntryData.unitId; // Assuming 'unitId' is a property in the data
+
+   const equipmentDescriptionCell = document.createElement('td');
+   equipmentDescriptionCell.classList.add('unit-description-col');
+   equipmentDescriptionCell.textContent = newEntryData.equipmentDescription; 
+
+   const serviceTypeCell = document.createElement('td');
+   serviceTypeCell.classList.add('service-type-col');
+   serviceTypeCell.textContent = newEntryData.serviceType;
+
+   const serviceDescriptionCell = document.createElement('td');
+   serviceDescriptionCell.classList.add('service-description-col');
+   serviceDescriptionCell.textContent = newEntryData.serviceDescription;
+
+   const hourMeterCell = document.createElement('td');
+   hourMeterCell.classList.add('hour-meter-col');
+   hourMeterCell.textContent = newEntryData.hourMeter;
+
+   const dateCell = document.createElement('td');
+   dateCell.classList.add('date-col');
+   dateCell.textContent = newEntryData.date;
+
+   const techNameCell = document.createElement('td');
+   techNameCell.classList.add('tech-name-col');
+   techNameCell.textContent = newEntryData.techName;
+ 
+   const editColCell = document.createElement('td');
+   editColCell.classList.add('edit-col');
+   editColCell.innerHTML = '<div class="col-wrapper"><span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span></div>';
+ 
+   // Append the data cells to the new row
+   newRow.appendChild(entryLogNumCell);
+   newRow.appendChild(unitIdCell);
+   newRow.appendChild(equipmentDescriptionCell);
+   newRow.appendChild(serviceTypeCell);
+   newRow.appendChild(serviceDescriptionCell);
+   newRow.appendChild(hourMeterCell);
+   newRow.appendChild(dateCell);
+   newRow.appendChild(techNameCell);
+   newRow.appendChild(editColCell);
+ 
+   // Append the new row to the table body
+   tableBody.appendChild(newRow);
+ }
 
 
 

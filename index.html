@@ -25,7 +25,7 @@
          <button id="new-form-btn" type="button" onclick="formOpenClose()">Log New Maintenance</button>
       </div>
 
-        <!-- Table container for logged maintenance entries -->
+      <!-- Table container for logged maintenance entries -->
       <div id="table-container">
          <table id="equipment-log-table" class="sortable">
             <thead>
@@ -74,7 +74,7 @@
             </thead>
 
             <tbody id="data-table">
-               <tr> <!-- This is the second row -->
+               <tr> 
                   <td class="entry-log-num-col">3</td>
                   <td class="unit-id-col">63231</td>
                   <td class="unit-description-col">Gas Chainsaw 20"</td>
@@ -89,7 +89,7 @@
                      </div>
                   </td>
                </tr>
-               <tr> <!-- This is the thrid row -->
+               <tr> 
                   <td class="entry-log-num-col">1</td>
                   <td class="unit-id-col">14309</td>
                   <td class="unit-description-col">Vibrator Plate Compactor 20"</td>
@@ -104,7 +104,7 @@
                      </div>
                   </td>
                </tr>
-               <tr> <!-- This is the thrid row -->
+               <tr> 
                   <td class="entry-log-num-col">2</td>
                   <td class="unit-id-col">05449</td>
                   <td class="unit-description-col">Wet/Dry Vacuum 12 Gal</td>
@@ -119,7 +119,7 @@
                      </div>
                   </td>
                </tr>
-               <tr> <!-- This is the thrid row -->
+               <tr> 
                   <td class="entry-log-num-col">4</td>
                   <td class="unit-id-col">24188</td>
                   <td class="unit-description-col">2 Man Auger</td>
@@ -134,7 +134,7 @@
                      </div>
                   </td>
                </tr>
-               <tr> <!-- This is the thrid row -->
+               <tr> 
                   <td class="entry-log-num-col">0</td>
                   <td class="unit-id-col">01366</td>
                   <td class="unit-description-col">Chipper 4"</td>
@@ -149,7 +149,7 @@
                      </div>
                   </td>
                </tr>
-               <tr> <!-- This is the thrid row -->
+               <tr> 
                   <td class="entry-log-num-col">5</td>
                   <td class="unit-id-col">24188</td>
                   <td class="unit-description-col">2 Man Auger</td>
@@ -168,6 +168,7 @@
             </tbody>
          </table>
       </div>
+      
       <footer>
          <div class="footer-wrapper">
             <div class="footer-col">
@@ -179,21 +180,27 @@
          </div>
           
       </footer>
+
       <!-- Entry input form -->
       <div id="entry-form-container">
          <div class="form-header">
             <h1>Log New Maintenance</h1>
             <button type="button" id="close-form-btn" onclick="formOpenClose()"><i class="fa-regular fa-rectangle-xmark"></i></button> 
          </div>
+
+         <!-- Start of form --> 
          <form id="entry-form" action="POST" >
-            <div class="form-control">
-               <label for="equipment-description-input">Equipment description</label>
-               <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer" required>    
-            </div>
+
             <div class="form-control">
                <label for="rental-id-number">Rental ID number</label>
                <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID">    
             </div>
+
+            <div class="form-control">
+               <label for="equipment-description-input">Equipment description</label>
+               <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer" required>    
+            </div>
+
             <div class="form-control">
                <label for="service-type">Service type</label>
                <select name="service-type" id="service-type">
@@ -202,29 +209,34 @@
                   <option value="Quick fix">Quick fix</option>
                </select>
             </div>
+
             <div class="form-control">
                <label for="service-description">Service description</label>
                <textarea name="service-description" id="service-description" placeholder="Eg. Pump oil changed" required></textarea>   
             </div>
+
             <div class="form-control">
                <label for="hour-meter">Hour meter reading</label>
                <input type="number" name="hour-meter" id="hour-meter" placeholder="Eg. 12.5">    
             </div>
+
             <div class="form-control">
                <label for="service-date">Service date</label>
                <input type="date" name="service-date" id="service-date" required>    
             </div>
-               <div class="form-control">
+
+            <div class="form-control">
                <label for="name-input">Done by</label>
                <input type="text" name="name-input" id="name-input" placeholder="Your first name or LDAP" required>    
             </div>
 
             <div class="form-control">
                <button id="submit-button">Submit</button>    
-            </div>    
-         </form>
+            </div> 
 
+         </form>
       </div>
+
    </div>
 
     
