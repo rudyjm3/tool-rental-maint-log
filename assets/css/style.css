@@ -69,7 +69,7 @@ header {
    justify-content: flex-start;
    align-items: center;
    /* padding: 20px; */
-   width: 60%;
+   width: 40%;
 }
 #search-input {
    background-color: var(--main-white-color);

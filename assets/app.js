@@ -67,6 +67,9 @@ function sortTable(n) {
       }
    }
 };
+// Preform mouse cliick action on the date table header so that it sorts the table for the most recent date
+const sortDesending = document.getElementById("date-header");;
+sortDesending.click();
 
 // Search Filter Function 
 function searchFilter() {
