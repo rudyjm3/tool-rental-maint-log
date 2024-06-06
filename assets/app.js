@@ -95,6 +95,31 @@ function searchFilter() {
    }
  };
 
+// Send form data to database function and create new table row
+const form = document.getElementById('entry-form');
+const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const formData = new FormData(form);
+
+  fetch('process_data.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.text())
+  .then(data => {
+    dataTable.innerHTML = data;
+  })
+  .catch(error => {
+    console.error(error);
+  });
+});
+
+
+
+
 
  // 2nd Search Filter function
 //  const searchFilter2 = () => {
