@@ -19,8 +19,8 @@
       <!--  Search bar and new form button section -->
       <div id="search-container">
          <div class="search-bar-wrapper">
-            <input type="search" name="search-input" id="search-input" placeholder="Search by Unit#, Equipment description">
-            <button type="button" id="search-btn" onclick="searchFilter2()">Search</button>
+            <input type="search" name="search-input" id="search-input" placeholder="Search Unit ID #" onkeyup="searchFilter()">
+            <button type="button" id="search-btn" onclick="searchFilter()">Search</button>
          </div>
          <button id="new-form-btn" type="button" onclick="formOpenClose()">Log New Maintenance</button>
       </div>
