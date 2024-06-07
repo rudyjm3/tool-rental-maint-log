@@ -67,6 +67,7 @@ function sortTable(n) {
       }
    }
 };
+
 // Preform mouse cliick action on the date table header so that it sorts the table for the most recent date
 const sortDesending = document.getElementById("date-header");;
 sortDesending.click();
@@ -152,12 +153,12 @@ function updateTable(data) {
    entryLogNumCell.classList.add('entry-log-num-col');
    entryLogNumCell.textContent = newEntryData.entryLogNum; // Assuming 'entryLogNum' is a property in the data
  
-   const unitIdCell = document.createElement('td');
-   unitIdCell.classList.add('unit-id-col');
-   unitIdCell.textContent = newEntryData.unitId; // Assuming 'unitId' is a property in the data
+   const rentalIdCell = document.createElement('td');
+   rentalIdCell.classList.add('rental-id-col');
+   rentalIdCell.textContent = newEntryData.rentalId; // Assuming 'unitId' is a property in the data
 
    const equipmentDescriptionCell = document.createElement('td');
-   equipmentDescriptionCell.classList.add('unit-description-col');
+   equipmentDescriptionCell.classList.add('equipment-description-col');
    equipmentDescriptionCell.textContent = newEntryData.equipmentDescription; 
 
    const serviceTypeCell = document.createElement('td');
@@ -186,7 +187,7 @@ function updateTable(data) {
  
    // Append the data cells to the new row
    newRow.appendChild(entryLogNumCell);
-   newRow.appendChild(unitIdCell);
+   newRow.appendChild(rentalIdCell);
    newRow.appendChild(equipmentDescriptionCell);
    newRow.appendChild(serviceTypeCell);
    newRow.appendChild(serviceDescriptionCell);

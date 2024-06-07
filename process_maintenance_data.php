@@ -31,7 +31,7 @@ if ($stmt->execute()) {
   // Assuming you have a table with columns matching the database table
   $newEntryData = array(
     "entryLogNum" => $newEntryId, // Assuming 'entryLogNum' is an auto-incrementing ID
-    "unitId" => $data["rentalId"], // Assuming 'unitId' maps to 'rental_id' in the database
+    "rentalId" => $data["rentalId"], // Assuming 'unitId' maps to 'rental_id' in the database
     "equipmentDescription" => $data["equipmentDescription"],
     "serviceType" => $data["serviceType"],
     "serviceDescription" => $data["serviceDescription"],
