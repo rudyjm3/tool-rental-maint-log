@@ -1,7 +1,7 @@
 # Tool Maintenance Log Web App
 ### Version 1.0.0
  
-![Tool Rental General Maintenece App Design Image](assets\images\tool-mainteneance-log-design.png)
+![Tool Rental General Maintenece Design Image](/assets/images/tool-mainteneance-log-design.png)
 
 
 ## Project Description:
@@ -25,4 +25,3 @@ This app will allow the user to log maintenance records and view them in a table
 - Create a filter to filter the data by unit#, date, tool, and maintenance type
 - Setting update MySql database and PHP to update the database and retrive database entryies
 - Learn how to edit data base entries
-
