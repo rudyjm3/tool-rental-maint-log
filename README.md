@@ -1,7 +1,7 @@
 # Tool Maintenance Log Web App
 ### Version 1.0.0
  
-![Tool Rental General Maintenece Design Image](/assets/images/tool-mainteneance-log-design.png)
+![Tool Rental General Maintenece Design Image](./assets/images/tool-mainteneance-log-design.png)
 
 
 ## Project Description:
