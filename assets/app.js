@@ -101,23 +101,15 @@ const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', function(event) {
   event.preventDefault();
 
-  const rentalId = document.getElementById('rental-id-number').value;
-  const equipmentDescription = document.getElementById('equipment-description-input').value;
-  const serviceType = document.getElementById('service-type').value;
-  const serviceDescription = document.getElementById('service-description').value;
-  const hourMeter = document.getElementById('hour-meter').value;
-  const serviceDate = document.getElementById('service-date').value;
-  const techName = document.getElementById('name-input').value;
-
   const formData = {
-    rentalId: rentalId,
-    equipmentDescription: equipmentDescription,
-    serviceType: serviceType,
-    serviceDescription: serviceDescription,
-    hourMeter: hourMeter,
-    serviceDate: serviceDate,
-    techName: techName
-  };
+   rentalId: document.getElementById('rentalId').value,
+   equipmentDescription : document.getElementById('equipment-description-input').value,
+   serviceType: document.getElementById('serviceType').value,
+   serviceDescription: document.getElementById('serviceDescription').value,
+   hourMeter: document.getElementById('hourMeter').value,
+   serviceDate: document.getElementById('serviceDate').value,
+   techName: document.getElementById('techName').value
+};
 
   sendFormDataToServer(formData);
 });
