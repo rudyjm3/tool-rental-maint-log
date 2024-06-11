@@ -72,29 +72,37 @@ function sortTable(n) {
 const sortDesending = document.getElementById("date-header");;
 sortDesending.click();
 
+// updated code 6/11/24 for search filter
 // Search Filter Function 
 function searchFilter() {
-   // Declare variables
-   var input, filter, table, tr, td, i, txtValue;
+   var input, filter, table, tr, td, i, j, txtValue;
    input = document.getElementById("search-input");
    filter = input.value.toUpperCase();
    table = document.getElementById("equipment-log-table");
    tr = table.getElementsByTagName("tr");
+
  
-   // Loop through all table rows, and hide those who don't match the search query
    for (i = 1; i < tr.length; i++) {
-      console.log("This ran");
-     td = tr[i].getElementsByTagName("td")[1];
+      console.log("for i ran");
+     td = tr[i].getElementsByTagName("td");
      if (td) {
-       txtValue = td.textContent || td.innerText;
+       txtValue = "";
+       for (j = 0; j < td.length; j++) {
+         console.log("for j ran");
+         // Check if the hidden column (entry number) needs to be excluded from search
+         if (j !== 0 ) {
+           txtValue += td[j].textContent || td[j].innerText;
+         }
+       }
        if (txtValue.toUpperCase().indexOf(filter) > -1) {
          tr[i].style.display = "";
        } else {
          tr[i].style.display = "none";
        }
-     }
+     } 
    }
- };
+ }
+
 
 // Send form data to database function and create new table row
 const submitButton = document.getElementById('submit-button');
@@ -191,33 +199,3 @@ function updateTable(data) {
    // Append the new row to the table body
    tableBody.appendChild(newRow);
  }
-
-
-
-
-
- // 2nd Search Filter function
-//  const searchFilter2 = () => {
-//    debugger;
-//    const columns = [
-//      { name: 'entry#', index: 0, isFilter: false },
-//      { name: 'unit#', index: 1, isFilter: true },
-//      { name: 'unit-description', index: 2, isFilter: true },
-//      { name: 'service-type', index: 3, isFilter: true },
-//      { name: 'date-of-service', index: 4, isFilter: true },
-//      { name: 'tech-name', index: 5, isFilter: true },
-//    ]
-//    const filterColumns = columns.filter(c => c.isFilter).map(c => c.index)
-//    const trs = document.querySelectorAll(`#equipment-log-table tr:not(.header)`)
-//    const filter = document.querySelector('#search-input').value
-//    const regex = new RegExp(escape(filter), 'i')
-//    const isFoundInTds = td => regex.test(td.innerHTML)
-//    const isFound = childrenArr => childrenArr.some(isFoundInTds)
-//    const setTrStyleDisplay = ({ style, children }) => {
-//      style.display = isFound([
-//        ...filterColumns.map(c => children[c]) // <-- filter Columns
-//      ]) ? '' : 'none'
-//    }
-   
-//    trs.forEach(setTrStyleDisplay)
-//  }
