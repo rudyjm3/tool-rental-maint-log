@@ -25,7 +25,6 @@ body {
    font-family: Roboto, sans-serif;
    font-size: 16px;
    height: 100%;
-   /* padding-bottom: 65px;  */
 }
 
 /* Header styling */
@@ -348,6 +347,9 @@ footer {
 
 /* Responsive Styling */
 @media screen and (max-width: 700px) {
+   body {
+      height: 100vh;
+   }
    .page-title > h1 {
       font-size: 1rem;
    }
