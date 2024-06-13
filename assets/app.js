@@ -4,8 +4,10 @@ function formOpenClose() {
    const entryForm = document.getElementById('entry-form');
    if (formContainer.className == 'open-form-container') {
       entryForm.reset();
+      formContainer.style.display = 'none';
       formContainer.classList.toggle('open-form-container');
    } else {
+      formContainer.style.display = 'block';
       formContainer.classList.toggle('open-form-container');
    }
 };
@@ -72,7 +74,6 @@ function sortTable(n) {
 const sortDesending = document.getElementById("date-header");;
 sortDesending.click();
 
-// updated code 6/11/24 for search filter
 // Search Filter Function 
 function searchFilter() {
    var input, filter, table, tr, td, i, j, txtValue;
@@ -106,11 +107,12 @@ function searchFilter() {
 
 // Send form data to database function and create new table row
 const submitButton = document.getElementById('submit-button');
+debugger; 
 submitButton.addEventListener('click', function(event) {
   event.preventDefault();
 
   const formData = {
-   rentalId: document.getElementById('rentalId').value,
+   rentalId: document.getElementById('rental-id-number"').value,
    equipmentDescription : document.getElementById('equipment-description-input').value,
    serviceType: document.getElementById('serviceType').value,
    serviceDescription: document.getElementById('serviceDescription').value,
@@ -122,7 +124,37 @@ submitButton.addEventListener('click', function(event) {
   sendFormDataToServer(formData);
 });
 
+// 2nd method - Send form data to database function
+// const myForm = document.getElementById('entry-form');
+
+// myForm.addEventListener('submit', function(event) {
+//   event.preventDefault();
+
+//   const formData = new FormData(this);
+
+//   sendFormDataToServer(formData);
+
+// });
+
+// 2nd method part2- Send form data to database function
+// function sendFormDataToServer(formData) {
+//   fetch('process_maintenance_data.php', {
+//     method: 'POST',
+//     body: formData
+//   })
+//  .then(response => response.text())
+//  .then(data => {
+//     // Update the table with the received data (new row)
+//     updateTable(data);
+//   })
+//  .catch(error => {
+//     console.error(error);
+//     // Handle any errors that might occur during the request
+//   });
+// }
+
 function sendFormDataToServer(formData) {
+   debugger;
   fetch('process_maintenance_data.php', {
     method: 'POST',
     body: JSON.stringify(formData)
@@ -139,12 +171,13 @@ function sendFormDataToServer(formData) {
 }
 
 function updateTable(data) {
+   console.log("updateTable function started.");
    // Assuming you have a table with an ID like 'equipment-log-table'
    const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
  
    // Parse the JSON data from the server response
    const newEntryData = JSON.parse(data);
- 
+   console.log("This is the parse'd data - " + newEntryData);
    // Create new table row element for the new entry
    const newRow = document.createElement('tr');
  

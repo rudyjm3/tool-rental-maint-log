@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Stylesheet/s -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <!-- Font Awesome 6.5.2 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    <title>Tool Rental Maintenance Log</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   <!-- Stylesheet/s -->
+   <link rel="stylesheet" href="assets/css/style.css">
+   <!-- Font Awesome 6.5.2 -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+   <title>Tool Rental Maintenance Log</title>
 </head>
+
 <body onload="sortTable(6)"> <!-- Sort table by most recent date (index 6) on page load-->
 
+   <header>
+       <div class="page-title"><h1>General Maintenance Log</h1></div>
+   </header>   
+
    <div id="main-container">
-      <header>
-         <div class="page-title"><h1>General Maintenance Log</h1></div>
-      </header>
       
       <!--  Search bar and new form button section -->
       <div id="search-container">
@@ -31,7 +34,7 @@
       <div id="table-container">
          <table id="equipment-log-table">
             <thead>
-               <tr class="header"> <!-- This is the first row -->
+               <tr class="header-table-row"> <!-- This is the first row -->
                   <th id="entry-log-num-header-col" onclick="sortTable(0)">
                      <div class="col-th-wrapper">
                      </div>
@@ -166,85 +169,80 @@
                      </div>
                   </td>
                </tr>
-
             </tbody>
          </table>
       </div>
 
-      <footer>
-         <div class="footer-wrapper">
-            <div class="footer-col">
-               <p class="site-version-text">Version 1.0</p>
-            </div>
-            <div class="footer-col">
-               <p class="site-author-text">Site designed and coded by : Rudy Mims</p>
-            </div>
-         </div>
-          
-      </footer>
-
-      <!-- Entry input form -->
-      <div id="entry-form-container">
-         <div class="form-header">
-            <h1>Log New Maintenance</h1>
-            <button type="button" id="close-form-btn" onclick="formOpenClose()"><i class="fa-regular fa-rectangle-xmark"></i></button> 
-         </div>
-
-         <!-- Start of form --> 
-         <form id="entry-form" action="process-form.php"
-            method= "POST" >
-
-            <div class="form-control">
-               <label for="rental-id-number">Rental ID number</label>
-               <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID">    
-            </div>
-
-            <div class="form-control">
-               <label for="equipment-description-input">Equipment description</label>
-               <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer" required>    
-            </div>
-
-            <div class="form-control">
-               <label for="service-type">Service type</label>
-               <select name="service-type" id="service-type">
-                  <option value="" selected >Choose service type</option>
-                  <option value="Preventive maintenance">Preventive maintenance</option>
-                  <option value="Quick fix">Quick fix</option>
-               </select>
-            </div>
-
-            <div class="form-control">
-               <label for="service-description">Service description</label>
-               <textarea name="service-description" id="service-description" placeholder="Eg. Pump oil changed" required></textarea>   
-            </div>
-
-            <div class="form-control">
-               <label for="hour-meter">Hour meter reading</label>
-               <input type="number" name="hour-meter" id="hour-meter" placeholder="Eg. 12.5">    
-            </div>
-
-            <div class="form-control">
-               <label for="service-date">Service date</label>
-               <input type="date" name="service-date" id="service-date" required>    
-            </div>
-
-            <div class="form-control">
-               <label for="name-input">Done by</label>
-               <input type="text" name="name-input" id="name-input" placeholder="Your first name or LDAP" required>    
-            </div>
-
-            <div class="form-control">
-               <button id="submit-button">Submit</button>    
-            </div> 
-
-         </form>
-      </div>
-
    </div>
 
-    
+   <!-- Entry input form -->
+   <div id="entry-form-container">
+      <div class="form-header">
+         <h1>Log New Maintenance</h1>
+         <button type="button" id="close-form-btn" onclick="formOpenClose()"><i class="fa-regular fa-rectangle-xmark"></i></button> 
+      </div>
+
+      <!-- Start of form --> 
+      <form id="entry-form">
+
+         <div class="form-control">
+            <label for="rental-id-number">Rental ID number</label>
+            <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID">    
+         </div>
+
+         <div class="form-control">
+            <label for="equipment-description-input">Equipment description</label>
+            <input type="text" name="equipment-description-input" id="equipment-description-input" placeholder="Eg. 3500 4500 PSI Pressure Washer" required>    
+         </div>
+
+         <div class="form-control">
+            <label for="service-type">Service type</label>
+            <select name="service-type" id="service-type">
+               <option value="" selected >Choose service type</option>
+               <option value="Preventive maintenance">Preventive maintenance</option>
+               <option value="Quick fix">Quick fix</option>
+            </select>
+         </div>
+
+         <div class="form-control">
+            <label for="service-description">Service description</label>
+            <textarea name="service-description" id="service-description" placeholder="Eg. Pump oil changed" required></textarea>   
+         </div>
+
+         <div class="form-control">
+            <label for="hour-meter">Hour meter reading</label>
+            <input type="number" name="hour-meter" id="hour-meter" placeholder="Eg. 12.5">    
+         </div>
+
+         <div class="form-control">
+            <label for="service-date">Service date</label>
+            <input type="date" name="service-date" id="service-date" required>    
+         </div>
+
+         <div class="form-control">
+            <label for="name-input">Done by</label>
+            <input type="text" name="name-input" id="name-input" placeholder="Your first name or LDAP" required>    
+         </div>
+
+         <div class="form-control">
+            <button id="submit-button">Submit</button>    
+         </div> 
+
+      </form>
+   </div>
+   <!-- End of form -->
+   <footer>
+      <div class="footer-wrapper">
+         <div class="footer-col">
+            <p class="site-version-text">Version 1.0</p>
+         </div>
+         <div class="footer-col">
+            <p class="site-author-text">Site designed and coded by : Rudy Mims</p>
+         </div>
+      </div>    
+   </footer>    
 
 
- <script src="assets/app.js"></script>   
+   <script src="assets/app.js"></script>   
 </body>
 </html>

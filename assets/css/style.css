@@ -17,25 +17,14 @@ html {
 
 body {
    display: flex;
-   justify-content: center;
-   align-items: center;
-   background-color: var(--main-white-color);
-   font-family: Roboto, sans-serif;
-   font-size: 16px;
-   height: 100vh;
-}
-
-#main-container {
-   position: relative;
-   display: flex;
-   justify-content: flex-start;
+   justify-content: space-between;
    align-items: center;
    flex-direction: column;
-   gap: 15px;
-   width: 100%;
-   height: 100%;
+   gap: 25px;
    background-color: var(--light-grey-color1);
-   overflow-x: hidden;
+   font-family: Roboto, sans-serif;
+   font-size: 16px;
+   height: 100%;
 }
 
 /* Header styling */
@@ -53,6 +42,21 @@ header {
    font-weight: 500;
 }
 
+#main-container {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   flex-direction: column;
+   gap: 15px;
+   width: 90%;
+   height: 100%;
+   padding: 20px;
+   border-radius: 4px;
+   background-color: var(--main-white-color);
+   overflow: hidden;
+   filter:drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
+}
+
 /* Search Section styling */
 #search-container {
    display: flex;
@@ -60,7 +64,7 @@ header {
    align-items: center;
    flex-wrap: wrap;
    gap: 15px;
-   padding: 20px;
+   padding: 20px 0px;
    width: 100%;
 }
 .search-bar-wrapper {
@@ -72,21 +76,22 @@ header {
    width: 40%;
 }
 #search-input {
-   background-color: var(--main-white-color);
+   background-color: var(--light-grey-color1);
    padding-right: 140px;
    width: 100%;
+   height: 44px;
 }
 #search-btn {
    position: absolute;
-   top: 3px;
-   right: 3px;
+   top: 0px;
+   right: 0px;
    font-size: 16px;
    font-weight: 600;
    color: var(--main-white-color);
    background-color: var(--main-orange-color);
    border: none;
    padding: 10px;
-   border-radius: 2px;
+   border-radius: 0px 2px 2px 0px;
    width: 125px;
    cursor: pointer;
 }
@@ -118,26 +123,36 @@ header {
    align-items: flex-start;
    width: 100%;
    height: 100%;
-   padding: 0 20px;
+   max-height: 650px;
    background-color: var(--light-grey-color1);
-   overflow: auto;
+   overflow: scroll;
 }
 table {
    border-collapse: collapse;
    width: 100%;
-   height: auto;
+   /* height: 650px; */
    padding: 0 20px;
    background-color: var(--main-white-color);
 }
 thead {
+   /* display: block; */
    position: sticky;
-   top: 0px;
+   top: 0;
+   /* width: 100%; */
+   /* border-bottom: 2px solid var(--main-black-color); */
+   filter: drop-shadow(0px 1px 5px grey);
 }
+/* tr {
+   width: 100%;
+} */
 th {
    padding: 18px 10px;
-   border-bottom: 2px solid var(--main-black-color);
+   /* border-bottom: 2px solid var(--main-black-color); */
    background-color: var(--main-white-color);
    cursor: pointer;
+}
+#data-table {
+   width: 100%;
 }
 tr:nth-child(odd) {
    background-color: var(--light-grey-color1);
@@ -190,15 +205,13 @@ td {
    top: 0px;
    right: calc(0px - 430px);
    width: 425px;
-   height: 90vh;
-   min-height: 600px;
-   padding-bottom: 62px;
+   height: max-content;
    border-radius: 4px;
-   overflow: hidden;
    box-shadow: 0px 5px 8px 4px rgba(0,0,0,0.19);
    -webkit-box-shadow: 0px 5px 8px 4px rgba(0,0,0,0.19);
    -moz-box-shadow: 0px 5px 8px 4px rgba(0,0,0,0.19);
    transition: all 0.3s ease-in-out;
+   display: none;
 }
 
 .open-form-container {
@@ -226,10 +239,10 @@ td {
    align-items: center;
    flex-direction: column;
    width: 100%;
-   height: 100%;
+   height: max-content;
    padding: 20px;
    background-color: var(--main-white-color);
-   overflow-y: scroll;
+   /* overflow-y: scroll; */
 }
 .form-header {
    display: flex;
@@ -318,8 +331,6 @@ input:focus, input[type=number]:focus, input[type=text]:focus,  input[type=email
 
 /* START FOOTER STYLING */
 footer {
-   position: relative;
-   bottom: 0;
    width: 100%;
    height: 50px;
    background-color: var(--main-black-color);
@@ -341,6 +352,9 @@ footer {
 
 /* Responsive Styling */
 @media screen and (max-width: 700px) {
+   .page-title > h1 {
+      font-size: 1rem;
+   }
    #search-container {
       justify-content: center;
    }
@@ -354,11 +368,14 @@ footer {
    #new-form-btn {
       width: 95%;
    }
-   #entry-form-container {
+   /* #entry-form-container {
       min-height: 100%;
-   }
+   } */
    .form-header > h1 {
       padding-left: 10px;
+   }
+   #entry-form-container {
+      width: 100%;
    }
 }
 /* End Responsive Styling */
