@@ -73,7 +73,7 @@ header {
    justify-content: flex-start;
    align-items: center;
    /* padding: 20px; */
-   width: 40%;
+   width: 55%;
 }
 #search-input {
    background-color: var(--light-grey-color1);
@@ -331,6 +331,8 @@ input:focus, input[type=number]:focus, input[type=text]:focus,  input[type=email
 
 /* START FOOTER STYLING */
 footer {
+   position: relavtive;
+   bottom: 0px;
    width: 100%;
    height: 50px;
    background-color: var(--main-black-color);
