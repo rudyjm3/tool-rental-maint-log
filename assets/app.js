@@ -84,12 +84,12 @@ function searchFilter() {
 
  
    for (i = 1; i < tr.length; i++) {
-      console.log("for i ran");
+      // console.log("for i ran");
      td = tr[i].getElementsByTagName("td");
      if (td) {
        txtValue = "";
        for (j = 0; j < td.length; j++) {
-         console.log("for j ran");
+         // console.log("for j ran");
          // Check if the hidden column (entry number) needs to be excluded from search
          if (j !== 0 ) {
            txtValue += td[j].textContent || td[j].innerText;
