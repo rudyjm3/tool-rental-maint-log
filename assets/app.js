@@ -71,8 +71,8 @@ function sortTable(n) {
 };
 
 // Preform mouse cliick action on the date table header so that it sorts the table for the most recent date
-const sortDesending = document.getElementById("date-header");;
-sortDesending.click();
+// const sortDesending = document.getElementById("date-header");;
+// sortDesending.click();
 
 // Search Filter Function 
 function searchFilter() {
@@ -106,77 +106,54 @@ function searchFilter() {
 
 
 // Send form data to database function and create new table row
-const submitButton = document.getElementById('submit-button');
-debugger; 
-submitButton.addEventListener('click', function(event) {
-  event.preventDefault();
+document.getElementById('entry-form').addEventListener('submit', function(event) {
+   event.preventDefault();
 
-  const formData = {
-   rentalId: document.getElementById('rental-id-number"').value,
-   equipmentDescription : document.getElementById('equipment-description-input').value,
-   serviceType: document.getElementById('serviceType').value,
-   serviceDescription: document.getElementById('serviceDescription').value,
-   hourMeter: document.getElementById('hourMeter').value,
-   serviceDate: document.getElementById('serviceDate').value,
-   techName: document.getElementById('techName').value
-};
+   const formData = {
+       rentalId: document.getElementById('rental-id-number').value,
+       equipmentDescription: document.getElementById('equipment-description-input').value,
+       serviceType: document.getElementById('service-type').value,
+       serviceDescription: document.getElementById('service-description').value,
+       hourMeter: document.getElementById('hour-meter').value,
+       serviceDate: document.getElementById('service-date').value,
+       techName: document.getElementById('name-input').value
+   };
 
-  sendFormDataToServer(formData);
+   sendFormDataToServer(formData);
 });
 
-// 2nd method - Send form data to database function
-// const myForm = document.getElementById('entry-form');
-
-// myForm.addEventListener('submit', function(event) {
-//   event.preventDefault();
-
-//   const formData = new FormData(this);
-
-//   sendFormDataToServer(formData);
-
-// });
-
-// 2nd method part2- Send form data to database function
-// function sendFormDataToServer(formData) {
-//   fetch('process_maintenance_data.php', {
-//     method: 'POST',
-//     body: formData
-//   })
-//  .then(response => response.text())
-//  .then(data => {
-//     // Update the table with the received data (new row)
-//     updateTable(data);
-//   })
-//  .catch(error => {
-//     console.error(error);
-//     // Handle any errors that might occur during the request
-//   });
-// }
-
 function sendFormDataToServer(formData) {
-   debugger;
-  fetch('process_maintenance_data.php', {
-    method: 'POST',
-    body: JSON.stringify(formData)
-  })
-  .then(response => response.text())
-  .then(data => {
-    // Update the table with the received data (new row)
-    updateTable(data);
-  })
-  .catch(error => {
-    console.error(error);
-    // Handle any errors that might occur during the request
-  });
+   console.log("sendFormDataToServer function started.");
+   console.log("formData: ", formData);
+
+   fetch('process-form2.php', {
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(formData)
+   })
+   .then(response => response.json())
+   .then(data => {
+       if (data.error) {
+           console.error("Error:", data.error);
+       } else {
+           console.log("Success:", data);
+           // You can add code here to update the UI with the new data
+           updateTable(data);
+       }
+   })
+   .catch(error => {
+       console.error("Error: ", error);
+   });
 }
 
 function updateTable(data) {
+
    console.log("updateTable function started.");
-   // Assuming you have a table with an ID like 'equipment-log-table'
    const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
- 
-   // Parse the JSON data from the server response
-   const newEntryData = JSON.parse(data);
+
+   const newEntryData = data;
    console.log("This is the parse'd data - " + newEntryData);
    // Create new table row element for the new entry
    const newRow = document.createElement('tr');
@@ -184,11 +161,11 @@ function updateTable(data) {
    // Create table cells for each data point in the new entry
    const entryLogNumCell = document.createElement('td');
    entryLogNumCell.classList.add('entry-log-num-col');
-   entryLogNumCell.textContent = newEntryData.entryLogNum; // Assuming 'entryLogNum' is a property in the data
+   entryLogNumCell.textContent = newEntryData.entryLogNum;
  
    const rentalIdCell = document.createElement('td');
    rentalIdCell.classList.add('rental-id-col');
-   rentalIdCell.textContent = newEntryData.rentalId; // Assuming 'unitId' is a property in the data
+   rentalIdCell.textContent = newEntryData.rentalId;
 
    const equipmentDescriptionCell = document.createElement('td');
    equipmentDescriptionCell.classList.add('equipment-description-col');
@@ -208,7 +185,7 @@ function updateTable(data) {
 
    const dateCell = document.createElement('td');
    dateCell.classList.add('date-col');
-   dateCell.textContent = newEntryData.date;
+   dateCell.textContent = formatDate(data.serviceDate); // Format the date
 
    const techNameCell = document.createElement('td');
    techNameCell.classList.add('tech-name-col');
@@ -231,4 +208,89 @@ function updateTable(data) {
  
    // Append the new row to the table body
    tableBody.appendChild(newRow);
- }
+}
+
+// Get entries from data base on load and populate
+document.addEventListener('DOMContentLoaded', function() {
+   fetchEntries();
+});
+
+function fetchEntries() {
+   fetch('get-entries.php')
+       .then(response => response.json())
+       .then(data => {
+           if (data.error) {
+               console.error("Error:", data.error);
+           } else {
+               populateTable(data);
+           }
+       })
+       .catch(error => {
+           console.error("Error: ", error);
+       });
+}
+
+function populateTable(entries) {
+   const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
+   tableBody.innerHTML = ''; // Clear any existing rows
+
+   entries.forEach(entry => {
+       const newRow = document.createElement('tr');
+
+       const entryLogNumCell = document.createElement('td');
+       entryLogNumCell.classList.add('entry-log-num-col');
+       entryLogNumCell.textContent = entry.entryLogNum;
+
+       const rentalIdCell = document.createElement('td');
+       rentalIdCell.classList.add('rental-id-col');
+       rentalIdCell.textContent = entry.rental_id;
+
+       const equipmentDescriptionCell = document.createElement('td');
+       equipmentDescriptionCell.classList.add('equipment-description-col');
+       equipmentDescriptionCell.textContent = entry.equipment_description;
+
+       const serviceTypeCell = document.createElement('td');
+       serviceTypeCell.classList.add('service-type-col');
+       serviceTypeCell.textContent = entry.service_type;
+
+       const serviceDescriptionCell = document.createElement('td');
+       serviceDescriptionCell.classList.add('service-description-col');
+       serviceDescriptionCell.textContent = entry.service_description;
+
+       const hourMeterCell = document.createElement('td');
+       hourMeterCell.classList.add('hour-meter-col');
+       hourMeterCell.textContent = entry.hour_meter;
+
+       const dateCell = document.createElement('td');
+       dateCell.classList.add('date-col');
+       dateCell.textContent = formatDate(entry.service_date); // Format the date
+
+       const techNameCell = document.createElement('td');
+       techNameCell.classList.add('tech-name-col');
+       techNameCell.textContent = entry.tech_name;
+
+       const editColCell = document.createElement('td');
+       editColCell.classList.add('edit-col');
+       editColCell.innerHTML = '<div class="col-wrapper"><span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span></div>';
+
+       newRow.appendChild(entryLogNumCell);
+       newRow.appendChild(rentalIdCell);
+       newRow.appendChild(equipmentDescriptionCell);
+       newRow.appendChild(serviceTypeCell);
+       newRow.appendChild(serviceDescriptionCell);
+       newRow.appendChild(hourMeterCell);
+       newRow.appendChild(dateCell);
+       newRow.appendChild(techNameCell);
+       newRow.appendChild(editColCell);
+
+       tableBody.appendChild(newRow);
+   });
+}
+
+function formatDate(dateString) {
+   const date = new Date(dateString);
+   const month = String(date.getMonth() + 1).padStart(2, '0'); // Add 1 because months are zero-indexed
+   const day = String(date.getDate()).padStart(2, '0');
+   const year = date.getFullYear();
+   return `${month}/${day}/${year}`;
+}
