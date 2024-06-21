@@ -87,22 +87,23 @@ function searchFilter() {
       // console.log("for i ran");
      td = tr[i].getElementsByTagName("td");
      if (td) {
-       txtValue = "";
-       for (j = 0; j < td.length; j++) {
-         // console.log("for j ran");
-         // Check if the hidden column (entry number) needs to be excluded from search
-         if (j !== 0 ) {
-           txtValue += td[j].textContent || td[j].innerText;
-         }
-       }
-       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-         tr[i].style.display = "";
-       } else {
-         tr[i].style.display = "none";
-       }
+
+      txtValue = "";
+      for (j = 0; j < td.length; j++) {
+      // console.log("for j ran");
+      // Check if the hidden column (entry number) needs to be excluded from search
+      if (j !== 0 ) {
+         txtValue += td[j].textContent || td[j].innerText;
+      }
+      }
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      tr[i].style.display = "";
+      } else {
+      tr[i].style.display = "none";
+      }
      } 
    }
- }
+}
 
 
 // Send form data to database function and create new table row
