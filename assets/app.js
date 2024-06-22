@@ -194,7 +194,7 @@ function updateTable(data) {
  
    const editColCell = document.createElement('td');
    editColCell.classList.add('edit-col');
-   editColCell.innerHTML = '<div class="col-wrapper"><span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span></div>';
+   editColCell.innerHTML = '<div class="col-wrapper"><span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></span></div>';
  
    // Append the data cells to the new row
    newRow.appendChild(entryLogNumCell);
@@ -215,7 +215,7 @@ function updateTable(data) {
 document.addEventListener('DOMContentLoaded', function() {
    fetchEntries();
 });
-
+// This is the function that will get the entries from the database
 function fetchEntries() {
    fetch('get-entries.php')
        .then(response => response.json())
@@ -230,7 +230,7 @@ function fetchEntries() {
            console.error("Error: ", error);
        });
 }
-
+// This is the function that will populate the table with the data from the database that was fetched above
 function populateTable(entries) {
    const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
    tableBody.innerHTML = ''; // Clear any existing rows
@@ -240,7 +240,7 @@ function populateTable(entries) {
 
        const entryLogNumCell = document.createElement('td');
        entryLogNumCell.classList.add('entry-log-num-col');
-       entryLogNumCell.textContent = entry.entryLogNum;
+       entryLogNumCell.textContent = entry.id;
 
        const rentalIdCell = document.createElement('td');
        rentalIdCell.classList.add('rental-id-col');
@@ -272,7 +272,7 @@ function populateTable(entries) {
 
        const editColCell = document.createElement('td');
        editColCell.classList.add('edit-col');
-       editColCell.innerHTML = '<div class="col-wrapper"><span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span></div>';
+       editColCell.innerHTML = '<div class="col-wrapper"><span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></span></div>';
 
        newRow.appendChild(entryLogNumCell);
        newRow.appendChild(rentalIdCell);
@@ -296,15 +296,14 @@ function formatDate(dateString) {
    return `${month}/${day}/${year}`;
 }
 
-// Delete Log Entries functions
-document.addEventListener('click', function(event) {
-   if (event.target.classList.contains('delete-log-btn')) {
-      const row = event.target.closest('tr');
-      const entryLogNum = row.querySelector('.entry-log-num-col').textContent;
+// Delete Log Entry functions
+function deleteBtnClick(ele) {
+   console.log('Delete Log Entry button clicked');
+   const row = ele.parentNode.closest('tr');
+   const entryLogNum = row.querySelector('.entry-log-num-col').textContent;
 
-      deleteEntry(entryLogNum, row);
-   }
-});
+   deleteEntry(entryLogNum, row);
+};
 
 function deleteEntry(entryLogNum, row) {
    fetch('delete-entry.php', {
@@ -312,7 +311,7 @@ function deleteEntry(entryLogNum, row) {
        headers: {
            'Content-Type': 'application/json'
        },
-       body: JSON.stringify({ entryLogNum: entryLogNum })
+       body: JSON.stringify({ id: entryLogNum }) // id = database column name
    })
    .then(response => response.json())
    .then(data => {

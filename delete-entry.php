@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 
 include 'db-conn-info.php';
 
@@ -10,9 +11,9 @@ if ($conn->connect_error) {
 }
 
 $input = json_decode(file_get_contents('php://input'), true);
-$entryLogNum = $input['entryLogNum'];
+$entryLogNum = $input['id']; // id is the database column name
 
-$sql = "DELETE FROM maintenance_log WHERE entry_log_num = ?";
+$sql = "DELETE FROM maintenance_log WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $entryLogNum);
 
