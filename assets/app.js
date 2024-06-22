@@ -296,7 +296,7 @@ function formatDate(dateString) {
    return `${month}/${day}/${year}`;
 }
 
-// Delete and Edit Log Entries functions
+// Delete Log Entries functions
 document.addEventListener('click', function(event) {
    if (event.target.classList.contains('delete-log-btn')) {
       const row = event.target.closest('tr');
