@@ -2,10 +2,7 @@
 header('Content-Type: application/json');
 
 // Database connection details
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "tool_log";
+include 'db-conn-info.php';
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
