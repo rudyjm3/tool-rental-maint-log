@@ -106,7 +106,7 @@ function searchFilter() {
 }
 
 
-// Send form data to database function and create new table row
+// Send form data to database function and create new table row functions.
 document.getElementById('entry-form').addEventListener('submit', function(event) {
    event.preventDefault();
 
@@ -294,4 +294,35 @@ function formatDate(dateString) {
    const day = String(date.getDate()).padStart(2, '0');
    const year = date.getFullYear();
    return `${month}/${day}/${year}`;
+}
+
+// Delete and Edit Log Entries functions
+document.addEventListener('click', function(event) {
+   if (event.target.classList.contains('delete-log-btn')) {
+      const row = event.target.closest('tr');
+      const entryLogNum = row.querySelector('.entry-log-num-col').textContent;
+
+      deleteEntry(entryLogNum, row);
+   }
+});
+
+function deleteEntry(entryLogNum, row) {
+   fetch('delete-entry.php', {
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json'
+       },
+       body: JSON.stringify({ entryLogNum: entryLogNum })
+   })
+   .then(response => response.json())
+   .then(data => {
+       if (data.success) {
+           row.remove();
+       } else {
+           console.error("Error:", data.error);
+       }
+   })
+   .catch(error => {
+       console.error("Error:", error);
+   });
 }
