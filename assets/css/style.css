@@ -177,8 +177,10 @@ td {
    gap: 18px;
 }
 .edit-log-btn, .delete-log-btn {
+   border: none;
    font-size: 20px;
    color: var(--main-orange-color);
+   background-color: transparent;
    cursor: pointer;
 }
 .edit-log-btn:hover {

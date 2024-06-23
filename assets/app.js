@@ -194,7 +194,7 @@ function updateTable(data) {
  
    const editColCell = document.createElement('td');
    editColCell.classList.add('edit-col');
-   editColCell.innerHTML = '<div class="col-wrapper"><span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></span></div>';
+   editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
  
    // Append the data cells to the new row
    newRow.appendChild(entryLogNumCell);
@@ -272,7 +272,7 @@ function populateTable(entries) {
 
        const editColCell = document.createElement('td');
        editColCell.classList.add('edit-col');
-       editColCell.innerHTML = '<div class="col-wrapper"><span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></span></div>';
+       editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
 
        newRow.appendChild(entryLogNumCell);
        newRow.appendChild(rentalIdCell);
