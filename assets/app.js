@@ -194,7 +194,7 @@ function updateTable(data) {
  
    const editColCell = document.createElement('td');
    editColCell.classList.add('edit-col');
-   editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
+   editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
  
    // Append the data cells to the new row
    newRow.appendChild(entryLogNumCell);
@@ -272,7 +272,7 @@ function populateTable(entries) {
 
        const editColCell = document.createElement('td');
        editColCell.classList.add('edit-col');
-       editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
+       editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
 
        newRow.appendChild(entryLogNumCell);
        newRow.appendChild(rentalIdCell);
@@ -310,6 +310,79 @@ document.addEventListener('DOMContentLoaded', function() {
        });
    });
 });
+
+// Edit Log Entry functions
+function editLogBtnClick(button) {
+   console.log("edit log button clicked");
+   const row = button.parentNode.closest('tr');
+   populateFormForEdit(row);
+}
+
+
+function populateFormForEdit(row) {
+   console.log("populate form for edit started");
+
+   document.getElementById('rental-id-number').value = row.querySelector('.rental-id-col').textContent;
+   document.getElementById('equipment-description-input').value = row.querySelector('.equipment-description-col').textContent;
+   document.getElementById('service-type').value = row.querySelector('.service-type-col').textContent;
+   document.getElementById('service-description').value = row.querySelector('.service-description-col').textContent;
+   document.getElementById('hour-meter').value = row.querySelector('.hour-meter-col').textContent;
+   document.getElementById('service-date').value = row.querySelector('.date-col').textContent;
+   document.getElementById('name-input').value = row.querySelector('.tech-name-col').textContent;
+
+   document.getElementById('submit-button').innerText = "Update";
+   document.getElementById('entry-form').dataset.editing = row.querySelector('.entry-log-num-col').textContent;
+}
+
+document.getElementById('entry-form').addEventListener('submit', function(event) {
+   event.preventDefault();
+
+   const formData = {
+       rentalId: document.getElementById('rental-id-number').value,
+       equipmentDescription: document.getElementById('equipment-description-input').value,
+       serviceType: document.getElementById('service-type').value,
+       serviceDescription: document.getElementById('service-description').value,
+       hourMeter: document.getElementById('hour-meter').value,
+       serviceDate: document.getElementById('service-date').value,
+       techName: document.getElementById('name-input').value
+   };
+
+   const editing = document.getElementById('entry-form').dataset.editing;
+   if (editing) {
+       formData.entryLogNum = editing;
+       updateEntry(formData);
+   } else {
+       sendFormDataToServer(formData);
+   }
+});
+
+function updateEntry(formData) {
+   console.log("update entry started");
+   fetch('update-entry.php', {
+       method: 'POST',
+       headers: {
+           'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(formData)
+   })
+   .then(response => response.json())
+   .then(data => {
+       if (data.success) {
+           document.getElementById('submit-button').innerText = "Submit";
+           document.getElementById('entry-form').dataset.editing = '';
+
+           // Refresh the table or update the specific row
+           // (You might want to implement a more efficient way to update the row)
+           location.reload();
+       } else {
+           console.error("Error:", data.error);
+       }
+   })
+   .catch(error => {
+       console.error("Error:", error);
+   });
+}
+
 // Delete Log Entry functions
 function deleteBtnClick(button) {
    console.log('Delete Log Entry button clicked');
