@@ -296,13 +296,29 @@ function formatDate(dateString) {
    return `${month}/${day}/${year}`;
 }
 
+// Handle listening for click on desktop and touch on mobile for delete function
+document.addEventListener('DOMContentLoaded', function() {
+   const deleteButtons = document.querySelectorAll('.delete-log-btn');
+   deleteButtons.forEach(function(button) {
+       button.addEventListener('click', function(event) {
+           event.preventDefault();
+           deleteBtnClick(this);
+       });
+       button.addEventListener('touchend', function(event) {
+           event.preventDefault();
+           deleteBtnClick(this);
+       });
+   });
+});
 // Delete Log Entry functions
-function deleteBtnClick(ele) {
+function deleteBtnClick(button) {
    console.log('Delete Log Entry button clicked');
-   const row = ele.parentNode.closest('tr');
+   const row = button.parentNode.closest('tr');
    const entryLogNum = row.querySelector('.entry-log-num-col').textContent;
 
-   deleteEntry(entryLogNum, row);
+   if (confirm("Are you sure you want to delete this entry?")) {
+      deleteEntry(entryLogNum, row);
+  }
 };
 
 function deleteEntry(entryLogNum, row) {
