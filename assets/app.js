@@ -155,27 +155,23 @@ function sendFormDataToServer(formData) {
 }
 
 function updateTable(data) {
-
    console.log("updateTable function started.");
    const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
 
    const newEntryData = data;
-   console.log("This is the parse'd data - " + newEntryData);
-   // Create new table row element for the new entry
    const newRow = document.createElement('tr');
- 
-   // Create table cells for each data point in the new entry
+
    const entryLogNumCell = document.createElement('td');
    entryLogNumCell.classList.add('entry-log-num-col');
    entryLogNumCell.textContent = newEntryData.entryLogNum;
- 
+
    const rentalIdCell = document.createElement('td');
    rentalIdCell.classList.add('rental-id-col');
    rentalIdCell.textContent = newEntryData.rentalId;
 
    const equipmentDescriptionCell = document.createElement('td');
    equipmentDescriptionCell.classList.add('equipment-description-col');
-   equipmentDescriptionCell.textContent = newEntryData.equipmentDescription; 
+   equipmentDescriptionCell.textContent = newEntryData.equipmentDescription;
 
    const serviceTypeCell = document.createElement('td');
    serviceTypeCell.classList.add('service-type-col');
@@ -191,17 +187,16 @@ function updateTable(data) {
 
    const dateCell = document.createElement('td');
    dateCell.classList.add('date-col');
-   dateCell.textContent = formatDate(data.serviceDate); // Format the date
+   dateCell.textContent = formatDate(newEntryData.serviceDate);
 
    const techNameCell = document.createElement('td');
    techNameCell.classList.add('tech-name-col');
    techNameCell.textContent = newEntryData.techName;
- 
+
    const editColCell = document.createElement('td');
    editColCell.classList.add('edit-col');
    editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
- 
-   // Append the data cells to the new row
+
    newRow.appendChild(entryLogNumCell);
    newRow.appendChild(rentalIdCell);
    newRow.appendChild(equipmentDescriptionCell);
@@ -211,8 +206,7 @@ function updateTable(data) {
    newRow.appendChild(dateCell);
    newRow.appendChild(techNameCell);
    newRow.appendChild(editColCell);
- 
-   // Append the new row to the table body
+
    tableBody.appendChild(newRow);
 }
 
@@ -410,18 +404,19 @@ function updateFormDataOnServer(entryLogNum, formData) {
 }
 
 function updateTableRow(entryLogNum, formData) {
-   const table = document.getElementById('equipment-log-table');
-   const rows = table.getElementsByTagName('tr');
+   console.log("updateTableRow function started.");
+   const rows = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 
    for (let row of rows) {
-       if (row.querySelector('.entry-log-num-col').textContent.trim() === entryLogNum) {
-           row.querySelector('.rental-id-col').textContent = formData.rentalId;
-           row.querySelector('.equipment-description-col').textContent = formData.equipmentDescription;
-           row.querySelector('.service-type-col').textContent = formData.serviceType;
-           row.querySelector('.service-description-col').textContent = formData.serviceDescription;
-           row.querySelector('.hour-meter-col').textContent = formData.hourMeter;
-           row.querySelector('.date-col').textContent = formData.serviceDate; // You may need to format this
-           row.querySelector('.tech-name-col').textContent = formData.techName;
+       if (row.getElementsByClassName('entry-log-num-col')[0].textContent == entryLogNum) {
+           row.getElementsByClassName('rental-id-col')[0].textContent = formData.rentalId;
+           row.getElementsByClassName('equipment-description-col')[0].textContent = formData.equipmentDescription;
+           row.getElementsByClassName('service-type-col')[0].textContent = formData.serviceType;
+           row.getElementsByClassName('service-description-col')[0].textContent = formData.serviceDescription;
+           row.getElementsByClassName('hour-meter-col')[0].textContent = formData.hourMeter;
+           row.getElementsByClassName('date-col')[0].textContent = formatDate(formData.serviceDate);
+           row.getElementsByClassName('tech-name-col')[0].textContent = formData.techName;
+           break;
        }
    }
 }
