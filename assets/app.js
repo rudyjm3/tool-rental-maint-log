@@ -1,4 +1,4 @@
-// Open close Log New Maintenance Form function
+// Open close Log New Maintenance Form function ===================
 function formOpenClose() {
    const formContainer = document.getElementById('entry-form-container');
    const entryForm = document.getElementById('entry-form');
@@ -12,7 +12,7 @@ function formOpenClose() {
    }
 };
 
-// Table header sort function
+// Table header sort function ============================
 function sortTable(n) {
    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
    table = document.getElementById("equipment-log-table");
@@ -74,7 +74,7 @@ function sortTable(n) {
 // const sortDesending = document.getElementById("date-header");;
 // sortDesending.click();
 
-// Search Filter Function 
+// Search Filter Function ===============================
 function searchFilter() {
    var input, filter, table, tr, td, i, j, txtValue;
    input = document.getElementById("search-input");
@@ -120,12 +120,16 @@ document.getElementById('entry-form').addEventListener('submit', function(event)
        techName: document.getElementById('name-input').value
    };
 
-   sendFormDataToServer(formData);
+   if (document.getElementById('entry-id').value) {
+       const entryLogNum = document.getElementById('entry-id').value;
+       updateFormDataOnServer(entryLogNum, formData);
+   } else {
+       sendFormDataToServer(formData);
+   }
 });
 
 function sendFormDataToServer(formData) {
    console.log("sendFormDataToServer function started.");
-   console.log("formData: ", formData);
 
    fetch('process-form2.php', {
        method: 'POST',
@@ -311,31 +315,13 @@ document.addEventListener('DOMContentLoaded', function() {
    });
 });
 
-// Edit Log Entry functions
-function editLogBtnClick(button) {
-   console.log("edit log button clicked");
-   const row = button.parentNode.closest('tr');
-   populateFormForEdit(row);
-}
-
-
-function populateFormForEdit(row) {
-   console.log("populate form for edit started");
-
-   document.getElementById('rental-id-number').value = row.querySelector('.rental-id-col').textContent;
-   document.getElementById('equipment-description-input').value = row.querySelector('.equipment-description-col').textContent;
-   document.getElementById('service-type').value = row.querySelector('.service-type-col').textContent;
-   document.getElementById('service-description').value = row.querySelector('.service-description-col').textContent;
-   document.getElementById('hour-meter').value = row.querySelector('.hour-meter-col').textContent;
-   document.getElementById('service-date').value = row.querySelector('.date-col').textContent;
-   document.getElementById('name-input').value = row.querySelector('.tech-name-col').textContent;
-
-   document.getElementById('submit-button').innerText = "Update";
-   document.getElementById('entry-form').dataset.editing = row.querySelector('.entry-log-num-col').textContent;
-}
-
+// Edit Log Entry functions ==================================
+// Check if form is in Edit mode
 document.getElementById('entry-form').addEventListener('submit', function(event) {
    event.preventDefault();
+
+   // Check if the form is in edit mode
+   const isEditMode = document.getElementById('entry-form').dataset.editMode === 'true';
 
    const formData = {
        rentalId: document.getElementById('rental-id-number').value,
@@ -347,40 +333,96 @@ document.getElementById('entry-form').addEventListener('submit', function(event)
        techName: document.getElementById('name-input').value
    };
 
-   const editing = document.getElementById('entry-form').dataset.editing;
-   if (editing) {
-       formData.entryLogNum = editing;
-       updateEntry(formData);
+   if (isEditMode) {
+       const entryLogNum = document.getElementById('entry-form').dataset.editEntryLogNum;
+       updateFormDataOnServer(entryLogNum, formData);
    } else {
        sendFormDataToServer(formData);
    }
 });
+// Edit Function ++++++++++++++++++++++++++++
+function editLogBtnClick(button) {
+   console.log("edit log button clicked");
+   const row = button.parentNode.closest('tr');
+   formOpenClose();
+   populateFormForEdit(row);
+}
 
-function updateEntry(formData) {
-   console.log("update entry started");
+
+function populateFormForEdit(row) {
+   console.log("populate form for edit started");
+
+   // Get data from the row
+   const entryLogNum = row.querySelector('.entry-log-num-col').textContent.trim();
+   const rentalId = row.querySelector('.rental-id-col').textContent.trim();
+   const equipmentDescription = row.querySelector('.equipment-description-col').textContent.trim();
+   const serviceType = row.querySelector('.service-type-col').textContent.trim();
+   const serviceDescription = row.querySelector('.service-description-col').textContent.trim();
+   const hourMeter = row.querySelector('.hour-meter-col').textContent.trim();
+   const serviceDate = row.querySelector('.date-col').textContent.trim();
+   const techName = row.querySelector('.tech-name-col').textContent.trim();
+
+   // Populate the form
+   document.getElementById('rental-id-number').value = rentalId;
+   document.getElementById('equipment-description-input').value = equipmentDescription;
+   document.getElementById('service-type').value = serviceType;
+   document.getElementById('service-description').value = serviceDescription;
+   document.getElementById('hour-meter').value = hourMeter;
+   document.getElementById('service-date').value = serviceDate;
+   document.getElementById('name-input').value = techName;
+
+   // Set the form to edit mode and store the entry log number
+   document.getElementById('entry-form').dataset.editMode = 'true';
+   document.getElementById('entry-form').dataset.editEntryLogNum = entryLogNum;
+}
+
+function updateFormDataOnServer(entryLogNum, formData) {
+   console.log("updateFormDataOnServer function started.");
+   console.log("formData: ", formData);
+
    fetch('update-entry.php', {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json'
        },
-       body: JSON.stringify(formData)
+       body: JSON.stringify({ entryLogNum: entryLogNum, formData: formData })
    })
    .then(response => response.json())
    .then(data => {
-       if (data.success) {
-           document.getElementById('submit-button').innerText = "Submit";
-           document.getElementById('entry-form').dataset.editing = '';
-
-           // Refresh the table or update the specific row
-           // (You might want to implement a more efficient way to update the row)
-           location.reload();
-       } else {
+       if (data.error) {
            console.error("Error:", data.error);
+       } else {
+           console.log("Success:", data);
+           updateTableRow(entryLogNum, formData);
+           clearForm();
        }
    })
    .catch(error => {
-       console.error("Error:", error);
+       console.error("Error: ", error);
    });
+}
+
+function updateTableRow(entryLogNum, formData) {
+   const table = document.getElementById('equipment-log-table');
+   const rows = table.getElementsByTagName('tr');
+
+   for (let row of rows) {
+       if (row.querySelector('.entry-log-num-col').textContent.trim() === entryLogNum) {
+           row.querySelector('.rental-id-col').textContent = formData.rentalId;
+           row.querySelector('.equipment-description-col').textContent = formData.equipmentDescription;
+           row.querySelector('.service-type-col').textContent = formData.serviceType;
+           row.querySelector('.service-description-col').textContent = formData.serviceDescription;
+           row.querySelector('.hour-meter-col').textContent = formData.hourMeter;
+           row.querySelector('.date-col').textContent = formData.serviceDate; // You may need to format this
+           row.querySelector('.tech-name-col').textContent = formData.techName;
+       }
+   }
+}
+
+function clearForm() {
+   document.getElementById('entry-form').reset();
+   document.getElementById('entry-form').dataset.editMode = 'false';
+   document.getElementById('entry-form').dataset.editEntryLogNum = '';
 }
 
 // Delete Log Entry functions
