@@ -388,14 +388,20 @@ function updateFormDataOnServer(entryLogNum, formData) {
        },
        body: JSON.stringify({ entryLogNum: entryLogNum, formData: formData })
    })
-   .then(response => response.json())
-   .then(data => {
-       if (data.error) {
-           console.error("Error:", data.error);
-       } else {
-           console.log("Success:", data);
-           updateTableRow(entryLogNum, formData);
-           clearForm();
+   .then(response => response.text())
+   .then(text => {
+       try {
+           const data = JSON.parse(text);
+           if (data.error) {
+               console.error("Error:", data.error);
+           } else {
+               console.log("Success:", data);
+               updateTableRow(entryLogNum, formData);
+               clearForm();
+           }
+       } catch (error) {
+           console.error("Failed to parse JSON response:", text);
+           console.error("Error:", error);
        }
    })
    .catch(error => {
