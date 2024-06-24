@@ -287,10 +287,10 @@ function populateTable(entries) {
    });
 }
 
-function formatDate(dateString) {
-   const date = new Date(dateString);
-   const month = String(date.getMonth() + 1).padStart(2, '0'); // Add 1 because months are zero-indexed
+function formatDate(dateStr) {
+   const date = new Date(dateStr);
    const day = String(date.getDate()).padStart(2, '0');
+   const month = String(date.getMonth() + 1).padStart(2, '0');
    const year = date.getFullYear();
    return `${month}/${day}/${year}`;
 }
