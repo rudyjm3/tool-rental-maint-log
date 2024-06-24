@@ -422,9 +422,14 @@ function updateTableRow(entryLogNum, formData) {
 }
 
 function clearForm() {
-   document.getElementById('entry-form').reset();
-   document.getElementById('entry-form').dataset.editMode = 'false';
-   document.getElementById('entry-form').dataset.editEntryLogNum = '';
+   document.getElementById('entry-id').value = '';
+   document.getElementById('rental-id-number').value = '';
+   document.getElementById('equipment-description-input').value = '';
+   document.getElementById('service-type').value = '';
+   document.getElementById('service-description').value = '';
+   document.getElementById('hour-meter').value = '';
+   document.getElementById('service-date').value = '';
+   document.getElementById('name-input').value = '';
 }
 
 // Delete Log Entry functions
