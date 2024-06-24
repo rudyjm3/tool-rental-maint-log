@@ -345,30 +345,14 @@ function editLogBtnClick(button) {
 
 
 function populateFormForEdit(row) {
-   console.log("populate form for edit started");
-
-   // Get data from the row
-   const entryLogNum = row.querySelector('.entry-log-num-col').textContent.trim();
-   const rentalId = row.querySelector('.rental-id-col').textContent.trim();
-   const equipmentDescription = row.querySelector('.equipment-description-col').textContent.trim();
-   const serviceType = row.querySelector('.service-type-col').textContent.trim();
-   const serviceDescription = row.querySelector('.service-description-col').textContent.trim();
-   const hourMeter = row.querySelector('.hour-meter-col').textContent.trim();
-   const serviceDate = row.querySelector('.date-col').textContent.trim();
-   const techName = row.querySelector('.tech-name-col').textContent.trim();
-
-   // Populate the form
-   document.getElementById('rental-id-number').value = rentalId;
-   document.getElementById('equipment-description-input').value = equipmentDescription;
-   document.getElementById('service-type').value = serviceType;
-   document.getElementById('service-description').value = serviceDescription;
-   document.getElementById('hour-meter').value = hourMeter;
-   document.getElementById('service-date').value = serviceDate;
-   document.getElementById('name-input').value = techName;
-
-   // Set the form to edit mode and store the entry log number
-   document.getElementById('entry-form').dataset.editMode = 'true';
-   document.getElementById('entry-form').dataset.editEntryLogNum = entryLogNum;
+   document.getElementById('entry-id').value = row.getElementsByClassName('entry-log-num-col')[0].textContent;
+   document.getElementById('rental-id-number').value = row.getElementsByClassName('rental-id-col')[0].textContent;
+   document.getElementById('equipment-description-input').value = row.getElementsByClassName('equipment-description-col')[0].textContent;
+   document.getElementById('service-type').value = row.getElementsByClassName('service-type-col')[0].textContent;
+   document.getElementById('service-description').value = row.getElementsByClassName('service-description-col')[0].textContent;
+   document.getElementById('hour-meter').value = row.getElementsByClassName('hour-meter-col')[0].textContent;
+   document.getElementById('service-date').value = row.getElementsByClassName('date-col')[0].textContent;
+   document.getElementById('name-input').value = row.getElementsByClassName('tech-name-col')[0].textContent;
 }
 
 function updateFormDataOnServer(entryLogNum, formData) {
