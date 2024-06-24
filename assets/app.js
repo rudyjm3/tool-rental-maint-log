@@ -418,32 +418,26 @@ function clearForm() {
 
 // Delete Log Entry functions
 function deleteBtnClick(button) {
-   console.log('Delete Log Entry button clicked');
    const row = button.parentNode.closest('tr');
-   const entryLogNum = row.querySelector('.entry-log-num-col').textContent;
+   const entryLogNum = row.getElementsByClassName('entry-log-num-col')[0].textContent;
 
-   if (confirm("Are you sure you want to delete this entry?")) {
-      deleteEntry(entryLogNum, row);
-  }
-};
-
-function deleteEntry(entryLogNum, row) {
    fetch('delete-entry.php', {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json'
        },
-       body: JSON.stringify({ id: entryLogNum }) // id = database column name
+       body: JSON.stringify({ entryLogNum: entryLogNum })
    })
    .then(response => response.json())
    .then(data => {
-       if (data.success) {
-           row.remove();
-       } else {
+       if (data.error) {
            console.error("Error:", data.error);
+       } else {
+           console.log("Success:", data);
+           row.remove();
        }
    })
    .catch(error => {
-       console.error("Error:", error);
+       console.error("Error: ", error);
    });
 }
