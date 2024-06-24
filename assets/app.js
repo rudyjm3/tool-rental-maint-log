@@ -130,6 +130,7 @@ document.getElementById('entry-form').addEventListener('submit', function(event)
 
 function sendFormDataToServer(formData) {
    console.log("sendFormDataToServer function started.");
+   console.log("formData: ", formData);
 
    fetch('process-form2.php', {
        method: 'POST',
@@ -144,8 +145,8 @@ function sendFormDataToServer(formData) {
            console.error("Error:", data.error);
        } else {
            console.log("Success:", data);
-           // You can add code here to update the UI with the new data
            updateTable(data);
+           clearForm();
        }
    })
    .catch(error => {
