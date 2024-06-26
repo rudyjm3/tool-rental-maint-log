@@ -1,21 +1,45 @@
 <?php
 header('Content-Type: application/json');
 
-$response = [];
+// Database connection details (replace with your actual credentials)
+include 'db-conn-info.php';
 
-try {
-    // Your code to update the entry in the database
-    // Assume $success is a boolean indicating whether the update was successful
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    if ($success) {
-        $response['success'] = true;
-        $response['message'] = 'Entry updated successfully.';
-    } else {
-        throw new Exception('Failed to update entry.');
-    }
-} catch (Exception $e) {
-    $response['error'] = $e->getMessage();
+// Check connection
+if ($conn->connect_error) {
+    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
 }
 
-echo json_encode($response);
+// Get the input data
+$data = json_decode(file_get_contents('php://input'), true);
+
+if (isset($data['entryLogNum'], $data['rentalId'], $data['equipmentDescription'], $data['serviceType'], $data['serviceDescription'], $data['hourMeter'], $data['serviceDate'], $data['techName'])) {
+    $entryLogNum = $data['entryLogNum'];
+    $rentalId = $data['rentalId'];
+    $equipmentDescription = $data['equipmentDescription'];
+    $serviceType = $data['serviceType'];
+    $serviceDescription = $data['serviceDescription'];
+    $hourMeter = $data['hourMeter'];
+    $serviceDate = $data['serviceDate'];
+    $techName = $data['techName'];
+
+    // Prepare the SQL statement to update the entry
+    $sql = "UPDATE maintenance_log SET rental_id=?, equipment_description=?, service_type=?, service_description=?, hour_meter=?, service_date=?, tech_name=? WHERE id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('sssssssi', $rentalId, $equipmentDescription, $serviceType, $serviceDescription, $hourMeter, $serviceDate, $techName, $entryLogNum);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['error' => 'Failed to update entry: ' . $stmt->error]);
+    }
+
+    $stmt->close();
+} else {
+    echo json_encode(['error' => 'Invalid input']);
+}
+
+$conn->close();
 ?>

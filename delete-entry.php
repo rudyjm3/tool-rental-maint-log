@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 }
 
 $input = json_decode(file_get_contents('php://input'), true);
-$entryLogNum = $input['id']; // id is the database column name
+$entryLogNum = $input['entryLogNum'];
 
 $sql = "DELETE FROM maintenance_log WHERE id = ?";
 $stmt = $conn->prepare($sql);

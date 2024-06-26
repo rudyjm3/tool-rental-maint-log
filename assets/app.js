@@ -3,14 +3,14 @@ function formOpenClose() {
    const formContainer = document.getElementById('entry-form-container');
    const entryForm = document.getElementById('entry-form');
    if (formContainer.className == 'open-form-container') {
-      entryForm.reset();
-      formContainer.style.display = 'none';
-      formContainer.classList.toggle('open-form-container');
+       entryForm.reset();
+       formContainer.style.display = 'none';
+       formContainer.classList.toggle('open-form-container');
    } else {
-      formContainer.style.display = 'block';
-      formContainer.classList.toggle('open-form-container');
+       formContainer.style.display = 'block';
+       formContainer.classList.toggle('open-form-container');
    }
-};
+}
 
 // Table header sort function ============================
 function sortTable(n) {
@@ -19,60 +19,51 @@ function sortTable(n) {
    switching = true;
    // Set the sorting direction to descending:
    dir = "desc";
-   /* Make a loop that will continue until
-   no switching has been done: */
+   // Make a loop that will continue until no switching has been done:
    while (switching) {
-      // Start by saying: no switching is done: 
-      switching = false;
-      rows = table.rows; 
-      /* Loop through all table rows (except the
-         first, which contains table headers): */
-      for (i = 1; i < (rows.length - 1); i++) {
-         // Start by saying there should be no switching:
-         shouldSwitch = false;
-         /* Get the two elements you want to compare,
-         one from current row and one from the next: */
-         x = rows[i].getElementsByTagName("TD")[n];
-         y = rows[i + 1].getElementsByTagName("TD")[n];
-         /* Check if the two rows should switch place,
-         based on the direction, asc or desc: */
-         if (dir == "asc") {
-            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-               // If so, mark as a switch and break the loop:
-               shouldSwitch= true;
-               break;
-            }
-         } else if (dir == "desc") {
-            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-               // If so, mark as a switch and break the loop:
-               shouldSwitch = true;
-               break;
-            }
-         }
-      }
-      // If no switching has been done AND the direction is "asc",   
-      // set the direction to "desc" and run the while loop again.
-      if (shouldSwitch) {
-         /* If a switch has been marked, make the switch
-         and mark that a switch has been done: */
-         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-         switching = true;
-         // Each time a switch is done, increase this count by 1:
-         switchcount ++;
-      } else {
-         /* If no switching has been done AND the direction is "asc",
-         set the direction to "desc" and run the while loop again. */
-         if (switchcount == 0 && dir == "desc") {
-            dir = "asc";
-            switching = true;
-         }
-      }
+       // Start by saying: no switching is done: 
+       switching = false;
+       rows = table.rows; 
+       // Loop through all table rows (except the first, which contains table headers):
+       for (i = 1; i < (rows.length - 1); i++) {
+           // Start by saying there should be no switching:
+           shouldSwitch = false;
+           // Get the two elements you want to compare, one from current row and one from the next:
+           x = rows[i].getElementsByTagName("TD")[n];
+           y = rows[i + 1].getElementsByTagName("TD")[n];
+           // Check if the two rows should switch place, based on the direction, asc or desc:
+           if (dir == "asc") {
+               if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                   // If so, mark as a switch and break the loop:
+                   shouldSwitch = true;
+                   break;
+               }
+           } else if (dir == "desc") {
+               if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                   // If so, mark as a switch and break the loop:
+                   shouldSwitch = true;
+                   break;
+               }
+           }
+       }
+       if (shouldSwitch) {
+           // If a switch has been marked, make the switch and mark that a switch has been done:
+           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+           switching = true;
+           switchcount++;
+       } else {
+           // If no switching has been done AND the direction is "asc", set the direction to "desc" and run the while loop again.
+           if (switchcount == 0 && dir == "desc") {
+               dir = "asc";
+               switching = true;
+           }
+       }
    }
-};
+}
 
-// Preform mouse cliick action on the date table header so that it sorts the table for the most recent date
-// const sortDesending = document.getElementById("date-header");;
-// sortDesending.click();
+// Preform mouse click action on the date table header so that it sorts the table for the most recent date
+const sortDesending = document.getElementById("date-header-col");
+sortDesending.click();
 
 // Search Filter Function ===============================
 function searchFilter() {
@@ -82,31 +73,26 @@ function searchFilter() {
    table = document.getElementById("equipment-log-table");
    tr = table.getElementsByTagName("tr");
 
- 
    for (i = 1; i < tr.length; i++) {
-      // console.log("for i ran");
-     td = tr[i].getElementsByTagName("td");
-     if (td) {
-
-      txtValue = "";
-      for (j = 0; j < td.length; j++) {
-      // console.log("for j ran");
-      // Check if the hidden column (entry number) needs to be excluded from search
-      if (j !== 0 ) {
-         txtValue += td[j].textContent || td[j].innerText;
-      }
-      }
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      tr[i].style.display = "";
-      } else {
-      tr[i].style.display = "none";
-      }
-     } 
+       td = tr[i].getElementsByTagName("td");
+       if (td) {
+           txtValue = "";
+           for (j = 0; j < td.length; j++) {
+               // Check if the hidden column (entry number) needs to be excluded from search
+               if (j !== 0) {
+                   txtValue += td[j].textContent || td[j].innerText;
+               }
+           }
+           if (txtValue.toUpperCase().indexOf(filter) > -1) {
+               tr[i].style.display = "";
+           } else {
+               tr[i].style.display = "none";
+           }
+       }
    }
 }
 
-
-// Send form data to database function and create new table row functions.
+// Send form data to database functions and create new table row functions.
 document.getElementById('entry-form').addEventListener('submit', function(event) {
    event.preventDefault();
 
@@ -147,6 +133,7 @@ function sendFormDataToServer(formData) {
            console.log("Success:", data);
            updateTable(data);
            clearForm();
+           formOpenClose();
        }
    })
    .catch(error => {
@@ -210,11 +197,11 @@ function updateTable(data) {
    tableBody.appendChild(newRow);
 }
 
-// Get entries from data base on load and populate
+// Get entries from database on load and populate
 document.addEventListener('DOMContentLoaded', function() {
    fetchEntries();
 });
-// This is the function that will get the entries from the database
+
 function fetchEntries() {
    fetch('get-entries.php')
        .then(response => response.json())
@@ -229,7 +216,7 @@ function fetchEntries() {
            console.error("Error: ", error);
        });
 }
-// This is the function that will populate the table with the data from the database that was fetched above
+
 function populateTable(entries) {
    const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
    tableBody.innerHTML = ''; // Clear any existing rows
@@ -312,37 +299,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Edit Log Entry functions ==================================
 // Check if form is in Edit mode
-document.getElementById('entry-form').addEventListener('submit', function(event) {
-   event.preventDefault();
+// document.getElementById('entry-form').addEventListener('submit', function(event) {
+//    event.preventDefault();
 
-   // Check if the form is in edit mode
-   const isEditMode = document.getElementById('entry-form').dataset.editMode === 'true';
+//    // Check if the form is in edit mode
+//    const isEditMode = document.getElementById('entry-form').dataset.editMode === 'true';
 
-   const formData = {
-       rentalId: document.getElementById('rental-id-number').value,
-       equipmentDescription: document.getElementById('equipment-description-input').value,
-       serviceType: document.getElementById('service-type').value,
-       serviceDescription: document.getElementById('service-description').value,
-       hourMeter: document.getElementById('hour-meter').value,
-       serviceDate: document.getElementById('service-date').value,
-       techName: document.getElementById('name-input').value
-   };
+//    const formData = {
+//        rentalId: document.getElementById('rental-id-number').value,
+//        equipmentDescription: document.getElementById('equipment-description-input').value,
+//        serviceType: document.getElementById('service-type').value,
+//        serviceDescription: document.getElementById('service-description').value,
+//        hourMeter: document.getElementById('hour-meter').value,
+//        serviceDate: document.getElementById('service-date').value,
+//        techName: document.getElementById('name-input').value
+//    };
 
-   if (isEditMode) {
-       const entryLogNum = document.getElementById('entry-form').dataset.editEntryLogNum;
-       updateFormDataOnServer(entryLogNum, formData);
-   } else {
-       sendFormDataToServer(formData);
-   }
-});
-// Edit Function ++++++++++++++++++++++++++++
+//    if (isEditMode) {
+//        const entryLogNum = document.getElementById('entry-form').dataset.editEntryLogNum;
+//        updateFormDataOnServer(entryLogNum, formData);
+//    } else {
+//        sendFormDataToServer(formData);
+//    }
+// });
+
+// Edit Function
 function editLogBtnClick(button) {
    console.log("edit log button clicked");
-   const row = button.parentNode.closest('tr');
+   const row = button.closest('tr');
    formOpenClose();
    populateFormForEdit(row);
 }
-
 
 function populateFormForEdit(row) {
    document.getElementById('entry-id').value = row.getElementsByClassName('entry-log-num-col')[0].textContent;
@@ -353,6 +340,8 @@ function populateFormForEdit(row) {
    document.getElementById('hour-meter').value = row.getElementsByClassName('hour-meter-col')[0].textContent;
    document.getElementById('service-date').value = row.getElementsByClassName('date-col')[0].textContent;
    document.getElementById('name-input').value = row.getElementsByClassName('tech-name-col')[0].textContent;
+   // get submit button
+   document.getElementById('entry-form').getElementsByTagName('button')[0].textContent = 'Update';
 }
 
 function updateFormDataOnServer(entryLogNum, formData) {
@@ -364,10 +353,11 @@ function updateFormDataOnServer(entryLogNum, formData) {
        headers: {
            'Content-Type': 'application/json'
        },
-       body: JSON.stringify({ entryLogNum: entryLogNum, formData: formData })
+       body: JSON.stringify({ entryLogNum: entryLogNum, ...formData })
    })
    .then(response => response.text())
    .then(text => {
+       console.log("Server response:", text); // Log the response for debugging
        try {
            const data = JSON.parse(text);
            if (data.error) {
@@ -376,6 +366,7 @@ function updateFormDataOnServer(entryLogNum, formData) {
                console.log("Success:", data);
                updateTableRow(entryLogNum, formData);
                clearForm();
+               formOpenClose();
            }
        } catch (error) {
            console.error("Failed to parse JSON response:", text);
@@ -386,6 +377,7 @@ function updateFormDataOnServer(entryLogNum, formData) {
        console.error("Error: ", error);
    });
 }
+
 
 function updateTableRow(entryLogNum, formData) {
    console.log("updateTableRow function started.");
@@ -420,24 +412,29 @@ function clearForm() {
 function deleteBtnClick(button) {
    const row = button.parentNode.closest('tr');
    const entryLogNum = row.getElementsByClassName('entry-log-num-col')[0].textContent;
+   const rentalId = row.getElementsByClassName('rental-id-col')[0].textContent;
+   const equipmentDescription = row.getElementsByClassName('equipment-description-col')[0].textContent;
 
-   fetch('delete-entry.php', {
-       method: 'POST',
-       headers: {
-           'Content-Type': 'application/json'
-       },
-       body: JSON.stringify({ entryLogNum: entryLogNum })
-   })
-   .then(response => response.json())
-   .then(data => {
-       if (data.error) {
-           console.error("Error:", data.error);
-       } else {
-           console.log("Success:", data);
-           row.remove();
-       }
-   })
-   .catch(error => {
-       console.error("Error: ", error);
-   });
+   if (confirm(`Are you sure you want to delete this entry? Rental ID: ${rentalId}, Equipment Description: ${equipmentDescription}`)) {
+       fetch('delete-entry.php', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify({ entryLogNum: entryLogNum })
+       })
+       .then(response => response.json())
+       .then(data => {
+           if (data.error) {
+               console.error("Error:", data.error);
+           } else {
+               console.log("Success:", data);
+               row.remove();
+           }
+       })
+       .catch(error => {
+           console.error("Error: ", error);
+       });
+   }
 }
+

@@ -93,82 +93,8 @@
                         <span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span>
                      </div>
                   </td>
-               </tr>
-               <tr> 
-                  <td class="entry-log-num-col">1</td>
-                  <td class="rental-id-col">14309</td>
-                  <td class="equipment-description-col">Vibrator Plate Compactor 20"</td>
-                  <td class="service-type-col">Quick Fix</td>
-                  <td class="service-description-col">Changed spring</td>
-                  <td class="hour-meter-col">n/a</td>
-                  <td class="date-col">05/14/2024</td>
-                  <td class="tech-name-col">Rudy</td>
-                  <td class="edit-col">
-                     <div class="col-wrapper">
-                        <span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span>
-                     </div>
-                  </td>
-               </tr>
-               <tr> 
-                  <td class="entry-log-num-col">2</td>
-                  <td class="rental-id-col">05449</td>
-                  <td class="equipment-description-col">Wet/Dry Vacuum 12 Gal</td>
-                  <td class="service-type-col">Preventive maintenance</td>
-                  <td class="service-description-col">Changed filter</td>
-                  <td class="hour-meter-col">17</td>
-                  <td class="date-col">05/16/2024</td>
-                  <td class="tech-name-col">Jim</td>
-                  <td class="edit-col">
-                     <div class="col-wrapper">
-                        <span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span>
-                     </div>
-                  </td>
-               </tr>
-               <tr> 
-                  <td class="entry-log-num-col">4</td>
-                  <td class="rental-id-col">24188</td>
-                  <td class="equipment-description-col">2 Man Auger</td>
-                  <td class="service-type-col">Fix</td>
-                  <td class="service-description-col">Bit chuck changed out</td>
-                  <td class="hour-meter-col">11</td>
-                  <td class="date-col">05/22/2024</td>
-                  <td class="tech-name-col">Jeff</td>
-                  <td class="edit-col">
-                     <div class="col-wrapper">
-                        <span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span>
-                     </div>
-                  </td>
-               </tr>
-               <tr> 
-                  <td class="entry-log-num-col">0</td>
-                  <td class="rental-id-col">01366</td>
-                  <td class="equipment-description-col">Chipper 4"</td>
-                  <td class="service-type-col">Quick Fix</td>
-                  <td class="service-description-col">Cleaned off and changed hydraulic oil.</td>
-                  <td class="hour-meter-col">19</td>
-                  <td class="date-col">05/10/2024</td>
-                  <td class="tech-name-col">Rudy</td>
-                  <td class="edit-col">
-                     <div class="col-wrapper">
-                        <span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span>
-                     </div>
-                  </td>
-               </tr>
-               <tr> 
-                  <td class="entry-log-num-col">5</td>
-                  <td class="rental-id-col">24188</td>
-                  <td class="equipment-description-col">2 Man Auger</td>
-                  <td class="service-type-col">	Preventive maintenance</td>
-                  <td class="service-description-col">Changed oil</td>
-                  <td class="hour-meter-col">19</td>
-                  <td class="date-col">05/30/2024</td>
-                  <td class="tech-name-col">My'Chyl</td>
-                  <td class="edit-col">
-                     <div class="col-wrapper">
-                        <span class="edit-log-btn"><i class="fa-solid fa-pen-to-square"></i></span> <span class="delete-log-btn"><i class="fa-solid fa-trash-can"></i></span>
-                     </div>
-                  </td>
                </tr> -->
+               
             </tbody>
          </table>
       </div>
@@ -185,6 +111,7 @@
       <!-- Start of form --> 
       <form id="entry-form">
 
+         <input type="hidden" id="entry-id">
          <div class="form-control">
             <label for="rental-id-number">Rental ID number</label>
             <input type="number" name="rental-id-number" id="rental-id-number" placeholder="Last 5-digits of rental ID">    
@@ -200,7 +127,7 @@
             <select name="service-type" id="service-type">
                <option value="" selected >Choose service type</option>
                <option value="Preventive maintenance">Preventive maintenance</option>
-               <option value="Quick fix">Quick fix</option>
+               <option value="Minor repair">Minor repair</option>
             </select>
          </div>
 
