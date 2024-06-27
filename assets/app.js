@@ -298,31 +298,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Edit Log Entry functions ==================================
-// Check if form is in Edit mode
-// document.getElementById('entry-form').addEventListener('submit', function(event) {
-//    event.preventDefault();
-
-//    // Check if the form is in edit mode
-//    const isEditMode = document.getElementById('entry-form').dataset.editMode === 'true';
-
-//    const formData = {
-//        rentalId: document.getElementById('rental-id-number').value,
-//        equipmentDescription: document.getElementById('equipment-description-input').value,
-//        serviceType: document.getElementById('service-type').value,
-//        serviceDescription: document.getElementById('service-description').value,
-//        hourMeter: document.getElementById('hour-meter').value,
-//        serviceDate: document.getElementById('service-date').value,
-//        techName: document.getElementById('name-input').value
-//    };
-
-//    if (isEditMode) {
-//        const entryLogNum = document.getElementById('entry-form').dataset.editEntryLogNum;
-//        updateFormDataOnServer(entryLogNum, formData);
-//    } else {
-//        sendFormDataToServer(formData);
-//    }
-// });
-
 // Edit Function
 function editLogBtnClick(button) {
    console.log("edit log button clicked");
@@ -415,7 +390,7 @@ function deleteBtnClick(button) {
    const rentalId = row.getElementsByClassName('rental-id-col')[0].textContent;
    const equipmentDescription = row.getElementsByClassName('equipment-description-col')[0].textContent;
 
-   if (confirm(`Are you sure you want to delete this entry? Rental ID: ${rentalId}, Equipment Description: ${equipmentDescription}`)) {
+   if (confirm(`Are you sure you want to delete Rental ID: ${rentalId}, Equipment Description: ${equipmentDescription}?`)) {
        fetch('delete-entry.php', {
            method: 'POST',
            headers: {
@@ -430,6 +405,7 @@ function deleteBtnClick(button) {
            } else {
                console.log("Success:", data);
                row.remove();
+               alert(`Rental ID: ${rentalId}, ${equipmentDescription} has been deleted.`);
            }
        })
        .catch(error => {
