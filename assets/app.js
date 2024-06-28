@@ -3,12 +3,12 @@ function formOpenClose() {
    const formContainer = document.getElementById('entry-form-container');
    const entryForm = document.getElementById('entry-form');
    if (formContainer.className == 'open-form-container') {
-       entryForm.reset();
-       formContainer.style.display = 'none';
-       formContainer.classList.toggle('open-form-container');
+      entryForm.reset();
+      formContainer.classList.toggle('open-form-container');
+      formContainer.style.display = 'none';
    } else {
-       formContainer.style.display = 'block';
-       formContainer.classList.toggle('open-form-container');
+      formContainer.style.display = 'block';
+      formContainer.classList.toggle('open-form-container');
    }
 }
 
