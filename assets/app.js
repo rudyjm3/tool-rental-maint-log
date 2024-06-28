@@ -3,6 +3,7 @@ function formOpenClose() {
    const formContainer = document.getElementById('entry-form-container');
    const entryForm = document.getElementById('entry-form');
    if (formContainer.className == 'open-form-container') {
+      resetFormTitle();
       entryForm.reset();
       formContainer.classList.toggle('open-form-container');
       formContainer.style.display = 'none';
@@ -95,7 +96,6 @@ function searchFilter() {
 // Send form data to database functions and create new table row functions.
 document.getElementById('entry-form').addEventListener('submit', function(event) {
    event.preventDefault();
-
    const formData = {
        rentalId: document.getElementById('rental-id-number').value,
        equipmentDescription: document.getElementById('equipment-description-input').value,
@@ -282,6 +282,12 @@ function formatDate(dateStr) {
    return `${month}/${day}/${year}`;
 }
 
+// Reset form title and button text
+function resetFormTitle() {
+   document.getElementsByClassName('form-title')[0].textContent = 'Log New Maintenance';
+   document.getElementById('submit-button').textContent = 'Add Log Entry';
+}
+
 // Handle listening for click on desktop and touch on mobile for delete function
 document.addEventListener('DOMContentLoaded', function() {
    const deleteButtons = document.querySelectorAll('.delete-log-btn');
@@ -303,7 +309,11 @@ function editLogBtnClick(button) {
    console.log("edit log button clicked");
    const row = button.closest('tr');
    formOpenClose();
-   populateFormForEdit(row);
+   // Edit form title to indicate edit mode
+   document.getElementsByClassName('form-title')[0].textContent = 'Edit Log Entry';
+   // Change form button text to update
+   document.getElementById('submit-button').textContent = 'Update Log Entry';
+   populateFormForEdit(row); 
 }
 
 function populateFormForEdit(row) {
@@ -313,10 +323,15 @@ function populateFormForEdit(row) {
    document.getElementById('service-type').value = row.getElementsByClassName('service-type-col')[0].textContent;
    document.getElementById('service-description').value = row.getElementsByClassName('service-description-col')[0].textContent;
    document.getElementById('hour-meter').value = row.getElementsByClassName('hour-meter-col')[0].textContent;
-   document.getElementById('service-date').value = row.getElementsByClassName('date-col')[0].textContent;
+   // Format the date for input
+   const serviceDate = row.getElementsByClassName('date-col')[0].textContent;
+   document.getElementById('service-date').value = formatDateForInput(serviceDate);
    document.getElementById('name-input').value = row.getElementsByClassName('tech-name-col')[0].textContent;
-   // get submit button
-   document.getElementById('entry-form').getElementsByTagName('button')[0].textContent = 'Update';
+}
+
+function formatDateForInput(dateString) {
+   const [month, day, year] = dateString.split('/');
+   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
 function updateFormDataOnServer(entryLogNum, formData) {
@@ -351,8 +366,8 @@ function updateFormDataOnServer(entryLogNum, formData) {
    .catch(error => {
        console.error("Error: ", error);
    });
-}
 
+}
 
 function updateTableRow(entryLogNum, formData) {
    console.log("updateTableRow function started.");
