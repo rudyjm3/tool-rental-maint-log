@@ -98,12 +98,12 @@ document.getElementById('entry-form').addEventListener('submit', function(event)
    event.preventDefault();
    const formData = {
        rentalId: document.getElementById('rental-id-number').value,
-       equipmentDescription: document.getElementById('equipment-description-input').value,
+       equipmentDescription: document.getElementById('equipment-description-input').value.trim(),
        serviceType: document.getElementById('service-type').value,
-       serviceDescription: document.getElementById('service-description').value,
-       hourMeter: document.getElementById('hour-meter').value,
+       serviceDescription: document.getElementById('service-description').value.trim(),
+       hourMeter: document.getElementById('hour-meter').value.trim(),
        serviceDate: document.getElementById('service-date').value,
-       techName: document.getElementById('name-input').value
+       techName: document.getElementById('name-input').value.trim()
    };
 
    if (document.getElementById('entry-id').value) {
