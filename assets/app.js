@@ -134,11 +134,28 @@ function sendFormDataToServer(formData) {
            updateTable(data);
            clearForm();
            formOpenClose();
+           successAddMessage(data);
        }
    })
    .catch(error => {
        console.error("Error: ", error);
    });
+}
+
+function successAddMessage(data) {
+   console.log("successAddMessage function started.");
+   const body = document.getElementsByTagName('body')[0];
+   const successMessageContainer = `
+   <div class="alert-success-container">
+      <p class="alert-success-title">Success!</p>
+      <p class="alert-success-message">
+      Rental Id: ${data.rentalId} <br> ${data.equipmentDescription} <br>
+      was successfully added to the log.</p>
+   </div>`;
+   body.insertAdjacentHTML('afterbegin', successMessageContainer);
+   setTimeout(function() {
+       body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
+    }, 3000);
 }
 
 function updateTable(data) {
@@ -193,8 +210,7 @@ function updateTable(data) {
    newRow.appendChild(dateCell);
    newRow.appendChild(techNameCell);
    newRow.appendChild(editColCell);
-
-   // tableBody.appendChild(newRow);
+   // Add table row to the top of the table body
    tableBody.prepend(newRow);
 }
 

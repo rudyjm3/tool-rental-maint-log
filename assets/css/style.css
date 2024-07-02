@@ -327,6 +327,45 @@ input:focus, input[type=number]:focus, input[type=text]:focus,  input[type=email
 }
 /* End form styling */
 
+/* Start Success message styling */
+.alert-success-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-wrap: wrap;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 350px;
+   height: auto;
+   background-color: var(--main-white-color);
+   border-radius: 4px;
+   border: 2px solid var(--light-grey-color2);
+   padding: 18px;
+   box-shadow: 0px 4px 15px 9px rgba(0,0,0,0.3);
+   -webkit-box-shadow: 0px 4px 15px 9px rgba(0,0,0,0.3);
+   -moz-box-shadow: 0px 4px 15px 9px rgba(0,0,0,0.3);
+   transition: all 0.3s ease-in-out;
+   z-index: 10;
+}
+.alert-success-title {
+   display: block;
+   text-align: center;
+   font-size: 22px;
+   font-weight: bold;
+   color: rgb(19, 145, 19);
+   margin-bottom: 15px;
+   width: 100%;
+}
+.alert-success-message {
+   text-align: center;
+   font-weight: 500;
+   color: #727272;
+   width: 100%
+}
+/* END Success message styling */
+
 /* START FOOTER STYLING */
 footer {
    /* position: fixed;
