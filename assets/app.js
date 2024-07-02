@@ -194,7 +194,8 @@ function updateTable(data) {
    newRow.appendChild(techNameCell);
    newRow.appendChild(editColCell);
 
-   tableBody.appendChild(newRow);
+   // tableBody.appendChild(newRow);
+   tableBody.prepend(newRow);
 }
 
 // Get entries from database on load and populate
