@@ -8,6 +8,7 @@
    --light-grey-color1: #f0f0f0;
    --light-grey-color2: #ababab;
    --orange-hover-color: #faa65d;
+   
 }
 
 
@@ -194,6 +195,13 @@ td {
    color: red;
    transition: all 0.3s ease-in-out;
 }
+/* set width for select table header columns */
+#service-type-header-col {
+   width: 150px;
+}
+#hour-meter-header-col {
+   width: 50px;
+}
 /* End Table styling */
 
 /* Form styling */
@@ -295,6 +303,7 @@ input, textarea, select {
    padding: 5px 10px;
    height: 44px;
 }
+input[type=text]
 input::placeholder, textarea::placeholder, select::placeholder {
    color: rgba(158, 158, 158, 0.5);
    font-weight: 500;
@@ -306,10 +315,14 @@ input:focus, input[type=number]:focus, input[type=text]:focus,  input[type=email
 }
 #equipment-description-input {
    width: 100%;
+   text-transform: capitalize;
 }
 #service-description {
    width: 100%; 
    height: 80px;
+}
+#name-input {
+   text-transform: capitalize;
 }
 #submit-button {
    padding: 15px 0;
