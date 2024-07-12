@@ -336,21 +336,34 @@ function editLogBtnClick(button) {
 
 function populateFormForEdit(row) {
    document.getElementById('entry-id').value = row.getElementsByClassName('entry-log-num-col')[0].textContent;
-   document.getElementById('rental-id-number').value = row.getElementsByClassName('rental-id-col')[0].textContent;
-   document.getElementById('equipment-description-input').value = row.getElementsByClassName('equipment-description-col')[0].textContent;
+   document.getElementById('rental-id-number').value = row.getElementsByClassName('rental-id-col')[0].textContent.trim();
+   document.getElementById('equipment-description-input').value = row.getElementsByClassName('equipment-description-col')[0].textContent.trim();
    document.getElementById('service-type').value = row.getElementsByClassName('service-type-col')[0].textContent;
-   document.getElementById('service-description').value = row.getElementsByClassName('service-description-col')[0].textContent;
-   document.getElementById('hour-meter').value = row.getElementsByClassName('hour-meter-col')[0].textContent;
+   document.getElementById('service-description').value = row.getElementsByClassName('service-description-col')[0].textContent.trim();
+   document.getElementById('hour-meter').value = row.getElementsByClassName('hour-meter-col')[0].textContent.trim();
    // Format the date for input
    const serviceDate = row.getElementsByClassName('date-col')[0].textContent;
+   console.log("service date: ", serviceDate);
    document.getElementById('service-date').value = formatDateForInput(serviceDate);
-   document.getElementById('name-input').value = row.getElementsByClassName('tech-name-col')[0].textContent;
+   console.log("service date formatted: ", document.getElementById('service-date').value);
+   document.getElementById('name-input').value = row.getElementsByClassName('tech-name-col')[0].textContent.trim();
 }
 
 function formatDateForInput(dateString) {
    const [month, day, year] = dateString.split('/');
    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+   console.log("formatted date: ", dateString);
+   console.log("formatted date: ", [month, day, year]);
 }
+// function formatDateForInput(dateString) {
+//    const [month, day, year] = dateString.split('/');
+//    const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+//    const utcYear = date.getUTCFullYear();
+//    const utcMonth = String(date.getUTCMonth() + 1).padStart(2, '0');
+//    const utcDay = String(date.getUTCDate()).padStart(2, '0');
+//    return `${utcYear}-${utcMonth}-${utcDay}`;
+//    console.log("formatted date: ", dateString);
+// }
 
 function updateFormDataOnServer(entryLogNum, formData) {
    console.log("updateFormDataOnServer function started.");
