@@ -64,8 +64,9 @@ function sortTable(n) {
 
 // Preform mouse click action on the date table header so that it sorts the table for the most recent date
 const sortDesending = document.getElementById("date-header-col");
-console.log("sort Desending function ran.");
+
 sortDesending.click();
+console.log("sort Desending function ran.");
 
 // Search Filter Function ===============================
 function searchFilter() {
@@ -296,7 +297,7 @@ function formatDate(dateStr) {
    const day = String(date.getDate()).padStart(2, '0');
    const month = String(date.getMonth() + 1).padStart(2, '0');
    const year = date.getFullYear();
-   return `${month}/${day}/${year}`;
+   return `${year}-${month}-${day}`;
 }
 
 // Reset form title and button text
@@ -340,20 +341,16 @@ function populateFormForEdit(row) {
    document.getElementById('service-type').value = row.getElementsByClassName('service-type-col')[0].textContent;
    document.getElementById('service-description').value = row.getElementsByClassName('service-description-col')[0].textContent.trim();
    document.getElementById('hour-meter').value = row.getElementsByClassName('hour-meter-col')[0].textContent.trim();
-   // Format the date for input
    const serviceDate = row.getElementsByClassName('date-col')[0].textContent;
    console.log("service date: ", serviceDate);
-   document.getElementById('service-date').value = formatDateForInput(serviceDate);
-   console.log("service date formatted: ", document.getElementById('service-date').value);
+   document.getElementById('service-date').value = row.getElementsByClassName('date-col')[0].textContent;
    document.getElementById('name-input').value = row.getElementsByClassName('tech-name-col')[0].textContent.trim();
 }
 
-function formatDateForInput(dateString) {
-   const [month, day, year] = dateString.split('/');
-   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-   console.log("formatted date: ", dateString);
-   console.log("formatted date: ", [month, day, year]);
-}
+// function formatDateForInput(dateString) {
+//    const [month, day, year] = dateString.split('/');
+//    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+// }
 // function formatDateForInput(dateString) {
 //    const [month, day, year] = dateString.split('/');
 //    const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
@@ -410,7 +407,7 @@ function updateTableRow(entryLogNum, formData) {
            row.getElementsByClassName('service-type-col')[0].textContent = formData.serviceType;
            row.getElementsByClassName('service-description-col')[0].textContent = formData.serviceDescription;
            row.getElementsByClassName('hour-meter-col')[0].textContent = formData.hourMeter;
-           row.getElementsByClassName('date-col')[0].textContent = formatDate(formData.serviceDate);
+           row.getElementsByClassName('date-col')[0].textContent = formData.serviceDate;
            row.getElementsByClassName('tech-name-col')[0].textContent = formData.techName;
            break;
        }
