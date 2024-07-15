@@ -152,6 +152,10 @@ function sendFormDataToServer(formData) {
    });
 }
 
+// function closePopup() {
+//    body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
+// }
+
 function successAddMessage(data) {
    console.log("successAddMessage function started.");
    const body = document.getElementsByTagName('body')[0];
@@ -162,16 +166,12 @@ function successAddMessage(data) {
       Rental Id: ${data.rentalId} <br> 
       ${data.equipmentDescription} <br>
       was successfully added to the log.</p>
-      <button class="close-popup-btn" onclick="closePopup()">Close</button>
+      <!-- <input type="button" class="close-popup-btn" onclick="closePopup()">Close</input> -->
    </div>`;
    body.insertAdjacentHTML('afterbegin', successMessageContainer);
    setTimeout(function() {
        body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
     }, 3500);
-
-    function closePopup() {
-        body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
-    }
 }
 
 function updateTable(data) {
@@ -446,7 +446,7 @@ function deleteBtnClick(button) {
    const rentalId = row.getElementsByClassName('rental-id-col')[0].textContent;
    const equipmentDescription = row.getElementsByClassName('equipment-description-col')[0].textContent;
 
-   if (confirm(`Are you sure you want to delete Rental ID: ${rentalId}, Equipment Description: ${equipmentDescription}, done on ${serviceDate}?`)) {
+   if (confirm(`Are you sure you want to delete Rental ID: ${rentalId}, Equipment Description: ${equipmentDescription}?`)) {
        fetch('delete-entry.php', {
            method: 'POST',
            headers: {
