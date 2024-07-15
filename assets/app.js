@@ -63,10 +63,14 @@ function sortTable(n) {
 }
 
 // Preform mouse click action on the date table header so that it sorts the table for the most recent date
-const sortDesending = document.getElementById("date-header-col");
-
+const sortDesending = document.getElementById("entry-log-num-header-col");
 sortDesending.click();
-console.log("sort Desending function ran.");
+// sortDesending.addEventListener("DOMContentLoaded", function () {
+//    sortDesending.click();
+//    sortDesending.click();
+//    console.log("sort Desending function ran.");
+// });
+
 
 // Search Filter Function ===============================
 function searchFilter() {
