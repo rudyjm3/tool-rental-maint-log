@@ -234,7 +234,6 @@ function fetchEntries() {
            console.error("Error: ", error);
        });
 }
-
 function populateTable(entries) {
    const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
    tableBody.innerHTML = ''; // Clear any existing rows
