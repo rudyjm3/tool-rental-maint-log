@@ -98,18 +98,22 @@ function searchFilter() {
        }
    }
 }
-
+// Capitialize input Text ===============================
+// Function to capitalize each word
+function capitalizeWords(str) {
+   return str.replace(/\b\w/g, char => char.toUpperCase());
+}
 // Send form data to database functions and create new table row functions.
 document.getElementById('entry-form').addEventListener('submit', function(event) {
    event.preventDefault();
    const formData = {
        rentalId: document.getElementById('rental-id-number').value,
-       equipmentDescription: document.getElementById('equipment-description-input').value.trim(),
+       equipmentDescription: capitalizeWords(document.getElementById('equipment-description-input').value.trim()),
        serviceType: document.getElementById('service-type').value,
        serviceDescription: document.getElementById('service-description').value.trim(),
        hourMeter: document.getElementById('hour-meter').value.trim(),
        serviceDate: document.getElementById('service-date').value,
-       techName: document.getElementById('name-input').value.trim()
+       techName: capitalizeWords(document.getElementById('name-input').value.trim())
    };
 
    if (document.getElementById('entry-id').value) {
