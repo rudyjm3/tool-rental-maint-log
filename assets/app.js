@@ -165,7 +165,7 @@ function successAddMessage(data) {
    body.insertAdjacentHTML('afterbegin', successMessageContainer);
    setTimeout(function() {
        body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
-    }, 3000);
+    }, 4000);
 }
 
 function updateTable(data) {
@@ -440,7 +440,7 @@ function deleteBtnClick(button) {
    const rentalId = row.getElementsByClassName('rental-id-col')[0].textContent;
    const equipmentDescription = row.getElementsByClassName('equipment-description-col')[0].textContent;
 
-   if (confirm(`Are you sure you want to delete Rental ID: ${rentalId}, Equipment Description: ${equipmentDescription}?`)) {
+   if (confirm(`Are you sure you want to delete Rental ID: ${rentalId}, Equipment Description: ${equipmentDescription}, done on ${serviceDate}?`)) {
        fetch('delete-entry.php', {
            method: 'POST',
            headers: {
