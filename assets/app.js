@@ -361,20 +361,6 @@ function populateFormForEdit(row) {
    document.getElementById('name-input').value = row.getElementsByClassName('tech-name-col')[0].textContent.trim();
 }
 
-// function formatDateForInput(dateString) {
-//    const [month, day, year] = dateString.split('/');
-//    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-// }
-// function formatDateForInput(dateString) {
-//    const [month, day, year] = dateString.split('/');
-//    const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
-//    const utcYear = date.getUTCFullYear();
-//    const utcMonth = String(date.getUTCMonth() + 1).padStart(2, '0');
-//    const utcDay = String(date.getUTCDate()).padStart(2, '0');
-//    return `${utcYear}-${utcMonth}-${utcDay}`;
-//    console.log("formatted date: ", dateString);
-// }
-
 function updateFormDataOnServer(entryLogNum, formData) {
    console.log("updateFormDataOnServer function started.");
    console.log("formData: ", formData);
