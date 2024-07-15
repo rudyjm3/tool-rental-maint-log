@@ -159,13 +159,19 @@ function successAddMessage(data) {
    <div class="alert-success-container">
       <p class="alert-success-title">Success!</p>
       <p class="alert-success-message">
-      Rental Id: ${data.rentalId} <br> ${data.equipmentDescription} <br>
+      Rental Id: ${data.rentalId} <br> 
+      ${data.equipmentDescription} <br>
       was successfully added to the log.</p>
+      <button class="close-popup-btn" onclick="closePopup()">Close</button>
    </div>`;
    body.insertAdjacentHTML('afterbegin', successMessageContainer);
    setTimeout(function() {
        body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
-    }, 4000);
+    }, 3500);
+
+    function closePopup() {
+        body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
+    }
 }
 
 function updateTable(data) {
