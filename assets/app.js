@@ -62,16 +62,6 @@ function sortTable(n) {
    }
 }
 
-// Preform mouse click action on the date table header so that it sorts the table for the most recent date
-const sortDesending = document.getElementById("entry-log-num-header-col");
-sortDesending.click();
-// sortDesending.addEventListener("DOMContentLoaded", function () {
-//    sortDesending.click();
-//    sortDesending.click();
-//    console.log("sort Desending function ran.");
-// });
-
-
 // Search Filter Function ===============================
 function searchFilter() {
    var input, filter, table, tr, td, i, j, txtValue;
@@ -254,64 +244,76 @@ function populateTable(entries) {
    tableBody.innerHTML = ''; // Clear any existing rows
 
    entries.forEach(entry => {
-       const newRow = document.createElement('tr');
+      const newRow = document.createElement('tr');
 
-       const entryLogNumCell = document.createElement('td');
-       entryLogNumCell.classList.add('entry-log-num-col');
-       entryLogNumCell.textContent = entry.id;
+      const entryLogNumCell = document.createElement('td');
+      entryLogNumCell.classList.add('entry-log-num-col');
+      entryLogNumCell.textContent = entry.id;
 
-       const rentalIdCell = document.createElement('td');
-       rentalIdCell.classList.add('rental-id-col');
-       rentalIdCell.textContent = entry.rental_id;
+      const rentalIdCell = document.createElement('td');
+      rentalIdCell.classList.add('rental-id-col');
+      rentalIdCell.textContent = entry.rental_id;
 
-       const equipmentDescriptionCell = document.createElement('td');
-       equipmentDescriptionCell.classList.add('equipment-description-col');
-       equipmentDescriptionCell.textContent = entry.equipment_description;
+      const equipmentDescriptionCell = document.createElement('td');
+      equipmentDescriptionCell.classList.add('equipment-description-col');
+      equipmentDescriptionCell.textContent = entry.equipment_description;
 
-       const serviceTypeCell = document.createElement('td');
-       serviceTypeCell.classList.add('service-type-col');
-       serviceTypeCell.textContent = entry.service_type;
+      const serviceTypeCell = document.createElement('td');
+      serviceTypeCell.classList.add('service-type-col');
+      serviceTypeCell.textContent = entry.service_type;
 
-       const serviceDescriptionCell = document.createElement('td');
-       serviceDescriptionCell.classList.add('service-description-col');
-       serviceDescriptionCell.textContent = entry.service_description;
+      const serviceDescriptionCell = document.createElement('td');
+      serviceDescriptionCell.classList.add('service-description-col');
+      serviceDescriptionCell.textContent = entry.service_description;
 
-       const hourMeterCell = document.createElement('td');
-       hourMeterCell.classList.add('hour-meter-col');
-       hourMeterCell.textContent = entry.hour_meter;
+      const hourMeterCell = document.createElement('td');
+      hourMeterCell.classList.add('hour-meter-col');
+      hourMeterCell.textContent = entry.hour_meter;
 
-       const dateCell = document.createElement('td');
-       dateCell.classList.add('date-col');
-       dateCell.textContent = formatDate(entry.service_date); // Format the date
+      const dateCell = document.createElement('td');
+      dateCell.classList.add('date-col');
+      dateCell.textContent = formatDate(entry.service_date); // Format the date
+      // dateCell.textContent = (entry.service_date);
 
-       const techNameCell = document.createElement('td');
-       techNameCell.classList.add('tech-name-col');
-       techNameCell.textContent = entry.tech_name;
+      const techNameCell = document.createElement('td');
+      techNameCell.classList.add('tech-name-col');
+      techNameCell.textContent = entry.tech_name;
 
-       const editColCell = document.createElement('td');
-       editColCell.classList.add('edit-col');
-       editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
+      const editColCell = document.createElement('td');
+      editColCell.classList.add('edit-col');
+      editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
 
-       newRow.appendChild(entryLogNumCell);
-       newRow.appendChild(rentalIdCell);
-       newRow.appendChild(equipmentDescriptionCell);
-       newRow.appendChild(serviceTypeCell);
-       newRow.appendChild(serviceDescriptionCell);
-       newRow.appendChild(hourMeterCell);
-       newRow.appendChild(dateCell);
-       newRow.appendChild(techNameCell);
-       newRow.appendChild(editColCell);
+      newRow.appendChild(entryLogNumCell);
+      newRow.appendChild(rentalIdCell);
+      newRow.appendChild(equipmentDescriptionCell);
+      newRow.appendChild(serviceTypeCell);
+      newRow.appendChild(serviceDescriptionCell);
+      newRow.appendChild(hourMeterCell);
+      newRow.appendChild(dateCell);
+      newRow.appendChild(techNameCell);
+      newRow.appendChild(editColCell);
 
-       tableBody.appendChild(newRow);
+   //  tableBody.appendChild(newRow);
+      tableBody.prepend(newRow);
    });
 }
 
+// UTC added so the day is not behind by 1 day
 function formatDate(dateStr) {
+   const date = new Date(dateStr);
+   const day = String(date.getUTCDate()).padStart(2, '0');
+   const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+   const year = date.getUTCFullYear();
+   return `${month}/${day}/${year}`;
+}
+
+// Formates the date for the date input field which requires yyyy/mm/dd when entry needs to be edited others wise it will not disply in the form
+function formatEditDateInput(dateStr) {
    const date = new Date(dateStr);
    const day = String(date.getDate()).padStart(2, '0');
    const month = String(date.getMonth() + 1).padStart(2, '0');
    const year = date.getFullYear();
-   return `${year}-${month}-${day}`;
+   return `${year}-${month}-${day}`; //Needs to be "-" not "/" or will not disply in the form
 }
 
 // Reset form title and button text
@@ -350,14 +352,21 @@ function editLogBtnClick(button) {
 
 function populateFormForEdit(row) {
    document.getElementById('entry-id').value = row.getElementsByClassName('entry-log-num-col')[0].textContent;
+
    document.getElementById('rental-id-number').value = row.getElementsByClassName('rental-id-col')[0].textContent.trim();
+
    document.getElementById('equipment-description-input').value = row.getElementsByClassName('equipment-description-col')[0].textContent.trim();
+
    document.getElementById('service-type').value = row.getElementsByClassName('service-type-col')[0].textContent;
+
    document.getElementById('service-description').value = row.getElementsByClassName('service-description-col')[0].textContent.trim();
+
    document.getElementById('hour-meter').value = row.getElementsByClassName('hour-meter-col')[0].textContent.trim();
-   const serviceDate = row.getElementsByClassName('date-col')[0].textContent;
-   console.log("service date: ", serviceDate);
-   document.getElementById('service-date').value = row.getElementsByClassName('date-col')[0].textContent;
+
+   const serviceDate = formatEditDateInput(row.getElementsByClassName('date-col')[0].textContent);
+   console.log("Date input requires this format: ", serviceDate);
+   document.getElementById('service-date').value = serviceDate;  
+
    document.getElementById('name-input').value = row.getElementsByClassName('tech-name-col')[0].textContent.trim();
 }
 
@@ -407,7 +416,7 @@ function updateTableRow(entryLogNum, formData) {
            row.getElementsByClassName('service-type-col')[0].textContent = formData.serviceType;
            row.getElementsByClassName('service-description-col')[0].textContent = formData.serviceDescription;
            row.getElementsByClassName('hour-meter-col')[0].textContent = formData.hourMeter;
-           row.getElementsByClassName('date-col')[0].textContent = formData.serviceDate;
+           row.getElementsByClassName('date-col')[0].textContent = formatDate(formData.serviceDate);
            row.getElementsByClassName('tech-name-col')[0].textContent = formData.techName;
            break;
        }
