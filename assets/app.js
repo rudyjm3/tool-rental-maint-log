@@ -164,6 +164,25 @@ function successAddMessage(data) {
     }, 3500);
 }
 
+function updatedEntryMessage(formData) {
+   console.log("Update Entry Message function started.");
+   const body = document.getElementsByTagName('body')[0];
+   const successMessageContainer = `
+   <div class="alert-success-container">
+      <p class="alert-success-title">Entry Updated!</p>
+      <p class="alert-success-message">
+         Rental ID: ${formData.rentalId} <br> 
+         ${formData.equipmentDescription} <br>
+         was successfully updated.
+      </p>
+      <!-- <input type="button" class="close-popup-btn" onclick="closePopup()">Close</input> -->
+   </div>`;
+   body.insertAdjacentHTML('afterbegin', successMessageContainer);
+   setTimeout(function() {
+       body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
+    }, 3500);
+}
+
 function updateTable(data) {
    console.log("updateTable function started.");
    const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
@@ -393,6 +412,7 @@ function updateFormDataOnServer(entryLogNum, formData) {
                updateTableRow(entryLogNum, formData);
                clearForm();
                formOpenClose();
+               updatedEntryMessage(formData);
            }
        } catch (error) {
            console.error("Failed to parse JSON response:", text);
