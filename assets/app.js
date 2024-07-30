@@ -147,7 +147,6 @@ function sendFormDataToServer(formData) {
 // }
 
 function successAddMessage(data) {
-   console.log("successAddMessage function started.");
    const body = document.getElementsByTagName('body')[0];
    const successMessageContainer = `
    <div class="alert-success-container">
@@ -165,7 +164,6 @@ function successAddMessage(data) {
 }
 
 function updatedEntryMessage(formData) {
-   console.log("Update Entry Message function started.");
    const body = document.getElementsByTagName('body')[0];
    const successMessageContainer = `
    <div class="alert-success-container">
@@ -178,6 +176,24 @@ function updatedEntryMessage(formData) {
       <!-- <input type="button" class="close-popup-btn" onclick="closePopup()">Close</input> -->
    </div>`;
    body.insertAdjacentHTML('afterbegin', successMessageContainer);
+   setTimeout(function() {
+       body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
+    }, 3500);
+}
+
+function deletedEntryMessage(rentalId, equipmentDescription) {
+   console.log("Delete Entry Message function started.");
+   const body = document.getElementsByTagName('body')[0];
+   const successMessageContainer = `
+   <div class="alert-success-container">
+      <p class="alert-success-title">Entry Updated!</p>
+      <p class="alert-success-message">
+         Rental ID: ${rentalId} <br> 
+         ${equipmentDescription} <br>
+         was successfully deleted.
+      </p>
+      <!-- <input type="button" class="close-popup-btn" onclick="closePopup()">Close</input> -->
+   </div>`;
    setTimeout(function() {
        body.removeChild(document.getElementsByClassName('alert-success-container')[0]);
     }, 3500);
@@ -476,6 +492,7 @@ function deleteBtnClick(button) {
            } else {
                console.log("Success:", data);
                row.remove();
+               // deletedEntryMessage(rentalId, equipmentDescription);
                alert(`Rental ID: ${rentalId}, ${equipmentDescription} has been deleted.`);
            }
        })
@@ -484,4 +501,3 @@ function deleteBtnClick(button) {
        });
    }
 }
-
