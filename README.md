@@ -1,12 +1,12 @@
 # Tool Maintenance Log Web App
-### Version 1.0.0
+### Version 2.1.11
  
 ![Tool Rental General Maintenece Design Image](https://github.com/rudyjm3/tool-rental-maint-log/blob/main/assets/images/tool-maintenance-log-design.png)
 
 
 ## Project Description:
 This is a general purpose tool maintenance web app which will be used to log preventive maintenance and simple repairs to the tools rented out of the rental center.
-Reason for the need of the app is because the Work Order system in place is not giving us the ability to look at historical maintenance records and is unrelaiable on return accurate or any results for previous work order put into the system. 
+Reason for the need of the app is because the Work Order system in place is not giving us the ability to look at historical maintenance records and is unrelaiable on returning accurate or any results for previous work order put into the system. 
 
 This app will allow the user to log maintenance records and view them in a table with the ability to filter by unit#, date, tool, and maintenance type. Also will have a search bar to search for a specific unit#.
 
