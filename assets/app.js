@@ -8,7 +8,7 @@ const paginationInfo = document.getElementById('pagination-info');
 
 let currentPage = 1;
 let entriesPerPage = entriesPerPageSelect ? parseInt(entriesPerPageSelect.value, 10) : 10;
-const MAX_SERVICE_DESCRIPTION_CHARS = 90;
+const MAX_SERVICE_DESCRIPTION_CHARS = 100;
 
 if (entriesPerPageSelect) {
    entriesPerPageSelect.addEventListener('change', function() {
