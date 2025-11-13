@@ -13,7 +13,7 @@
    <title>Tool Rental Maintenance Log</title>
 </head>
 
-<body onload="sortTable(6)"> <!-- Sort table by most recent date (index 6) on page load-->
+<body>
 
    <header>
        <div class="page-title"><h1>General Maintenance Log</h1></div>
@@ -28,6 +28,23 @@
             <button type="button" id="search-btn" onclick="searchFilter()">Search</button>
          </div>
          <button id="new-form-btn" type="button" onclick="formOpenClose()">Log New Maintenance</button>
+      </div>
+
+      <div class="table-pagination-controls">
+         <div class="pagination-size-control">
+            <label for="entries-per-page">Rows per page:</label>
+            <select id="entries-per-page">
+               <option value="10" selected>10</option>
+               <option value="20">20</option>
+               <option value="30">30</option>
+               <option value="40">40</option>
+            </select>
+         </div>
+         <div class="pagination-nav">
+            <button type="button" id="prev-page" class="pagination-btn" disabled>Previous</button>
+            <span id="pagination-info">Showing 0 entries</span>
+            <button type="button" id="next-page" class="pagination-btn" disabled>Next</button>
+         </div>
       </div>
 
       <!-- Table container for logged maintenance entries -->
@@ -94,9 +111,10 @@
                      </div>
                   </td>
                </tr> -->
-               
+
             </tbody>
          </table>
+         
       </div>
 
    </div>
@@ -161,7 +179,7 @@
    <footer>
       <div class="footer-wrapper">
          <div class="footer-col">
-            <p class="site-version-text">Version 1.0</p>
+            <p class="site-version-text">Version 2.1.4</p>
          </div>
          <div class="footer-col">
             <p class="site-author-text">Site designed and coded by : Rudy Mims</p>

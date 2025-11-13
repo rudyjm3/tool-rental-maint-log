@@ -1,3 +1,41 @@
+const equipmentLogTable = document.getElementById('equipment-log-table');
+const tableBody = equipmentLogTable ? equipmentLogTable.getElementsByTagName('tbody')[0] : null;
+const searchInput = document.getElementById('search-input');
+const entriesPerPageSelect = document.getElementById('entries-per-page');
+const prevPageBtn = document.getElementById('prev-page');
+const nextPageBtn = document.getElementById('next-page');
+const paginationInfo = document.getElementById('pagination-info');
+
+let currentPage = 1;
+let entriesPerPage = entriesPerPageSelect ? parseInt(entriesPerPageSelect.value, 10) : 10;
+const MAX_SERVICE_DESCRIPTION_CHARS = 90;
+
+if (entriesPerPageSelect) {
+   entriesPerPageSelect.addEventListener('change', function() {
+      entriesPerPage = parseInt(this.value, 10) || 10;
+      currentPage = 1;
+      renderPaginatedRows();
+   });
+}
+
+if (prevPageBtn) {
+   prevPageBtn.addEventListener('click', function() {
+      if (currentPage > 1) {
+         currentPage--;
+         renderPaginatedRows();
+      }
+   });
+}
+
+if (nextPageBtn) {
+   nextPageBtn.addEventListener('click', function() {
+      currentPage++;
+      renderPaginatedRows();
+   });
+}
+
+renderPaginatedRows();
+
 // Open close Log New Maintenance Form function ===================
 function formOpenClose() {
    const formContainer = document.getElementById('entry-form-container');
@@ -15,8 +53,11 @@ function formOpenClose() {
 
 // Table header sort function ============================
 function sortTable(n) {
+   if (!equipmentLogTable) {
+      return;
+   }
    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-   table = document.getElementById("equipment-log-table");
+   table = equipmentLogTable;
    switching = true;
    // Set the sorting direction to descending:
    dir = "desc";
@@ -60,33 +101,90 @@ function sortTable(n) {
            }
        }
    }
+
+   currentPage = 1;
+   renderPaginatedRows();
 }
 
 // Search Filter Function ===============================
 function searchFilter() {
-   var input, filter, table, tr, td, i, j, txtValue;
-   input = document.getElementById("search-input");
-   filter = input.value.toUpperCase();
-   table = document.getElementById("equipment-log-table");
-   tr = table.getElementsByTagName("tr");
+   const filter = searchInput ? searchInput.value.toUpperCase() : "";
+   applySearchFilter(filter);
+   currentPage = 1;
+   renderPaginatedRows();
+}
 
-   for (i = 1; i < tr.length; i++) {
-       td = tr[i].getElementsByTagName("td");
-       if (td) {
-           txtValue = "";
-           for (j = 0; j < td.length; j++) {
-               // Check if the hidden column (entry number) needs to be excluded from search
-               if (j !== 0) {
-                   txtValue += td[j].textContent || td[j].innerText;
-               }
-           }
-           if (txtValue.toUpperCase().indexOf(filter) > -1) {
-               tr[i].style.display = "";
-           } else {
-               tr[i].style.display = "none";
-           }
-       }
+function applySearchFilter(filter) {
+   if (!tableBody) {
+      return;
    }
+   const rows = tableBody.getElementsByTagName("tr");
+   for (let i = 0; i < rows.length; i++) {
+      rows[i].dataset.searchHide = rowMatchesFilter(rows[i], filter) ? 'false' : 'true';
+   }
+}
+
+function rowMatchesFilter(row, filter) {
+   if (!filter) {
+      return true;
+   }
+   const cells = row.getElementsByTagName("td");
+   let txtValue = "";
+   for (let j = 1; j < cells.length; j++) {
+      txtValue += cells[j].textContent || cells[j].innerText;
+   }
+   return txtValue.toUpperCase().indexOf(filter) > -1;
+}
+
+function renderPaginatedRows() {
+   if (!tableBody) {
+      return;
+   }
+   if (!entriesPerPage || entriesPerPage < 1) {
+      entriesPerPage = 10;
+   }
+   const rows = Array.from(tableBody.getElementsByTagName('tr'));
+   const visibleRows = rows.filter(row => row.dataset.searchHide !== 'true');
+   const totalEntries = visibleRows.length;
+   const totalPages = totalEntries > 0 ? Math.ceil(totalEntries / entriesPerPage) : 1;
+   if (currentPage > totalPages) {
+      currentPage = totalPages;
+   }
+   const startIndex = totalEntries > 0 ? (currentPage - 1) * entriesPerPage : 0;
+   const endIndex = totalEntries > 0 ? Math.min(startIndex + entriesPerPage, totalEntries) : 0;
+
+   rows.forEach(row => {
+      if (row.dataset.searchHide === 'true') {
+         row.style.display = 'none';
+      }
+   });
+
+   visibleRows.forEach((row, index) => {
+      if (totalEntries === 0) {
+         row.style.display = 'none';
+      } else if (index >= startIndex && index < startIndex + entriesPerPage) {
+         row.style.display = '';
+      } else {
+         row.style.display = 'none';
+      }
+   });
+
+   updatePaginationControls(totalEntries, startIndex, endIndex, totalPages);
+}
+
+function updatePaginationControls(totalEntries, startIndex, endIndex, totalPages) {
+   if (!paginationInfo || !prevPageBtn || !nextPageBtn) {
+      return;
+   }
+
+   if (totalEntries === 0) {
+      paginationInfo.textContent = 'Showing 0 entries';
+   } else {
+      paginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalEntries} entries`;
+   }
+
+   prevPageBtn.disabled = totalEntries === 0 || currentPage <= 1;
+   nextPageBtn.disabled = totalEntries === 0 || currentPage >= totalPages;
 }
 // Capitialize input Text ===============================
 // Function to capitalize each word
@@ -140,6 +238,147 @@ function sendFormDataToServer(formData) {
    .catch(error => {
        console.error("Error: ", error);
    });
+}
+
+function normalizeEntry(entry) {
+   return {
+      entryLogNum: entry.entryLogNum ?? entry.id ?? '',
+      rentalId: entry.rentalId ?? entry.rental_id ?? '',
+      equipmentDescription: entry.equipmentDescription ?? entry.equipment_description ?? '',
+      serviceType: entry.serviceType ?? entry.service_type ?? '',
+      serviceDescription: entry.serviceDescription ?? entry.service_description ?? '',
+      hourMeter: entry.hourMeter ?? entry.hour_meter ?? '',
+      serviceDate: entry.serviceDate ?? entry.service_date ?? '',
+      techName: entry.techName ?? entry.tech_name ?? ''
+   };
+}
+
+function buildTableRow(entryData) {
+   const newRow = document.createElement('tr');
+   newRow.dataset.searchHide = 'false';
+   newRow.dataset.entryId = entryData.entryLogNum ?? '';
+
+   const entryLogNumCell = document.createElement('td');
+   entryLogNumCell.classList.add('entry-log-num-col');
+   entryLogNumCell.textContent = entryData.entryLogNum;
+
+   const rentalIdCell = document.createElement('td');
+   rentalIdCell.classList.add('rental-id-col');
+   rentalIdCell.textContent = entryData.rentalId;
+
+   const equipmentDescriptionCell = document.createElement('td');
+   equipmentDescriptionCell.classList.add('equipment-description-col');
+   equipmentDescriptionCell.textContent = entryData.equipmentDescription;
+
+   const serviceTypeCell = document.createElement('td');
+   serviceTypeCell.classList.add('service-type-col');
+   serviceTypeCell.textContent = entryData.serviceType;
+
+   const serviceDescriptionCell = document.createElement('td');
+   serviceDescriptionCell.classList.add('service-description-col');
+   setServiceDescriptionCellContent(serviceDescriptionCell, entryData.serviceDescription);
+
+   const hourMeterCell = document.createElement('td');
+   hourMeterCell.classList.add('hour-meter-col');
+   hourMeterCell.textContent = entryData.hourMeter ?? '';
+
+   const dateCell = document.createElement('td');
+   dateCell.classList.add('date-col');
+   dateCell.textContent = entryData.serviceDate ? formatDate(entryData.serviceDate) : '';
+
+   const techNameCell = document.createElement('td');
+   techNameCell.classList.add('tech-name-col');
+   techNameCell.textContent = entryData.techName;
+
+   const editColCell = document.createElement('td');
+   editColCell.classList.add('edit-col');
+   editColCell.innerHTML = '<div class="edit-col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
+
+   newRow.appendChild(entryLogNumCell);
+   newRow.appendChild(rentalIdCell);
+   newRow.appendChild(equipmentDescriptionCell);
+   newRow.appendChild(serviceTypeCell);
+   newRow.appendChild(serviceDescriptionCell);
+   newRow.appendChild(hourMeterCell);
+   newRow.appendChild(dateCell);
+   newRow.appendChild(techNameCell);
+   newRow.appendChild(editColCell);
+
+   return newRow;
+}
+
+function setServiceDescriptionCellContent(cell, descriptionText) {
+   const safeText = descriptionText || '';
+   const needsToggle = safeText.length > MAX_SERVICE_DESCRIPTION_CHARS;
+   cell.innerHTML = '';
+
+   const wrapper = document.createElement('div');
+   wrapper.classList.add('service-description-wrapper');
+   wrapper.dataset.hasToggle = needsToggle ? 'true' : 'false';
+   wrapper.dataset.expanded = needsToggle ? 'false' : 'true';
+
+   const truncatedSpan = document.createElement('span');
+   truncatedSpan.classList.add('service-description-text', 'truncated');
+   truncatedSpan.textContent = needsToggle ? getTruncatedDescription(safeText) : safeText;
+   wrapper.appendChild(truncatedSpan);
+
+   const fullSpan = document.createElement('span');
+   fullSpan.classList.add('service-description-text', 'full');
+   fullSpan.textContent = safeText;
+   wrapper.appendChild(fullSpan);
+
+   const toggleBtn = document.createElement('button');
+   toggleBtn.type = 'button';
+   toggleBtn.classList.add('toggle-description-btn');
+   toggleBtn.textContent = 'View more';
+   if (!needsToggle) {
+      toggleBtn.style.display = 'none';
+   }
+   wrapper.appendChild(toggleBtn);
+
+   cell.appendChild(wrapper);
+}
+
+function getFullDescriptionFromCell(cell) {
+   if (!cell) {
+      return '';
+   }
+   const fullSpan = cell.querySelector('.service-description-text.full');
+   return (fullSpan ? fullSpan.textContent : cell.textContent).trim();
+}
+
+function getTruncatedDescription(text) {
+   if (text.length <= MAX_SERVICE_DESCRIPTION_CHARS) {
+      return text;
+   }
+   return `${text.slice(0, MAX_SERVICE_DESCRIPTION_CHARS).trimEnd()}…`;
+}
+
+function parseEntryId(value) {
+   const parsed = parseInt(value, 10);
+   return isNaN(parsed) ? 0 : parsed;
+}
+
+function insertRowSorted(newRow) {
+   if (!tableBody) {
+      return;
+   }
+   const newEntryId = parseEntryId(newRow.dataset.entryId);
+   const rows = Array.from(tableBody.getElementsByTagName('tr'));
+   let inserted = false;
+
+   for (const row of rows) {
+      const rowEntryId = parseEntryId(row.dataset.entryId);
+      if (newEntryId >= rowEntryId) {
+         tableBody.insertBefore(newRow, row);
+         inserted = true;
+         break;
+      }
+   }
+
+   if (!inserted) {
+      tableBody.appendChild(newRow);
+   }
 }
 
 // function closePopup() {
@@ -201,58 +440,15 @@ function deletedEntryMessage(rentalId, equipmentDescription) {
 
 function updateTable(data) {
    console.log("updateTable function started.");
-   const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
-
-   const newEntryData = data;
-   const newRow = document.createElement('tr');
-
-   const entryLogNumCell = document.createElement('td');
-   entryLogNumCell.classList.add('entry-log-num-col');
-   entryLogNumCell.textContent = newEntryData.entryLogNum;
-
-   const rentalIdCell = document.createElement('td');
-   rentalIdCell.classList.add('rental-id-col');
-   rentalIdCell.textContent = newEntryData.rentalId;
-
-   const equipmentDescriptionCell = document.createElement('td');
-   equipmentDescriptionCell.classList.add('equipment-description-col');
-   equipmentDescriptionCell.textContent = newEntryData.equipmentDescription;
-
-   const serviceTypeCell = document.createElement('td');
-   serviceTypeCell.classList.add('service-type-col');
-   serviceTypeCell.textContent = newEntryData.serviceType;
-
-   const serviceDescriptionCell = document.createElement('td');
-   serviceDescriptionCell.classList.add('service-description-col');
-   serviceDescriptionCell.textContent = newEntryData.serviceDescription;
-
-   const hourMeterCell = document.createElement('td');
-   hourMeterCell.classList.add('hour-meter-col');
-   hourMeterCell.textContent = newEntryData.hourMeter;
-
-   const dateCell = document.createElement('td');
-   dateCell.classList.add('date-col');
-   dateCell.textContent = formatDate(newEntryData.serviceDate);
-
-   const techNameCell = document.createElement('td');
-   techNameCell.classList.add('tech-name-col');
-   techNameCell.textContent = newEntryData.techName;
-
-   const editColCell = document.createElement('td');
-   editColCell.classList.add('edit-col');
-   editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
-
-   newRow.appendChild(entryLogNumCell);
-   newRow.appendChild(rentalIdCell);
-   newRow.appendChild(equipmentDescriptionCell);
-   newRow.appendChild(serviceTypeCell);
-   newRow.appendChild(serviceDescriptionCell);
-   newRow.appendChild(hourMeterCell);
-   newRow.appendChild(dateCell);
-   newRow.appendChild(techNameCell);
-   newRow.appendChild(editColCell);
-   // Add table row to the top of the table body
-   tableBody.prepend(newRow);
+   if (!tableBody) {
+      return;
+   }
+   const normalizedEntry = normalizeEntry(data);
+   const newRow = buildTableRow(normalizedEntry);
+   insertRowSorted(newRow);
+   applySearchFilter(searchInput ? searchInput.value.toUpperCase() : "");
+   currentPage = 1;
+   renderPaginatedRows();
 }
 
 // Get entries from database on load and populate
@@ -275,62 +471,22 @@ function fetchEntries() {
        });
 }
 function populateTable(entries) {
-   const tableBody = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0];
-   tableBody.innerHTML = ''; // Clear any existing rows
+   if (!tableBody) {
+      return;
+   }
+   tableBody.innerHTML = '';
 
-   entries.forEach(entry => {
-      const newRow = document.createElement('tr');
+   const normalizedEntries = entries.map(normalizeEntry);
+   normalizedEntries.sort((a, b) => parseEntryId(b.entryLogNum) - parseEntryId(a.entryLogNum));
 
-      const entryLogNumCell = document.createElement('td');
-      entryLogNumCell.classList.add('entry-log-num-col');
-      entryLogNumCell.textContent = entry.id;
-
-      const rentalIdCell = document.createElement('td');
-      rentalIdCell.classList.add('rental-id-col');
-      rentalIdCell.textContent = entry.rental_id;
-
-      const equipmentDescriptionCell = document.createElement('td');
-      equipmentDescriptionCell.classList.add('equipment-description-col');
-      equipmentDescriptionCell.textContent = entry.equipment_description;
-
-      const serviceTypeCell = document.createElement('td');
-      serviceTypeCell.classList.add('service-type-col');
-      serviceTypeCell.textContent = entry.service_type;
-
-      const serviceDescriptionCell = document.createElement('td');
-      serviceDescriptionCell.classList.add('service-description-col');
-      serviceDescriptionCell.textContent = entry.service_description;
-
-      const hourMeterCell = document.createElement('td');
-      hourMeterCell.classList.add('hour-meter-col');
-      hourMeterCell.textContent = entry.hour_meter;
-
-      const dateCell = document.createElement('td');
-      dateCell.classList.add('date-col');
-      dateCell.textContent = formatDate(entry.service_date); // Format the date
-      // dateCell.textContent = (entry.service_date);
-
-      const techNameCell = document.createElement('td');
-      techNameCell.classList.add('tech-name-col');
-      techNameCell.textContent = entry.tech_name;
-
-      const editColCell = document.createElement('td');
-      editColCell.classList.add('edit-col');
-      editColCell.innerHTML = '<div class="col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
-
-      newRow.appendChild(entryLogNumCell);
-      newRow.appendChild(rentalIdCell);
-      newRow.appendChild(equipmentDescriptionCell);
-      newRow.appendChild(serviceTypeCell);
-      newRow.appendChild(serviceDescriptionCell);
-      newRow.appendChild(hourMeterCell);
-      newRow.appendChild(dateCell);
-      newRow.appendChild(techNameCell);
-      newRow.appendChild(editColCell);
-
-   //  tableBody.appendChild(newRow);
-      tableBody.prepend(newRow);
+   normalizedEntries.forEach(entry => {
+      const newRow = buildTableRow(entry);
+      tableBody.appendChild(newRow);
    });
+
+   applySearchFilter(searchInput ? searchInput.value.toUpperCase() : "");
+   currentPage = 1;
+   renderPaginatedRows();
 }
 
 // UTC added so the day is not behind by 1 day
@@ -372,6 +528,22 @@ document.addEventListener('DOMContentLoaded', function() {
    });
 });
 
+document.addEventListener('click', function(event) {
+   if (event.target.classList.contains('toggle-description-btn')) {
+      event.preventDefault();
+      const wrapper = event.target.closest('.service-description-wrapper');
+      if (!wrapper) {
+         return;
+      }
+      if (wrapper.dataset.hasToggle !== 'true') {
+         return;
+      }
+      const isExpanded = wrapper.dataset.expanded === 'true';
+      wrapper.dataset.expanded = isExpanded ? 'false' : 'true';
+      event.target.textContent = isExpanded ? 'View more' : 'View less';
+   }
+});
+
 // Edit Log Entry functions ==================================
 // Edit Function
 function editLogBtnClick(button) {
@@ -394,7 +566,8 @@ function populateFormForEdit(row) {
 
    document.getElementById('service-type').value = row.getElementsByClassName('service-type-col')[0].textContent;
 
-   document.getElementById('service-description').value = row.getElementsByClassName('service-description-col')[0].textContent.trim();
+   const serviceDescriptionCell = row.getElementsByClassName('service-description-col')[0];
+   document.getElementById('service-description').value = getFullDescriptionFromCell(serviceDescriptionCell);
 
    document.getElementById('hour-meter').value = row.getElementsByClassName('hour-meter-col')[0].textContent.trim();
 
@@ -443,20 +616,32 @@ function updateFormDataOnServer(entryLogNum, formData) {
 
 function updateTableRow(entryLogNum, formData) {
    console.log("updateTableRow function started.");
-   const rows = document.getElementById('equipment-log-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+   if (!tableBody) {
+      return;
+   }
+   const rows = tableBody.getElementsByTagName('tr');
 
    for (let row of rows) {
        if (row.getElementsByClassName('entry-log-num-col')[0].textContent == entryLogNum) {
            row.getElementsByClassName('rental-id-col')[0].textContent = formData.rentalId;
            row.getElementsByClassName('equipment-description-col')[0].textContent = formData.equipmentDescription;
            row.getElementsByClassName('service-type-col')[0].textContent = formData.serviceType;
-           row.getElementsByClassName('service-description-col')[0].textContent = formData.serviceDescription;
+           setServiceDescriptionCellContent(
+               row.getElementsByClassName('service-description-col')[0],
+               formData.serviceDescription
+           );
            row.getElementsByClassName('hour-meter-col')[0].textContent = formData.hourMeter;
            row.getElementsByClassName('date-col')[0].textContent = formatDate(formData.serviceDate);
            row.getElementsByClassName('tech-name-col')[0].textContent = formData.techName;
+           row.dataset.entryId = entryLogNum;
+           tableBody.removeChild(row);
+           insertRowSorted(row);
            break;
        }
    }
+
+   applySearchFilter(searchInput ? searchInput.value.toUpperCase() : "");
+   renderPaginatedRows();
 }
 
 function clearForm() {
@@ -492,6 +677,7 @@ function deleteBtnClick(button) {
            } else {
                console.log("Success:", data);
                row.remove();
+               renderPaginatedRows();
                // deletedEntryMessage(rentalId, equipmentDescription);
                alert(`Rental ID: ${rentalId}, ${equipmentDescription} has been deleted.`);
            }

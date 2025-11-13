@@ -13,8 +13,8 @@ if ($conn->connect_error) {
     die();
 }
 
-// Fetch entries from the database
-$sql = "SELECT * FROM maintenance_log";
+// Fetch entries from the database ordered by newest entry id first
+$sql = "SELECT * FROM maintenance_log ORDER BY id DESC";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

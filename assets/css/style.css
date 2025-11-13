@@ -24,7 +24,7 @@ body {
    background-color: var(--light-grey-color1);
    font-family: Roboto, sans-serif;
    font-size: 16px;
-   height: 100vh;
+   height: 100%;
    overflow-x: hidden;
 }
 
@@ -129,6 +129,7 @@ header {
    border: 2px solid var(--light-grey-color1);
    overflow-x: auto;
    overflow-y: scroll;
+   flex-direction: column;
 }
 table {
    border-collapse: collapse;
@@ -143,7 +144,7 @@ thead {
    filter: drop-shadow(0px 1px 5px grey);
 }
 th {
-   padding: 18px 10px;
+   padding: 10px 8px;
    background-color: var(--main-white-color);
    cursor: pointer;
 }
@@ -166,16 +167,17 @@ td {
 .table-header-text {
    color: grey;
    font-weight: 600;
+   line-height: 1.2;
 }
 .sort-icon-wrapper {
    color: var(--main-orange-color);
 }
-.col-wrapper {
+.edit-col-wrapper {
    display: flex;
    justify-content: space-between;
    align-items: center;
-   flex-wrap: wrap;
-   gap: 18px;
+   /* flex-wrap: wrap; */
+   gap: 15px;
 }
 .edit-log-btn, .delete-log-btn {
    border: none;
@@ -192,6 +194,87 @@ td {
 .delete-log-btn:hover {
    color: red;
    transition: all 0.3s ease-in-out;
+}
+
+.service-description-wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+}
+.service-description-text {
+   display: inline-block;
+   white-space: pre-wrap;
+   word-break: break-word;
+}
+.service-description-wrapper .service-description-text.full {
+   display: none;
+}
+.service-description-wrapper[data-expanded="true"] .service-description-text.full {
+   display: block;
+}
+.service-description-wrapper[data-expanded="true"] .service-description-text.truncated {
+   display: none;
+}
+.toggle-description-btn {
+   align-self: flex-start;
+   padding: 0;
+   border: none;
+   background: none;
+   color: var(--main-orange-color);
+   font-weight: 600;
+   cursor: pointer;
+}
+.service-description-wrapper[data-has-toggle="false"] .toggle-description-btn {
+   display: none;
+}
+.toggle-description-btn:hover {
+   text-decoration: underline;
+}
+
+.table-pagination-controls {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 15px;
+   /* padding: 15px 20px; */
+   width: 100%;
+   background-color: var(--main-white-color);
+   /* border-top: 1px solid var(--light-grey-color2); */
+}
+.pagination-size-control {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   font-weight: 500;
+   color: var(--main-black-color);
+}
+#entries-per-page {
+   height: 34px;
+   padding: 6px 10px;
+   border: 1px solid var(--light-grey-color2);
+   border-radius: 4px;
+   background-color: var(--light-grey-color1);
+}
+.pagination-nav {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   font-weight: 500;
+}
+.pagination-btn {
+   height: 34px;
+   padding: 4px 14px;
+   border: 1px solid var(--main-orange-color);
+   background-color: var(--main-orange-color);
+   color: var(--main-white-color);
+   border-radius: 4px;
+   cursor: pointer;
+}
+.pagination-btn:disabled {
+   border-color: var(--light-grey-color2);
+   background-color: var(--light-grey-color2);
+   cursor: not-allowed;
 }
 /* set width for select table header columns */
 #rental-id-header-col {
