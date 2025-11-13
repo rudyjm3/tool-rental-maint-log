@@ -8,7 +8,7 @@ const paginationInfo = document.getElementById('pagination-info');
 
 let currentPage = 1;
 let entriesPerPage = entriesPerPageSelect ? parseInt(entriesPerPageSelect.value, 10) : 10;
-const MAX_SERVICE_DESCRIPTION_CHARS = 100;
+let currentDescriptionLimit = getServiceDescriptionLimit();
 
 if (entriesPerPageSelect) {
    entriesPerPageSelect.addEventListener('change', function() {
@@ -34,20 +34,49 @@ if (nextPageBtn) {
    });
 }
 
+function getServiceDescriptionLimit() {
+   return window.innerWidth <= 750 ? 50 : 100;
+}
+
+function handleDescriptionLimitChange() {
+   const newLimit = getServiceDescriptionLimit();
+   if (newLimit !== currentDescriptionLimit) {
+      currentDescriptionLimit = newLimit;
+      refreshAllServiceDescriptionWrappers();
+   }
+}
+
+window.addEventListener('resize', handleDescriptionLimitChange);
+
+function refreshAllServiceDescriptionWrappers() {
+   if (!tableBody) {
+      return;
+   }
+   const wrappers = tableBody.getElementsByClassName('service-description-wrapper');
+   Array.from(wrappers).forEach(wrapper => updateWrapperTruncation(wrapper));
+}
+
 renderPaginatedRows();
 
 // Open close Log New Maintenance Form function ===================
 function formOpenClose() {
    const formContainer = document.getElementById('entry-form-container');
    const entryForm = document.getElementById('entry-form');
-   if (formContainer.className == 'open-form-container') {
+   const formModal = document.querySelector('.entry-form-modal');
+   if (!formContainer || !entryForm) {
+      return;
+   }
+   const isOpen = formContainer.classList.contains('open-form-container');
+   if (isOpen) {
       resetFormTitle();
       entryForm.reset();
-      formContainer.classList.toggle('open-form-container');
-      formContainer.style.display = 'none';
+      formContainer.classList.remove('open-form-container');
+      document.body.classList.remove('modal-open');
+      formModal.classList.remove('hide-scrollbar');
    } else {
-      formContainer.style.display = 'block';
-      formContainer.classList.toggle('open-form-container');
+      formContainer.classList.add('open-form-container');
+      document.body.classList.add('modal-open');
+      formModal.classList.add('hide-scrollbar');
    }
 }
 
@@ -309,17 +338,14 @@ function buildTableRow(entryData) {
 
 function setServiceDescriptionCellContent(cell, descriptionText) {
    const safeText = descriptionText || '';
-   const needsToggle = safeText.length > MAX_SERVICE_DESCRIPTION_CHARS;
    cell.innerHTML = '';
 
    const wrapper = document.createElement('div');
    wrapper.classList.add('service-description-wrapper');
-   wrapper.dataset.hasToggle = needsToggle ? 'true' : 'false';
-   wrapper.dataset.expanded = needsToggle ? 'false' : 'true';
-
+   wrapper.dataset.hasToggle = 'false';
+   wrapper.dataset.expanded = 'false';
    const truncatedSpan = document.createElement('span');
    truncatedSpan.classList.add('service-description-text', 'truncated');
-   truncatedSpan.textContent = needsToggle ? getTruncatedDescription(safeText) : safeText;
    wrapper.appendChild(truncatedSpan);
 
    const fullSpan = document.createElement('span');
@@ -331,12 +357,10 @@ function setServiceDescriptionCellContent(cell, descriptionText) {
    toggleBtn.type = 'button';
    toggleBtn.classList.add('toggle-description-btn');
    toggleBtn.textContent = 'View more';
-   if (!needsToggle) {
-      toggleBtn.style.display = 'none';
-   }
    wrapper.appendChild(toggleBtn);
 
    cell.appendChild(wrapper);
+   updateWrapperTruncation(wrapper);
 }
 
 function getFullDescriptionFromCell(cell) {
@@ -347,11 +371,54 @@ function getFullDescriptionFromCell(cell) {
    return (fullSpan ? fullSpan.textContent : cell.textContent).trim();
 }
 
-function getTruncatedDescription(text) {
-   if (text.length <= MAX_SERVICE_DESCRIPTION_CHARS) {
+function updateWrapperTruncation(wrapper, overrideText) {
+   if (!wrapper) {
+      return;
+   }
+   const truncatedSpan = wrapper.querySelector('.service-description-text.truncated');
+   const fullSpan = wrapper.querySelector('.service-description-text.full');
+   const toggleBtn = wrapper.querySelector('.toggle-description-btn');
+   if (!truncatedSpan || !fullSpan || !toggleBtn) {
+      return;
+   }
+
+   if (overrideText !== undefined) {
+      fullSpan.textContent = overrideText;
+   }
+
+   const fullText = fullSpan.textContent || '';
+   const needsToggle = fullText.length > currentDescriptionLimit;
+   const previouslyHadToggle = wrapper.dataset.hasToggle === 'true';
+   let isExpanded = wrapper.dataset.expanded === 'true';
+
+   truncatedSpan.textContent = needsToggle ? getTruncatedDescription(fullText, currentDescriptionLimit) : fullText;
+
+   if (!needsToggle) {
+      wrapper.dataset.hasToggle = 'false';
+      wrapper.dataset.expanded = 'true';
+      toggleBtn.style.display = 'none';
+      return;
+   }
+
+   wrapper.dataset.hasToggle = 'true';
+   toggleBtn.style.display = '';
+   if (!previouslyHadToggle) {
+      wrapper.dataset.expanded = 'false';
+      isExpanded = false;
+   } else if (wrapper.dataset.expanded !== 'true' && wrapper.dataset.expanded !== 'false') {
+      wrapper.dataset.expanded = 'false';
+      isExpanded = false;
+   } else {
+      isExpanded = wrapper.dataset.expanded === 'true';
+   }
+   toggleBtn.textContent = isExpanded ? 'View less' : 'View more';
+}
+
+function getTruncatedDescription(text, limit = currentDescriptionLimit) {
+   if (text.length <= limit) {
       return text;
    }
-   return `${text.slice(0, MAX_SERVICE_DESCRIPTION_CHARS).trimEnd()}…`;
+   return `${text.slice(0, limit).trimEnd()}…`;
 }
 
 function parseEntryId(value) {
@@ -454,6 +521,14 @@ function updateTable(data) {
 // Get entries from database on load and populate
 document.addEventListener('DOMContentLoaded', function() {
    fetchEntries();
+   const formContainer = document.getElementById('entry-form-container');
+   if (formContainer) {
+      formContainer.addEventListener('click', function(event) {
+         if (event.target === formContainer) {
+            formOpenClose();
+         }
+      });
+   }
 });
 
 function fetchEntries() {

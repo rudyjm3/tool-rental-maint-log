@@ -27,6 +27,9 @@ body {
    height: 100%;
    overflow-x: hidden;
 }
+body.modal-open {
+   overflow: hidden;
+}
 
 /* Header styling */
 header {
@@ -124,7 +127,7 @@ header {
    align-items: flex-start;
    width: 100%;
    height: 100%;
-   max-height: 650px;
+   max-height: 700px;
    background-color: var(--light-grey-color1);
    border: 2px solid var(--light-grey-color1);
    overflow-x: auto;
@@ -226,6 +229,11 @@ td {
    cursor: pointer;
    margin-left: 4px;
 }
+.service-description-wrapper[data-expanded="true"] .toggle-description-btn {
+   margin-left: 0;
+   margin-top: 6px;
+   display: inline-block;
+}
 .service-description-wrapper[data-has-toggle="false"] .toggle-description-btn {
    display: none;
 }
@@ -293,62 +301,67 @@ td {
    width: 150px;
 }
 #service-description-header-col {
-   width: 40%;
-   /* width: 400px;
+   /* width: 40%; */
+   width: 500px;
    min-width: 300px;
-   max-width: 500px; */
+   /* max-width: 600px; */
 }
 #hour-meter-header-col {
    width: 50px;
 }
 #edit-header-col {
-   width: 8%;
-   /* min-width: 90px; */
+   width: 110px;
+   min-width: 90px;
 }
-
 /* End Table styling */
 
 /* Form styling */
 #entry-form-container {
-   position: absolute;
-   top: 0px;
-   right: calc(0px - 430px);
-   width: 425px;
-   height: max-content;
-   border-radius: 4px;
-   box-shadow: 0px 5px 8px 4px rgba(0,0,0,0.19);
-   -webkit-box-shadow: 0px 5px 8px 4px rgba(0,0,0,0.19);
-   -moz-box-shadow: 0px 5px 8px 4px rgba(0,0,0,0.19);
-   transition: all 0.3s ease-in-out;
+   position: fixed;
+   inset: 0;
    display: none;
+   align-items: center;
+   justify-content: center;
+   background-color: rgba(0, 0, 0, 0.55);
+   padding: 20px;
+   z-index: 1000;
+}
+#entry-form-container.open-form-container {
+   display: flex;
+}
+.entry-form-modal {
+   width: min(520px, 100%);
+   max-height: 90vh;
+   overflow-y: auto;
+   background-color: var(--main-white-color);
+   border-radius: 8px;
+   box-shadow: 0px 10px 30px rgba(0,0,0,0.25);
+   padding: 8px;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   
+}
+/* For WebKit browsers (Chrome, Safari, Edge, Opera) */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-.open-form-container {
-   right: 0px;
-   animation: formSlideOut cubic-bezier(0.01,0.04,0.07,1.67) 0.3s;
-   animation-fill-mode: forwards;
+/* For Firefox */
+.hide-scrollbar {
+  scrollbar-width: none;
 }
-@keyframes formSlideOut {
-   0% {
-      right: calc(0px - 430px);
-      opacity: 0;
-   }
-   
-   100% {
-      right: 0px;
-      opacity: 1;
-   }
+
+/* For Internet Explorer and older Edge */
+.hide-scrollbar {
+  -ms-overflow-style: none;
 }
+
 #entry-form {
    display: flex;
-   justify-content: flex-start;
-   align-items: center;
    flex-direction: column;
    width: 100%;
-   height: max-content;
-   padding: 10px;
-   background-color: var(--main-white-color);
-   /* overflow-y: scroll; */
+   gap: 15px;
 }
 .form-control:nth-last-child(2) {
    margin-bottom: 20px;
@@ -440,6 +453,28 @@ input:focus, input[type=number]:focus, input[type=text]:focus,  input[type=email
 #submit-button:hover {
    background-color: var(--orange-hover-color);
    transition: all 0.3s ease-in-out;
+}
+@media (max-width: 750px) {
+   .entry-form-modal {
+      width: 100%;
+      max-height: 95vh;
+      padding: 16px;
+   }
+   .form-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+   }
+   #search-container {
+      flex-direction: column;
+      align-items: stretch;
+   }
+   .search-bar-wrapper {
+      width: 100%;
+   }
+   #new-form-btn {
+      width: 100%;
+   }
 }
 /* End form styling */
 
