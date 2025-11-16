@@ -10,6 +10,7 @@ const historyModalTitle = document.getElementById('history-modal-title');
 const historyModalEquipment = document.getElementById('history-modal-equipment');
 const historyModalContent = document.getElementById('history-modal-content');
 const historyModalCloseBtn = historyModal ? historyModal.querySelector('.history-modal-close-btn') : null;
+const newFormBtn = document.getElementById('new-form-btn');
 const columnLabels = {
    entryLogNum: 'Log #',
    rentalId: 'Rental ID#',
@@ -89,7 +90,30 @@ function handleDescriptionLimitChange() {
    }
 }
 
-window.addEventListener('resize', handleDescriptionLimitChange);
+function handleWindowResize() {
+   handleDescriptionLimitChange();
+   updateNewFormButtonLabel();
+}
+
+function updateNewFormButtonLabel() {
+   if (!newFormBtn) {
+      return;
+   }
+   if (!newFormBtn.dataset.defaultText) {
+      newFormBtn.dataset.defaultText = newFormBtn.textContent.trim();
+   }
+   const compactLabel = 'Log New Maint.';
+   const defaultLabel = newFormBtn.dataset.defaultText;
+   if (window.innerWidth <= 800) {
+      if (newFormBtn.textContent !== compactLabel) {
+         newFormBtn.textContent = compactLabel;
+      }
+   } else if (defaultLabel && newFormBtn.textContent !== defaultLabel) {
+      newFormBtn.textContent = defaultLabel;
+   }
+}
+
+window.addEventListener('resize', handleWindowResize);
 
 function refreshAllServiceDescriptionWrappers() {
    if (!tableBody) {
@@ -100,6 +124,7 @@ function refreshAllServiceDescriptionWrappers() {
 }
 
 renderPaginatedRows();
+updateNewFormButtonLabel();
 
 // Open close Log New Maintenance Form function ===================
 function formOpenClose() {

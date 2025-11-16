@@ -23,7 +23,7 @@ body {
    gap: 25px;
    background-color: var(--light-grey-color1);
    font-family: Roboto, sans-serif;
-   font-size: 16px;
+   font-size: 15px;
    height: 100%;
    overflow-x: hidden;
 }
@@ -43,7 +43,7 @@ header {
    color: var(--main-white-color);
 }
 .page-title > h1 {
-   font-size: 1.6rem;
+   font-size: 1.2rem;
    font-weight: 500;
 }
 
@@ -96,7 +96,7 @@ header {
    background-color: var(--main-orange-color);
    border: none;
    padding: 10px;
-   border-radius: 0px 2px 2px 0px;
+   border-radius: 0px 4px 4px 0px;
    width: 125px;
    cursor: pointer;
 }
@@ -111,7 +111,7 @@ header {
    background-color: var(--main-orange-color);
    border: none;
    padding: 10px;
-   border-radius: 2px;
+   border-radius: 4px;
    width: 240px;
    cursor: pointer;
 }
@@ -339,7 +339,7 @@ td {
    transition: all 0.2s ease-in-out;
    line-height: 1.3;
    width: 100%;
-   text-align: left;
+   text-align: center;
 }
 
 .view-history-btn:hover,
@@ -509,7 +509,7 @@ td {
    background-color: var(--main-white-color);
    border-radius: 8px;
    box-shadow: 0px 10px 30px rgba(0,0,0,0.25);
-   padding: 8px;
+   /* padding: 8px; */
    display: flex;
    flex-direction: column;
    gap: 10px;
@@ -535,6 +535,7 @@ td {
    flex-direction: column;
    width: 100%;
    gap: 15px;
+   padding: 8px;
 }
 .form-control:nth-last-child(2) {
    margin-bottom: 20px;
@@ -547,9 +548,9 @@ td {
    background-color: var(--main-black-color);
    padding: 20px;
 }
-.form-header > h1 {
-   font-size: 20px;
-   color: var(--main-white-color);
+#entry-form-title {
+   font-size: 1.1rem;
+   color: var(--light-grey-color1);
 }
 #close-form-btn {
    font-size: 20px;
@@ -559,7 +560,7 @@ td {
    cursor: pointer;
 }
 #close-form-btn:hover {
-   color: red;
+   color: var(--main-orange-color);
    transition: all 0.3s ease-in-out;
 }
 .form-control {
@@ -572,6 +573,7 @@ td {
 }
 label {
    width: 100%;
+   font-weight: 500;
 }
 /* HIDE NUMBER INPUTS UP/DOWN ARROWS */
 /* Chrome, Safari, Edge, Opera */
@@ -588,7 +590,7 @@ input[type=number] {
 input, textarea, select {
    border: 1px solid var(--light-grey-color2);
    background-color: var(--light-grey-color1);
-   border-radius: 2px;
+   border-radius: 4px;
    padding: 5px 10px;
    height: 44px;
 }
@@ -615,7 +617,7 @@ input:focus, input[type=number]:focus, input[type=text]:focus,  input[type=email
 }
 #submit-button {
    padding: 15px 0;
-   border-radius: 2px;
+   border-radius: 4px;
    border: none;
    color: var(--main-white-color);
    font-weight: 600;
@@ -631,16 +633,16 @@ input:focus, input[type=number]:focus, input[type=text]:focus,  input[type=email
    .entry-form-modal {
       width: 100%;
       max-height: 95vh;
-      padding: 16px;
+      /* padding: 16px; */
    }
    .form-header {
-      flex-direction: column;
+      flex-direction: row;
       align-items: flex-start;
       gap: 10px;
    }
    #search-container {
       flex-direction: column;
-      align-items: stretch;
+      /* align-items: stretch; */
    }
    .search-bar-wrapper {
       width: 100%;
@@ -740,17 +742,21 @@ footer {
       font-size: 1rem;
    }
    #search-container {
-      justify-content: center;
+      /* justify-content: center; */
+      justify-content: flex-start;
+      flex-direction: row;
    }
    .search-bar-wrapper {
-      width: 100%;
+      /* width: 100%; */
+      width: 65%;
    }
    #search-input {
       padding-right: 140px;
       width: 100%;
    }
-#new-form-btn {
-   width: 95%;
+   #new-form-btn {
+      /* width: 95%; */
+      width: 30%;
 }
 /* #entry-form-container {
    min-height: 100%;
@@ -772,7 +778,12 @@ footer {
    #equipment-log-table tr {
       display: block;
    }
-
+   #table-container {
+      border-radius: 8px;
+   }
+   #equipment-log-table {
+      padding: 0px;
+   }
    #equipment-log-table thead {
       position: absolute;
       width: 1px;
