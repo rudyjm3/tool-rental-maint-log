@@ -441,6 +441,7 @@ td {
    display: flex;
    flex-direction: column;
    gap: 12px;
+   padding-left: 0px; /* Remove default list padding */
 }
 
 .history-entry-item {
