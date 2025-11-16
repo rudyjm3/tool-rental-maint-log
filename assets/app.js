@@ -10,6 +10,17 @@ const historyModalTitle = document.getElementById('history-modal-title');
 const historyModalEquipment = document.getElementById('history-modal-equipment');
 const historyModalContent = document.getElementById('history-modal-content');
 const historyModalCloseBtn = historyModal ? historyModal.querySelector('.history-modal-close-btn') : null;
+const columnLabels = {
+   entryLogNum: 'Log #',
+   rentalId: 'Rental ID#',
+   equipmentDescription: 'Equipment Description',
+   serviceType: 'Service Type',
+   serviceDescription: 'Service Description',
+   hourMeter: 'Hour Meter',
+   serviceDate: 'Date',
+   techName: 'Tech Name',
+   edit: 'Actions'
+};
 
 let currentPage = 1;
 let entriesPerPage = entriesPerPageSelect ? parseInt(entriesPerPageSelect.value, 10) : 10;
@@ -318,12 +329,13 @@ function buildTableRow(entryData) {
    const newRow = document.createElement('tr');
    newRow.dataset.searchHide = 'false';
    newRow.dataset.entryId = entryData.entryLogNum ?? '';
-    newRow.dataset.rentalId = entryData.rentalId ?? '';
-    newRow.dataset.equipmentDescription = entryData.equipmentDescription ?? '';
+   newRow.dataset.rentalId = entryData.rentalId ?? '';
+   newRow.dataset.equipmentDescription = entryData.equipmentDescription ?? '';
 
    const entryLogNumCell = document.createElement('td');
    entryLogNumCell.classList.add('entry-log-num-col');
    entryLogNumCell.textContent = entryData.entryLogNum;
+   setCellLabel(entryLogNumCell, 'entryLogNum');
 
    const rentalIdCell = document.createElement('td');
    rentalIdCell.classList.add('rental-id-col');
@@ -332,30 +344,37 @@ function buildTableRow(entryData) {
    const equipmentDescriptionCell = document.createElement('td');
    equipmentDescriptionCell.classList.add('equipment-description-col');
    equipmentDescriptionCell.textContent = entryData.equipmentDescription;
+   setCellLabel(equipmentDescriptionCell, 'equipmentDescription');
 
    const serviceTypeCell = document.createElement('td');
    serviceTypeCell.classList.add('service-type-col');
    serviceTypeCell.textContent = entryData.serviceType;
+   setCellLabel(serviceTypeCell, 'serviceType');
 
    const serviceDescriptionCell = document.createElement('td');
    serviceDescriptionCell.classList.add('service-description-col');
+   setCellLabel(serviceDescriptionCell, 'serviceDescription');
    setServiceDescriptionCellContent(serviceDescriptionCell, entryData.serviceDescription);
 
    const hourMeterCell = document.createElement('td');
    hourMeterCell.classList.add('hour-meter-col');
    hourMeterCell.textContent = entryData.hourMeter ?? '';
+   setCellLabel(hourMeterCell, 'hourMeter');
 
    const dateCell = document.createElement('td');
    dateCell.classList.add('date-col');
    dateCell.textContent = entryData.serviceDate ? formatDate(entryData.serviceDate) : '';
+   setCellLabel(dateCell, 'serviceDate');
 
    const techNameCell = document.createElement('td');
    techNameCell.classList.add('tech-name-col');
    techNameCell.textContent = entryData.techName;
+   setCellLabel(techNameCell, 'techName');
 
    const editColCell = document.createElement('td');
    editColCell.classList.add('edit-col');
    editColCell.innerHTML = '<div class="edit-col-wrapper"><button class="edit-log-btn" onclick="editLogBtnClick(this);"><i class="fa-solid fa-pen-to-square"></i></button> <button class="delete-log-btn" onclick="deleteBtnClick(this);"><i class="fa-solid fa-trash-can"></i></button></div>';
+   setCellLabel(editColCell, 'edit');
 
    newRow.appendChild(entryLogNumCell);
    newRow.appendChild(rentalIdCell);
@@ -370,10 +389,21 @@ function buildTableRow(entryData) {
    return newRow;
 }
 
+function setCellLabel(cell, key) {
+   if (!cell) {
+      return;
+   }
+   const label = columnLabels[key] || key || '';
+   if (label) {
+      cell.setAttribute('data-label', label);
+   }
+}
+
 function setRentalIdCellContent(cell, rentalId, equipmentDescription) {
    if (!cell) {
       return;
    }
+   setCellLabel(cell, 'rentalId');
    cell.innerHTML = '';
    const wrapper = document.createElement('div');
    wrapper.classList.add('rental-id-wrapper');

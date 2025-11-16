@@ -178,7 +178,7 @@ td {
 }
 .edit-col-wrapper {
    display: flex;
-   justify-content: space-between;
+   justify-content: flex-start;
    align-items: center;
    /* flex-wrap: wrap; */
    gap: 15px;
@@ -734,6 +734,7 @@ footer {
 @media screen and (max-width: 800px) {
    body {
       height: 100vh;
+      gap: 0;
    }
    .page-title > h1 {
       font-size: 1rem;
@@ -748,17 +749,99 @@ footer {
       padding-right: 140px;
       width: 100%;
    }
-   #new-form-btn {
-      width: 95%;
-   }
-   /* #entry-form-container {
-      min-height: 100%;
+#new-form-btn {
+   width: 95%;
+}
+/* #entry-form-container {
+   min-height: 100%;
    } */
    .form-header > h1 {
       padding-left: 10px;
    }
    #entry-form-container {
       width: 100%;
+   }
+}
+
+@media screen and (max-width: 1024px) {
+   #equipment-log-table,
+   #equipment-log-table thead,
+   #equipment-log-table tbody,
+   #equipment-log-table th,
+   #equipment-log-table td,
+   #equipment-log-table tr {
+      display: block;
+   }
+
+   #equipment-log-table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+      clip: rect(0 0 0 0);
+      overflow: hidden;
+   }
+
+   #equipment-log-table tr {
+      margin-bottom: 18px;
+      border: 1px solid var(--light-grey-color2);
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      background-color: var(--main-white-color);
+   }
+
+   #equipment-log-table td {
+      border: none;
+      position: relative;
+      padding: 8px 10px 8px 125px;
+      text-align: left;
+      min-height: 28px;
+      margin: 4px 0;
+   }
+
+   #equipment-log-table td:last-child {
+      margin-bottom: 0;
+   }
+
+   #equipment-log-table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 120px;
+      font-weight: 600;
+      color: var(--main-black-color);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+   }
+
+   .entry-log-num-col {
+      display: none !important;
+   }
+
+   .entry-log-num-col,
+   .edit-col {
+      text-align: left;
+   }
+
+   .edit-col {
+      margin-top: 12px;
+   }
+
+   .rental-id-wrapper {
+      flex-direction: row;
+      gap: 20px;
+      width: 100%;
+   }
+
+   .view-history-btn {
+      width: auto;
+      align-self: flex-start;
    }
 }
 /* End Responsive Styling */
