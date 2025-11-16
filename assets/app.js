@@ -5,10 +5,16 @@ const entriesPerPageSelect = document.getElementById('entries-per-page');
 const prevPageBtn = document.getElementById('prev-page');
 const nextPageBtn = document.getElementById('next-page');
 const paginationInfo = document.getElementById('pagination-info');
+const historyModal = document.getElementById('history-modal');
+const historyModalTitle = document.getElementById('history-modal-title');
+const historyModalEquipment = document.getElementById('history-modal-equipment');
+const historyModalContent = document.getElementById('history-modal-content');
+const historyModalCloseBtn = historyModal ? historyModal.querySelector('.history-modal-close-btn') : null;
 
 let currentPage = 1;
 let entriesPerPage = entriesPerPageSelect ? parseInt(entriesPerPageSelect.value, 10) : 10;
 let currentDescriptionLimit = getServiceDescriptionLimit();
+let allEntries = [];
 
 if (entriesPerPageSelect) {
    entriesPerPageSelect.addEventListener('change', function() {
@@ -33,6 +39,32 @@ if (nextPageBtn) {
       renderPaginatedRows();
    });
 }
+
+if (historyModalCloseBtn) {
+   historyModalCloseBtn.addEventListener('click', closeHistoryModal);
+}
+
+if (historyModal) {
+   historyModal.addEventListener('click', function(event) {
+      if (event.target === historyModal) {
+         closeHistoryModal();
+      }
+   });
+}
+
+document.addEventListener('keydown', function(event) {
+   if (event.key === 'Escape' && historyModal && historyModal.classList.contains('open')) {
+      closeHistoryModal();
+   }
+});
+
+document.addEventListener('click', function(event) {
+   const historyBtn = event.target.closest ? event.target.closest('.view-history-btn') : null;
+   if (historyBtn) {
+      event.preventDefault();
+      openHistoryModal(historyBtn.dataset.rentalId || '', historyBtn.dataset.equipmentDescription || '');
+   }
+});
 
 function getServiceDescriptionLimit() {
    return window.innerWidth <= 750 ? 50 : 100;
@@ -286,6 +318,8 @@ function buildTableRow(entryData) {
    const newRow = document.createElement('tr');
    newRow.dataset.searchHide = 'false';
    newRow.dataset.entryId = entryData.entryLogNum ?? '';
+    newRow.dataset.rentalId = entryData.rentalId ?? '';
+    newRow.dataset.equipmentDescription = entryData.equipmentDescription ?? '';
 
    const entryLogNumCell = document.createElement('td');
    entryLogNumCell.classList.add('entry-log-num-col');
@@ -293,7 +327,7 @@ function buildTableRow(entryData) {
 
    const rentalIdCell = document.createElement('td');
    rentalIdCell.classList.add('rental-id-col');
-   rentalIdCell.textContent = entryData.rentalId;
+   setRentalIdCellContent(rentalIdCell, entryData.rentalId, entryData.equipmentDescription);
 
    const equipmentDescriptionCell = document.createElement('td');
    equipmentDescriptionCell.classList.add('equipment-description-col');
@@ -334,6 +368,30 @@ function buildTableRow(entryData) {
    newRow.appendChild(editColCell);
 
    return newRow;
+}
+
+function setRentalIdCellContent(cell, rentalId, equipmentDescription) {
+   if (!cell) {
+      return;
+   }
+   cell.innerHTML = '';
+   const wrapper = document.createElement('div');
+   wrapper.classList.add('rental-id-wrapper');
+
+   const rentalValue = document.createElement('span');
+   rentalValue.classList.add('rental-id-value');
+   rentalValue.textContent = rentalId ?? '';
+   wrapper.appendChild(rentalValue);
+
+   const historyBtn = document.createElement('button');
+   historyBtn.type = 'button';
+   historyBtn.classList.add('view-history-btn');
+   historyBtn.textContent = 'View Maint. History';
+   historyBtn.dataset.rentalId = rentalId ?? '';
+   historyBtn.dataset.equipmentDescription = equipmentDescription ?? '';
+   wrapper.appendChild(historyBtn);
+
+   cell.appendChild(wrapper);
 }
 
 function setServiceDescriptionCellContent(cell, descriptionText) {
@@ -418,7 +476,29 @@ function getTruncatedDescription(text, limit = currentDescriptionLimit) {
    if (text.length <= limit) {
       return text;
    }
-   return `${text.slice(0, limit).trimEnd()}…`;
+   return `${text.slice(0, limit).trimEnd()}...`;
+}
+
+function getRentalIdFromRow(row) {
+   if (!row) {
+      return '';
+   }
+   const rentalValueEl = row.querySelector('.rental-id-value');
+   if (rentalValueEl) {
+      return rentalValueEl.textContent.trim();
+   }
+   return row.dataset && row.dataset.rentalId ? row.dataset.rentalId : '';
+}
+
+function getEquipmentDescriptionFromRow(row) {
+   if (!row) {
+      return '';
+   }
+   if (row.dataset && row.dataset.equipmentDescription) {
+      return row.dataset.equipmentDescription;
+   }
+   const equipmentCell = row.querySelector('.equipment-description-col');
+   return equipmentCell ? equipmentCell.textContent.trim() : '';
 }
 
 function parseEntryId(value) {
@@ -446,6 +526,136 @@ function insertRowSorted(newRow) {
    if (!inserted) {
       tableBody.appendChild(newRow);
    }
+}
+
+function addEntryToCache(entry) {
+   allEntries = allEntries.filter(existing => existing.entryLogNum !== entry.entryLogNum);
+   allEntries.push(entry);
+}
+
+function updateEntryInCache(entryLogNum, formData) {
+   addEntryToCache({
+      entryLogNum,
+      rentalId: formData.rentalId,
+      equipmentDescription: formData.equipmentDescription,
+      serviceType: formData.serviceType,
+      serviceDescription: formData.serviceDescription,
+      hourMeter: formData.hourMeter,
+      serviceDate: formData.serviceDate,
+      techName: formData.techName
+   });
+}
+
+function removeEntryFromCache(entryLogNum) {
+   allEntries = allEntries.filter(entry => entry.entryLogNum !== entryLogNum);
+}
+
+function openHistoryModal(rentalId, equipmentDescription) {
+   if (!historyModal || !historyModalContent) {
+      return;
+   }
+   const matchingEntries = allEntries.filter(entry => entry.rentalId === rentalId);
+   matchingEntries.sort(sortEntriesByDateDesc);
+
+   if (historyModalTitle) {
+      historyModalTitle.textContent = rentalId || 'N/A';
+   }
+   if (historyModalEquipment) {
+      const fallbackDescription = matchingEntries[0]?.equipmentDescription ?? '';
+      historyModalEquipment.textContent = equipmentDescription || fallbackDescription || 'No equipment description available.';
+   }
+
+   renderHistoryEntries(matchingEntries);
+   historyModal.classList.add('open');
+   historyModal.setAttribute('aria-hidden', 'false');
+   document.body.classList.add('history-modal-open');
+}
+
+function closeHistoryModal() {
+   if (!historyModal) {
+      return;
+   }
+   historyModal.classList.remove('open');
+   historyModal.setAttribute('aria-hidden', 'true');
+   document.body.classList.remove('history-modal-open');
+}
+
+function renderHistoryEntries(entries) {
+   if (!historyModalContent) {
+      return;
+   }
+   historyModalContent.innerHTML = '';
+   if (!entries.length) {
+      const emptyState = document.createElement('p');
+      emptyState.classList.add('history-modal-empty');
+      emptyState.textContent = 'No maintenance history found for this rental ID.';
+      historyModalContent.appendChild(emptyState);
+      return;
+   }
+
+   const list = document.createElement('ul');
+   list.classList.add('history-entry-list');
+   entries.forEach(entry => {
+      list.appendChild(buildHistoryEntry(entry));
+   });
+   historyModalContent.appendChild(list);
+}
+
+function buildHistoryEntry(entry) {
+   const item = document.createElement('li');
+   item.classList.add('history-entry-item');
+
+   const header = document.createElement('div');
+   header.classList.add('history-entry-header');
+
+   const dateEl = document.createElement('span');
+   dateEl.classList.add('history-entry-date');
+   dateEl.textContent = entry.serviceDate ? formatDate(entry.serviceDate) : 'Date N/A';
+   header.appendChild(dateEl);
+
+   const typeEl = document.createElement('span');
+   typeEl.classList.add('history-entry-type');
+   typeEl.textContent = entry.serviceType || 'Maintenance';
+   header.appendChild(typeEl);
+
+   item.appendChild(header);
+
+   const descriptionEl = document.createElement('p');
+   descriptionEl.classList.add('history-entry-description');
+   descriptionEl.textContent = entry.serviceDescription || 'No description provided.';
+   item.appendChild(descriptionEl);
+
+   const meta = document.createElement('div');
+   meta.classList.add('history-entry-meta');
+
+   const hourSpan = document.createElement('span');
+   const hourIcon = document.createElement('i');
+   hourIcon.classList.add('fa-solid', 'fa-gauge');
+   hourSpan.appendChild(hourIcon);
+   hourSpan.appendChild(document.createTextNode(` ${entry.hourMeter || 'n/a'}`));
+   meta.appendChild(hourSpan);
+
+   const techSpan = document.createElement('span');
+   const techIcon = document.createElement('i');
+   techIcon.classList.add('fa-solid', 'fa-user-gear');
+   techSpan.appendChild(techIcon);
+   techSpan.appendChild(document.createTextNode(` ${entry.techName || 'n/a'}`));
+   meta.appendChild(techSpan);
+
+   item.appendChild(meta);
+   return item;
+}
+
+function getSortableServiceDate(dateStr) {
+   if (!dateStr) {
+      return 0;
+   }
+   const timestamp = new Date(dateStr).getTime();
+   return isNaN(timestamp) ? 0 : timestamp;
+}
+
+function sortEntriesByDateDesc(a, b) {
+   return getSortableServiceDate(b.serviceDate) - getSortableServiceDate(a.serviceDate);
 }
 
 // function closePopup() {
@@ -512,6 +722,7 @@ function updateTable(data) {
    }
    const normalizedEntry = normalizeEntry(data);
    const newRow = buildTableRow(normalizedEntry);
+    addEntryToCache(normalizedEntry);
    insertRowSorted(newRow);
    applySearchFilter(searchInput ? searchInput.value.toUpperCase() : "");
    currentPage = 1;
@@ -553,6 +764,7 @@ function populateTable(entries) {
 
    const normalizedEntries = entries.map(normalizeEntry);
    normalizedEntries.sort((a, b) => parseEntryId(b.entryLogNum) - parseEntryId(a.entryLogNum));
+    allEntries = normalizedEntries.slice();
 
    normalizedEntries.forEach(entry => {
       const newRow = buildTableRow(entry);
@@ -635,7 +847,7 @@ function editLogBtnClick(button) {
 function populateFormForEdit(row) {
    document.getElementById('entry-id').value = row.getElementsByClassName('entry-log-num-col')[0].textContent;
 
-   document.getElementById('rental-id-number').value = row.getElementsByClassName('rental-id-col')[0].textContent.trim();
+   document.getElementById('rental-id-number').value = getRentalIdFromRow(row);
 
    document.getElementById('equipment-description-input').value = row.getElementsByClassName('equipment-description-col')[0].textContent.trim();
 
@@ -697,26 +909,30 @@ function updateTableRow(entryLogNum, formData) {
    const rows = tableBody.getElementsByTagName('tr');
 
    for (let row of rows) {
-       if (row.getElementsByClassName('entry-log-num-col')[0].textContent == entryLogNum) {
-           row.getElementsByClassName('rental-id-col')[0].textContent = formData.rentalId;
-           row.getElementsByClassName('equipment-description-col')[0].textContent = formData.equipmentDescription;
-           row.getElementsByClassName('service-type-col')[0].textContent = formData.serviceType;
-           setServiceDescriptionCellContent(
-               row.getElementsByClassName('service-description-col')[0],
-               formData.serviceDescription
-           );
-           row.getElementsByClassName('hour-meter-col')[0].textContent = formData.hourMeter;
-           row.getElementsByClassName('date-col')[0].textContent = formatDate(formData.serviceDate);
-           row.getElementsByClassName('tech-name-col')[0].textContent = formData.techName;
-           row.dataset.entryId = entryLogNum;
-           tableBody.removeChild(row);
-           insertRowSorted(row);
-           break;
-       }
+      if (row.getElementsByClassName('entry-log-num-col')[0].textContent == entryLogNum) {
+          const rentalCell = row.getElementsByClassName('rental-id-col')[0];
+          setRentalIdCellContent(rentalCell, formData.rentalId, formData.equipmentDescription);
+          row.getElementsByClassName('equipment-description-col')[0].textContent = formData.equipmentDescription;
+          row.getElementsByClassName('service-type-col')[0].textContent = formData.serviceType;
+          setServiceDescriptionCellContent(
+              row.getElementsByClassName('service-description-col')[0],
+              formData.serviceDescription
+          );
+          row.getElementsByClassName('hour-meter-col')[0].textContent = formData.hourMeter;
+          row.getElementsByClassName('date-col')[0].textContent = formatDate(formData.serviceDate);
+          row.getElementsByClassName('tech-name-col')[0].textContent = formData.techName;
+          row.dataset.entryId = entryLogNum;
+          row.dataset.rentalId = formData.rentalId ?? '';
+          row.dataset.equipmentDescription = formData.equipmentDescription ?? '';
+          tableBody.removeChild(row);
+          insertRowSorted(row);
+          break;
+      }
    }
 
    applySearchFilter(searchInput ? searchInput.value.toUpperCase() : "");
    renderPaginatedRows();
+   updateEntryInCache(entryLogNum, formData);
 }
 
 function clearForm() {
@@ -734,8 +950,8 @@ function clearForm() {
 function deleteBtnClick(button) {
    const row = button.parentNode.closest('tr');
    const entryLogNum = row.getElementsByClassName('entry-log-num-col')[0].textContent;
-   const rentalId = row.getElementsByClassName('rental-id-col')[0].textContent;
-   const equipmentDescription = row.getElementsByClassName('equipment-description-col')[0].textContent;
+   const rentalId = getRentalIdFromRow(row);
+   const equipmentDescription = getEquipmentDescriptionFromRow(row);
 
    if (confirm(`Are you sure you want to delete Rental ID: ${rentalId}, Equipment Description: ${equipmentDescription}?`)) {
        fetch('delete-entry.php', {
@@ -752,6 +968,7 @@ function deleteBtnClick(button) {
            } else {
                console.log("Success:", data);
                row.remove();
+               removeEntryFromCache(entryLogNum);
                renderPaginatedRows();
                // deletedEntryMessage(rentalId, equipmentDescription);
                alert(`Rental ID: ${rentalId}, ${equipmentDescription} has been deleted.`);

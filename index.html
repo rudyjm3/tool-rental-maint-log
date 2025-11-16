@@ -6,7 +6,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
    <!-- Stylesheet/s -->
-   <link rel="stylesheet" href="assets/css/style.css?v=2.1.11">
+   <link rel="stylesheet" href="assets/css/style.css?v=2.2.11">
    <!-- Font Awesome 6.5.2 -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    
@@ -119,6 +119,26 @@
 
    </div>
 
+   <div id="history-modal" class="history-modal" aria-hidden="true">
+      <div class="history-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="history-modal-title">
+         <div class="history-modal-header">
+            <div class="history-modal-heading">
+               <p class="history-modal-label">Rental ID#</p>
+               <h2 id="history-modal-title" class="history-modal-title">N/A</h2>
+               <p id="history-modal-equipment" class="history-modal-equipment">Select an entry to view its history.</p>
+            </div>
+            <button type="button" class="history-modal-close-btn" aria-label="Close maintenance history">
+               <i class="fa-solid fa-xmark"></i>
+            </button>
+         </div>
+         <div class="history-modal-body">
+            <div id="history-modal-content" class="history-modal-content">
+               <p class="history-modal-empty">Choose "View Maint. History" beside a rental ID to see its maintenance records.</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
    <!-- Entry input form -->
    <div id="entry-form-container">
       <div class="entry-form-modal" role="dialog" aria-modal="true" aria-labelledby="entry-form-title">
@@ -181,7 +201,7 @@
    <footer>
       <div class="footer-wrapper">
          <div class="footer-col">
-            <p class="site-version-text">Version 2.1.11</p>
+            <p class="site-version-text">Version 2.2.11</p>
          </div>
          <div class="footer-col">
             <p class="site-author-text">Site designed and coded by : Rudy Mims</p>
